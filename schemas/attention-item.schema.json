@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:attention-item:1.0.0",
+  "title": "AttentionItem",
+  "description": "One explainable unit in an attention ranking.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "attention_item_id": {"type": "string"},
+    "attention_item_version": {"type": "integer", "minimum": 1},
+    "snapshot_id": {"type": "string"},
+    "subject_ref": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"},
+    "rank": {"type": "integer", "minimum": 1},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "previous_rank": {"type": ["integer", "null"], "minimum": 1},
+    "previous_score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "score_delta": {"type": ["number", "null"], "minimum": -1, "maximum": 1},
+    "due_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "status": {
+      "type": "string",
+      "enum": ["recommended_now", "monitor", "needs_confirmation", "deferred", "blocked"]
+    },
+    "component_breakdown": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/score_component"},
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "displaced_commitment_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "blocked_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "opportunity_cost": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "confidence": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/confidence_score"},
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "explanation": {"type": "string"}
+  },
+  "required": [
+    "schema_version",
+    "attention_item_id",
+    "attention_item_version",
+    "snapshot_id",
+    "subject_ref",
+    "rank",
+    "score",
+    "previous_rank",
+    "previous_score",
+    "score_delta",
+    "due_at",
+    "status",
+    "component_breakdown",
+    "evidence_refs",
+    "displaced_commitment_refs",
+    "blocked_refs",
+    "opportunity_cost",
+    "confidence",
+    "uncertainty",
+    "explanation"
+  ],
+  "additionalProperties": false
+}

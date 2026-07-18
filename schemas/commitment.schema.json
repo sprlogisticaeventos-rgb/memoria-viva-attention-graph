@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:commitment:1.0.0",
+  "title": "Commitment",
+  "description": "A sourced obligation with timing, ownership, protection, and displacement state.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "commitment_id": {"type": "string"},
+    "commitment_version": {"type": "integer", "minimum": 1},
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "owner_ref": {"type": ["string", "null"]},
+    "scheduled_start": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "scheduled_end": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "deadline": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "active", "completed", "cancelled", "superseded", "blocked"]
+    },
+    "protected_state": {
+      "type": "string",
+      "enum": ["protected", "flexible", "unprotected", "unknown"]
+    },
+    "displacement_state": {
+      "type": "string",
+      "enum": ["none", "at_risk", "proposed", "displaced", "confirmed"]
+    },
+    "displaced_by_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"}
+    },
+    "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "supersedes_commitment_id": {"type": ["string", "null"]}
+  },
+  "required": [
+    "schema_version",
+    "commitment_id",
+    "commitment_version",
+    "title",
+    "description",
+    "owner_ref",
+    "scheduled_start",
+    "scheduled_end",
+    "deadline",
+    "status",
+    "protected_state",
+    "displacement_state",
+    "displaced_by_refs",
+    "epistemic_state",
+    "evidence_refs",
+    "supersedes_commitment_id"
+  ],
+  "additionalProperties": false
+}

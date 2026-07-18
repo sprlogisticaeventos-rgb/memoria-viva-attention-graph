@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:common:1.0.0",
+  "title": "Memoria Viva Phase 0 shared definitions",
+  "description": "Canonical reusable value objects. This file does not define a standalone domain entity.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false,
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "description": "RFC 3339 UTC timestamp with a Z suffix."
+    },
+    "nullable_timestamp": {
+      "type": ["string", "null"],
+      "description": "RFC 3339 UTC timestamp with a Z suffix, or null when unknown or not applicable."
+    },
+    "epistemic_state": {
+      "type": "string",
+      "enum": ["confirmed", "approximate", "inferred", "blocked", "uncertain"]
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "read": {"type": "boolean"},
+        "write": {"type": "boolean"},
+        "scope": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "required": ["read", "write", "scope"],
+      "additionalProperties": false
+    },
+    "entity_ref": {
+      "type": "object",
+      "properties": {
+        "entity_type": {
+          "type": "string",
+          "enum": [
+            "Source",
+            "SourceEvent",
+            "Evidence",
+            "Goal",
+            "Constraint",
+            "Commitment",
+            "Snapshot",
+            "AttentionItem",
+            "AttentionRanking",
+            "Relationship",
+            "GraphDelta",
+            "RunRecord",
+            "Decision",
+            "Blocker",
+            "Artifact"
+          ]
+        },
+        "entity_id": {"type": "string"},
+        "entity_version": {"type": ["integer", "null"], "minimum": 1},
+        "label": {"type": ["string", "null"]}
+      },
+      "required": ["entity_type", "entity_id", "entity_version", "label"],
+      "additionalProperties": false
+    },
+    "lightweight_reference": {
+      "type": "object",
+      "description": "Reference only; it does not define lifecycle state for a deferred entity.",
+      "properties": {
+        "reference_type": {
+          "type": "string",
+          "enum": ["Decision", "Blocker", "Artifact"]
+        },
+        "reference_id": {"type": "string"},
+        "reference_version": {"type": ["integer", "null"], "minimum": 1},
+        "label": {"type": ["string", "null"]
+        }
+      },
+      "required": ["reference_type", "reference_id", "reference_version", "label"],
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "relationship_id": {"type": "string"},
+        "relationship_type": {
+          "type": "string",
+          "enum": [
+            "derived_from",
+            "supports",
+            "conflicts_with",
+            "blocks",
+            "depends_on",
+            "supersedes",
+            "displaces",
+            "scheduled_for",
+            "owned_by",
+            "constrained_by",
+            "verified_by",
+            "produced_by",
+            "attempts_to_resolve",
+            "changes_between"
+          ]
+        },
+        "from_ref": {"$ref": "#/$defs/entity_ref"},
+        "to_ref": {"$ref": "#/$defs/entity_ref"},
+        "epistemic_state": {"$ref": "#/$defs/epistemic_state"},
+        "confidence": {"$ref": "#/$defs/confidence_score"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"},
+        "created_by": {"type": "string"},
+        "created_at": {"$ref": "#/$defs/timestamp"},
+        "ontology_version": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["active", "superseded", "removed"]
+        },
+        "supersedes_relationship_id": {"type": ["string", "null"]}
+      },
+      "required": [
+        "relationship_id",
+        "relationship_type",
+        "from_ref",
+        "to_ref",
+        "epistemic_state",
+        "confidence",
+        "evidence_refs",
+        "created_by",
+        "created_at",
+        "ontology_version",
+        "status",
+        "supersedes_relationship_id"
+      ],
+      "additionalProperties": false
+    },
+    "score_component": {
+      "type": "object",
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "enum": [
+            "temporal_urgency",
+            "downstream_impact",
+            "strategic_alignment",
+            "conflict_or_displacement",
+            "event_novelty",
+            "evidence_confidence"
+          ]
+        },
+        "normalized_value": {"type": "number", "minimum": 0, "maximum": 1},
+        "weight": {"type": "number", "minimum": 0, "maximum": 1},
+        "weighted_value": {"type": "number", "minimum": 0, "maximum": 1},
+        "explanation": {"type": "string"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": [
+        "component_id",
+        "normalized_value",
+        "weight",
+        "weighted_value",
+        "explanation",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "object_change": {
+      "type": "object",
+      "properties": {
+        "object_ref": {"$ref": "#/$defs/entity_ref"},
+        "change_type": {
+          "type": "string",
+          "enum": ["added", "updated", "superseded"]
+        },
+        "changed_fields": {"$ref": "#/$defs/string_list"},
+        "before_digest": {"type": ["string", "null"]},
+        "after_digest": {"type": ["string", "null"]},
+        "explanation": {"type": "string"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": [
+        "object_ref",
+        "change_type",
+        "changed_fields",
+        "before_digest",
+        "after_digest",
+        "explanation",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "run_observation": {
+      "type": "object",
+      "properties": {
+        "observation_id": {"type": "string"},
+        "summary": {"type": "string"},
+        "epistemic_state": {"$ref": "#/$defs/epistemic_state"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": ["observation_id", "summary", "epistemic_state", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "run_recommendation": {
+      "type": "object",
+      "properties": {
+        "recommendation_id": {"type": "string"},
+        "summary": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["proposed", "accepted", "rejected", "deferred", "blocked"]
+        },
+        "attention_item_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "decision_ref": {
+          "anyOf": [
+            {"$ref": "#/$defs/lightweight_reference"},
+            {"type": "null"}
+          ]
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": [
+        "recommendation_id",
+        "summary",
+        "status",
+        "attention_item_refs",
+        "decision_ref",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "run_validation": {
+      "type": "object",
+      "properties": {
+        "validation_id": {"type": "string"},
+        "criterion": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["not_started", "passed", "failed", "blocked"]
+        },
+        "details": {"type": ["string", "null"]},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": ["validation_id", "criterion", "status", "details", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "run_warning": {
+      "type": "object",
+      "properties": {
+        "warning_id": {"type": "string"},
+        "severity": {"type": "string", "enum": ["info", "warning", "error"]},
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": ["warning_id", "severity", "code", "message", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "schema_reference": {
+      "type": "object",
+      "properties": {
+        "schema_id": {"type": "string"},
+        "schema_version": {"type": "string"}
+      },
+      "required": ["schema_id", "schema_version"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:attention-policy:1.0.0",
+  "title": "AttentionPolicy",
+  "description": "A versioned deterministic weighting and guardrail policy.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "policy_id": {"type": "string"},
+    "version": {"type": "string"},
+    "status": {"type": "string", "enum": ["draft", "active", "superseded", "retired"]},
+    "effective_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "ontology_version": {"type": "string"},
+    "score_scale": {
+      "type": "object",
+      "properties": {
+        "minimum": {"type": "number", "const": 0},
+        "maximum": {"type": "number", "const": 1}
+      },
+      "required": ["minimum", "maximum"],
+      "additionalProperties": false
+    },
+    "normalization_method": {"type": "string"},
+    "components": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "enum": [
+              "temporal_urgency",
+              "downstream_impact",
+              "strategic_alignment",
+              "conflict_or_displacement",
+              "event_novelty",
+              "evidence_confidence"
+            ]
+          },
+          "weight": {"type": "number", "minimum": 0, "maximum": 1},
+          "normalization_method": {"type": "string"},
+          "missing_value_handling": {"type": "string"}
+        },
+        "required": ["component_id", "weight", "normalization_method", "missing_value_handling"],
+        "additionalProperties": false
+      }
+    },
+    "eligibility_rules": {
+      "type": "object",
+      "properties": {
+        "require_evidence": {"type": "boolean"},
+        "require_non_confidence_importance_signal": {"type": "boolean"},
+        "require_displaced_commitments_when_displacement_positive": {"type": "boolean"},
+        "missing_value_behavior": {"type": "string", "enum": ["reject", "needs_confirmation"]}
+      },
+      "required": [
+        "require_evidence",
+        "require_non_confidence_importance_signal",
+        "require_displaced_commitments_when_displacement_positive",
+        "missing_value_behavior"
+      ],
+      "additionalProperties": false
+    },
+    "evidence_minimum": {
+      "type": "object",
+      "properties": {
+        "minimum_reference_count": {"type": "integer", "minimum": 1},
+        "require_at_least_one_non_blocked_reference": {"type": "boolean"}
+      },
+      "required": ["minimum_reference_count", "require_at_least_one_non_blocked_reference"],
+      "additionalProperties": false
+    },
+    "thresholds": {
+      "type": "object",
+      "properties": {
+        "recommended_now_min_score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "monitor_min_score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "needs_confirmation_if_uncertain": {"type": "boolean"},
+        "unconfigured_threshold_behavior": {"type": "string", "enum": ["needs_confirmation"]}
+      },
+      "required": [
+        "recommended_now_min_score",
+        "monitor_min_score",
+        "needs_confirmation_if_uncertain",
+        "unconfigured_threshold_behavior"
+      ],
+      "additionalProperties": false
+    },
+    "tie_breakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": {"type": "integer", "minimum": 1},
+          "field": {"type": "string"},
+          "direction": {"type": "string", "enum": ["ascending", "descending"]},
+          "nulls": {"type": "string", "enum": ["first", "last", "not_applicable"]}
+        },
+        "required": ["order", "field", "direction", "nulls"],
+        "additionalProperties": false
+      }
+    },
+    "rounding_rule": {
+      "type": "object",
+      "properties": {
+        "decimal_places": {"type": "integer", "minimum": 0},
+        "mode": {"type": "string", "enum": ["half_up"]},
+        "apply_to": {"type": "string", "enum": ["final_display_value_only"]}
+      },
+      "required": ["decimal_places", "mode", "apply_to"],
+      "additionalProperties": false
+    },
+    "policy_change_authority": {
+      "type": "object",
+      "properties": {
+        "authority": {"type": "string"},
+        "human_approval_required": {"type": "boolean", "const": true},
+        "new_version_required_for_weight_change": {"type": "boolean", "const": true},
+        "new_version_required_for_threshold_change": {"type": "boolean", "const": true}
+      },
+      "required": [
+        "authority",
+        "human_approval_required",
+        "new_version_required_for_weight_change",
+        "new_version_required_for_threshold_change"
+      ],
+      "additionalProperties": false
+    },
+    "guardrails": {
+      "type": "object",
+      "properties": {
+        "components_bounded_0_1": {"type": "boolean"},
+        "urgency_distinct_from_strategic_importance": {"type": "boolean"},
+        "evidence_confidence_cannot_create_importance_alone": {"type": "boolean"},
+        "displaced_commitments_exposed": {"type": "boolean"},
+        "opportunity_cost_visible": {"type": "boolean"},
+        "uncertainty_visible": {"type": "boolean"},
+        "inferred_preferences_cannot_be_hard_constraints": {"type": "boolean"},
+        "deterministic_tie_break_required": {"type": "boolean"},
+        "run_record_stores_policy_version_and_digest": {"type": "boolean"}
+      },
+      "required": [
+        "components_bounded_0_1",
+        "urgency_distinct_from_strategic_importance",
+        "evidence_confidence_cannot_create_importance_alone",
+        "displaced_commitments_exposed",
+        "opportunity_cost_visible",
+        "uncertainty_visible",
+        "inferred_preferences_cannot_be_hard_constraints",
+        "deterministic_tie_break_required",
+        "run_record_stores_policy_version_and_digest"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "policy_id",
+    "version",
+    "status",
+    "effective_at",
+    "ontology_version",
+    "score_scale",
+    "normalization_method",
+    "components",
+    "eligibility_rules",
+    "evidence_minimum",
+    "thresholds",
+    "tie_breakers",
+    "rounding_rule",
+    "policy_change_authority",
+    "guardrails"
+  ],
+  "additionalProperties": false
+}

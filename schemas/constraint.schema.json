@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:constraint:1.0.0",
+  "title": "Constraint",
+  "description": "A sourced condition that cannot be violated within its declared scope.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "constraint_id": {"type": "string"},
+    "constraint_version": {"type": "integer", "minimum": 1},
+    "condition": {"type": "string"},
+    "authority": {
+      "type": "string",
+      "enum": ["explicit_user", "official_rule", "policy", "system", "internal_interpretation", "other"]
+    },
+    "authority_ref": {"type": ["string", "null"]},
+    "scope": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "active", "satisfied", "superseded", "blocked"]
+    },
+    "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "effective_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "expires_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "supersedes_constraint_id": {"type": ["string", "null"]}
+  },
+  "required": [
+    "schema_version",
+    "constraint_id",
+    "constraint_version",
+    "condition",
+    "authority",
+    "authority_ref",
+    "scope",
+    "status",
+    "epistemic_state",
+    "evidence_refs",
+    "effective_at",
+    "expires_at",
+    "supersedes_constraint_id"
+  ],
+  "additionalProperties": false
+}
