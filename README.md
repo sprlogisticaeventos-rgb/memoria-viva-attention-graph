@@ -1,9 +1,16 @@
 # Memoria Viva — Attention Graph
 
-An explainable temporal attention layer for founders, now this is for my own use.
+A temporal layer of memory, attention, and execution for founders.
+
+Memoria Viva transforms verifiable events into explainable state changes,
+attention rankings, Goal progress, and auditable decisions.
 
 Built during OpenAI Build Week 2026.
 
+## Canonical blueprint
+
+See `docs/CONSTRUCTION_BLUEPRINT.md`.
+
 ## Status
 
-Initial implementation in progress.
+Construction in progress.
