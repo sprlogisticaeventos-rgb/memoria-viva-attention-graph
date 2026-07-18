@@ -42,5 +42,9 @@ are defined in [docs/privacy.md](docs/privacy.md).
 - [Build log](BUILD_LOG.md)
 - [Hackathon evidence scaffold](docs/hackathon/RULES_BASELINE.md)
 
-Hackathon compliance is not yet verified. Official sources have not been
-captured in this phase.
+Official hackathon sources have been captured as evidence in the
+[hackathon rules baseline](docs/hackathon/RULES_BASELINE.md) and mapped in the
+[requirements matrix](docs/hackathon/REQUIREMENTS_MATRIX.md). Compliance remains
+unverified until the required implementation, submission artifacts, final
+source recheck, and human review are complete; see the
+[build log](BUILD_LOG.md) for the latest recorded construction status.
