@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:attention-ranking:1.0.0",
+  "title": "AttentionRanking",
+  "description": "An immutable ordered attention projection for one Snapshot and policy.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "attention_ranking_id": {"type": "string"},
+    "ranking_version": {"type": "integer", "minimum": 1},
+    "ranking_context": {"type": "string", "enum": ["before", "after"]},
+    "snapshot_id": {"type": "string"},
+    "policy_id": {"type": "string"},
+    "policy_version": {"type": "string"},
+    "policy_digest": {"type": "string"},
+    "items": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:attention-item:1.0.0"}
+    },
+    "generated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "tie_break_method": {"type": "string"}
+  },
+  "required": [
+    "schema_version",
+    "attention_ranking_id",
+    "ranking_version",
+    "ranking_context",
+    "snapshot_id",
+    "policy_id",
+    "policy_version",
+    "policy_digest",
+    "items",
+    "generated_at",
+    "tie_break_method"
+  ],
+  "additionalProperties": false
+}

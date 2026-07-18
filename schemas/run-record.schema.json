@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:run-record:1.0.0",
+  "title": "RunRecord",
+  "description": "The immutable audit receipt for one Memoria Viva transition.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "run_id": {"type": "string"},
+    "run_version": {"type": "integer", "minimum": 1},
+    "started_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "completed_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "previous_snapshot_id": {"type": "string"},
+    "new_snapshot_id": {"type": "string"},
+    "trigger_event_id": {"type": "string"},
+    "goal_id": {"type": "string"},
+    "source_ids": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "graph_delta_id": {"type": "string"},
+    "ranking_before_id": {"type": "string"},
+    "ranking_after_id": {"type": "string"},
+    "observations": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/run_observation"}
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/run_recommendation"}
+    },
+    "validations": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/run_validation"}
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/run_warning"}
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "blocker_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "running", "completed", "blocked", "failed", "invalid"]
+    },
+    "schema_versions": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/schema_reference"}
+    },
+    "ontology_version": {"type": "string"},
+    "policy_id": {"type": "string"},
+    "policy_version": {"type": "string"},
+    "policy_digest": {"type": "string"},
+    "model_metadata": {
+      "type": ["object", "null"],
+      "properties": {
+        "mode": {"type": "string", "enum": ["replay", "model"]},
+        "provider": {"type": ["string", "null"]},
+        "model": {"type": ["string", "null"]},
+        "response_id": {"type": ["string", "null"]},
+        "reasoning_context": {"type": ["string", "null"]}
+      },
+      "required": ["mode", "provider", "model", "response_id", "reasoning_context"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "run_version",
+    "started_at",
+    "completed_at",
+    "previous_snapshot_id",
+    "new_snapshot_id",
+    "trigger_event_id",
+    "goal_id",
+    "source_ids",
+    "graph_delta_id",
+    "ranking_before_id",
+    "ranking_after_id",
+    "observations",
+    "recommendations",
+    "validations",
+    "warnings",
+    "decision_refs",
+    "blocker_refs",
+    "artifact_refs",
+    "status",
+    "schema_versions",
+    "ontology_version",
+    "policy_id",
+    "policy_version",
+    "policy_digest",
+    "model_metadata"
+  ],
+  "additionalProperties": false
+}

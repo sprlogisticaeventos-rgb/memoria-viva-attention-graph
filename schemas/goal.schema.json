@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:goal:1.0.0",
+  "title": "Goal",
+  "description": "A persistent desired outcome with verification and stop conditions.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "goal_id": {"type": "string"},
+    "goal_version": {"type": "integer", "minimum": 1},
+    "desired_outcome": {"type": "string"},
+    "lifecycle": {
+      "type": "string",
+      "enum": ["draft", "active", "paused", "completed", "blocked", "budget_limited", "cleared"]
+    },
+    "verification_surface": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "constraint_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "boundaries": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "iteration_policy": {"type": "string"},
+    "blocked_stop_condition": {"type": "string"},
+    "max_iterations": {"type": "integer", "minimum": 1},
+    "evidence_status": {
+      "type": "string",
+      "enum": ["unverified", "partial", "evidenced", "verified", "blocked"]
+    },
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "created_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "updated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+  },
+  "required": [
+    "schema_version",
+    "goal_id",
+    "goal_version",
+    "desired_outcome",
+    "lifecycle",
+    "verification_surface",
+    "constraint_refs",
+    "boundaries",
+    "iteration_policy",
+    "blocked_stop_condition",
+    "max_iterations",
+    "evidence_status",
+    "evidence_refs",
+    "created_at",
+    "updated_at"
+  ],
+  "additionalProperties": false
+}

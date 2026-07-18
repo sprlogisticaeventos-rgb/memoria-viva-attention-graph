@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:source-event:1.0.0",
+  "title": "SourceEvent",
+  "description": "One normalized external event observed through a Source.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "source_event_id": {"type": "string"},
+    "source_event_version": {"type": "integer", "minimum": 1},
+    "event_type": {"type": "string"},
+    "title": {"type": "string"},
+    "summary": {"type": "string"},
+    "source_id": {"type": "string"},
+    "source_record_id": {"type": ["string", "null"]},
+    "received_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "occurred_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "deadline": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "normalization_status": {
+      "type": "string",
+      "enum": ["raw", "normalized", "partial", "blocked"]
+    },
+    "normalization_warnings": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
+    "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+  },
+  "required": [
+    "schema_version",
+    "source_event_id",
+    "source_event_version",
+    "event_type",
+    "title",
+    "summary",
+    "source_id",
+    "source_record_id",
+    "received_at",
+    "occurred_at",
+    "deadline",
+    "evidence_refs",
+    "normalization_status",
+    "normalization_warnings",
+    "epistemic_state",
+    "recorded_at"
+  ],
+  "additionalProperties": false
+}

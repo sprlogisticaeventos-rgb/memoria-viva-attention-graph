@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:source:1.0.0",
+  "title": "Source",
+  "description": "An identified evidence-producing system, document, repository, or explicit input.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "source_id": {"type": "string"},
+    "source_version": {"type": "integer", "minimum": 1},
+    "source_type": {
+      "type": "string",
+      "enum": ["calendar", "email", "document", "repository", "rule", "explicit_user_input", "other"]
+    },
+    "owner_or_authority": {"type": ["string", "null"]},
+    "capture_method": {
+      "type": "string",
+      "enum": ["manual_export", "connector", "api", "repository_read", "user_provided", "other"]
+    },
+    "permissions": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/permissions"},
+    "observed_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "stable_reference": {"type": ["string", "null"]},
+    "content_hash": {"type": ["string", "null"]}
+  },
+  "required": [
+    "schema_version",
+    "source_id",
+    "source_version",
+    "source_type",
+    "owner_or_authority",
+    "capture_method",
+    "permissions",
+    "observed_at",
+    "recorded_at",
+    "stable_reference",
+    "content_hash"
+  ],
+  "additionalProperties": false
+}

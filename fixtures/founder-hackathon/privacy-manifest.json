@@ -1,0 +1,37 @@
+{
+  "manifest_version": "1.0.0",
+  "fixture_id": "founder_hackathon_v1",
+  "fixture_status": "scaffold_only",
+  "sanitization_status": "NOT_STARTED",
+  "permitted_public_data_classes": [
+    "sanitized_goal_contract",
+    "synthetic_identifiers",
+    "non_personal_project_metadata"
+  ],
+  "prohibited_data_classes": [
+    "real_names",
+    "email_addresses",
+    "phone_numbers",
+    "private_calendar_details",
+    "private_message_content",
+    "account_identifiers",
+    "credentials",
+    "tokens",
+    "private_repository_data"
+  ],
+  "pii_review_status": "NOT_REVIEWED",
+  "field_origins": [
+    {
+      "field_scope": "goal-hackathon.json contract values",
+      "origin_type": "source_derived",
+      "source_reference": "docs/CONSTRUCTION_BLUEPRINT.md#7-goal-contract-para-el-hackathon"
+    },
+    {
+      "field_scope": "schema and fixture metadata",
+      "origin_type": "synthetic",
+      "source_reference": null
+    }
+  ],
+  "reviewer_status": "UNASSIGNED",
+  "approval_status": "NOT_APPROVED"
+}

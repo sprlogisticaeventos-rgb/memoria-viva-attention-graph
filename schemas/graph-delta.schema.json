@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:graph-delta:1.0.0",
+  "title": "GraphDelta",
+  "description": "An immutable, evidence-backed transition between two Snapshots.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "ontology_version": {"type": "string"},
+    "graph_delta_id": {"type": "string"},
+    "graph_delta_version": {"type": "integer", "minimum": 1},
+    "previous_snapshot_id": {"type": "string"},
+    "new_snapshot_id": {"type": "string"},
+    "added_objects": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
+    },
+    "updated_objects": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
+    },
+    "superseded_objects": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
+    },
+    "added_relationships": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
+    },
+    "removed_relationships": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
+    },
+    "explanation": {"type": "string"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "generated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+  },
+  "required": [
+    "schema_version",
+    "ontology_version",
+    "graph_delta_id",
+    "graph_delta_version",
+    "previous_snapshot_id",
+    "new_snapshot_id",
+    "added_objects",
+    "updated_objects",
+    "superseded_objects",
+    "added_relationships",
+    "removed_relationships",
+    "explanation",
+    "evidence_refs",
+    "generated_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "mv_attention_policy",
+  "version": "1.0.0",
+  "status": "draft",
+  "effective_at": null,
+  "ontology_version": "1.0.0",
+  "score_scale": {
+    "minimum": 0,
+    "maximum": 1
+  },
+  "normalization_method": "pre_normalized_component_input_v1",
+  "components": [
+    {
+      "component_id": "temporal_urgency",
+      "weight": 0.25,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    },
+    {
+      "component_id": "downstream_impact",
+      "weight": 0.2,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    },
+    {
+      "component_id": "strategic_alignment",
+      "weight": 0.2,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    },
+    {
+      "component_id": "conflict_or_displacement",
+      "weight": 0.15,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    },
+    {
+      "component_id": "event_novelty",
+      "weight": 0.1,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    },
+    {
+      "component_id": "evidence_confidence",
+      "weight": 0.1,
+      "normalization_method": "pre_normalized_bounded_0_1",
+      "missing_value_handling": "reject_ranking_and_emit_needs_confirmation"
+    }
+  ],
+  "eligibility_rules": {
+    "require_evidence": true,
+    "require_non_confidence_importance_signal": true,
+    "require_displaced_commitments_when_displacement_positive": true,
+    "missing_value_behavior": "needs_confirmation"
+  },
+  "evidence_minimum": {
+    "minimum_reference_count": 1,
+    "require_at_least_one_non_blocked_reference": true
+  },
+  "thresholds": {
+    "recommended_now_min_score": null,
+    "monitor_min_score": null,
+    "needs_confirmation_if_uncertain": true,
+    "unconfigured_threshold_behavior": "needs_confirmation"
+  },
+  "tie_breakers": [
+    {
+      "order": 1,
+      "field": "score",
+      "direction": "descending",
+      "nulls": "not_applicable"
+    },
+    {
+      "order": 2,
+      "field": "due_at",
+      "direction": "ascending",
+      "nulls": "last"
+    },
+    {
+      "order": 3,
+      "field": "attention_item_id",
+      "direction": "ascending",
+      "nulls": "not_applicable"
+    }
+  ],
+  "rounding_rule": {
+    "decimal_places": 2,
+    "mode": "half_up",
+    "apply_to": "final_display_value_only"
+  },
+  "policy_change_authority": {
+    "authority": "human_product_owner",
+    "human_approval_required": true,
+    "new_version_required_for_weight_change": true,
+    "new_version_required_for_threshold_change": true
+  },
+  "guardrails": {
+    "components_bounded_0_1": true,
+    "urgency_distinct_from_strategic_importance": true,
+    "evidence_confidence_cannot_create_importance_alone": true,
+    "displaced_commitments_exposed": true,
+    "opportunity_cost_visible": true,
+    "uncertainty_visible": true,
+    "inferred_preferences_cannot_be_hard_constraints": true,
+    "deterministic_tie_break_required": true,
+    "run_record_stores_policy_version_and_digest": true
+  }
+}

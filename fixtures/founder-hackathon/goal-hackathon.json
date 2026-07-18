@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "goal_id": "hackathon_submission",
+  "goal_version": 1,
+  "desired_outcome": "Submission válida, reproducible y competitiva",
+  "lifecycle": "active",
+  "verification_surface": [
+    "official_rules_checklist",
+    "demo_replay_passes",
+    "README_complete",
+    "submission_artifacts_present"
+  ],
+  "constraint_refs": [
+    "privacy_preserved",
+    "no_unsupported_claims",
+    "sanitized_fixture_separated"
+  ],
+  "boundaries": [
+    "scoped_repo",
+    "approved_sources",
+    "read_only_calendar_mvp"
+  ],
+  "iteration_policy": "Choose the highest-impact unresolved delta supported by evidence",
+  "blocked_stop_condition": "Stop when no defensible path remains without new input or authority",
+  "max_iterations": 3,
+  "evidence_status": "unverified",
+  "evidence_refs": [],
+  "created_at": "2026-07-18T17:41:17Z",
+  "updated_at": "2026-07-18T17:41:17Z"
+}

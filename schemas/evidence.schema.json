@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:evidence:1.0.0",
+  "title": "Evidence",
+  "description": "A source-bound excerpt or structured observation supporting a claim.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "evidence_id": {"type": "string"},
+    "evidence_version": {"type": "integer", "minimum": 1},
+    "source_id": {"type": "string"},
+    "source_event_id": {"type": ["string", "null"]},
+    "observation_type": {
+      "type": "string",
+      "enum": ["exact_excerpt", "structured_observation", "metadata", "hash", "other"]
+    },
+    "source_excerpt": {"type": ["string", "null"]},
+    "structured_observation": {"type": ["string", "null"]},
+    "locator": {"type": "string"},
+    "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
+    "confidence": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/confidence_score"},
+    "observed_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "content_hash": {"type": ["string", "null"]}
+  },
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "evidence_version",
+    "source_id",
+    "source_event_id",
+    "observation_type",
+    "source_excerpt",
+    "structured_observation",
+    "locator",
+    "epistemic_state",
+    "confidence",
+    "observed_at",
+    "recorded_at",
+    "content_hash"
+  ],
+  "additionalProperties": false
+}

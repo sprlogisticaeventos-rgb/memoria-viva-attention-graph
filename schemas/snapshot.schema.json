@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:snapshot:1.0.0",
+  "title": "Snapshot",
+  "description": "An immutable capture of known state linked to its predecessor.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "ontology_version": {"type": "string"},
+    "snapshot_id": {"type": "string"},
+    "snapshot_version": {"type": "integer", "minimum": 1},
+    "captured_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "previous_snapshot_id": {"type": ["string", "null"]},
+    "source_event_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "goals": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:goal:1.0.0"}
+    },
+    "commitments": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:commitment:1.0.0"}
+    },
+    "constraints": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:constraint:1.0.0"}
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "blocker_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
+    },
+    "relationships": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
+    },
+    "attention_ranking_id": {"type": ["string", "null"]},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "diff_ref": {"type": ["string", "null"]},
+    "state_digest": {"type": ["string", "null"]}
+  },
+  "required": [
+    "schema_version",
+    "ontology_version",
+    "snapshot_id",
+    "snapshot_version",
+    "captured_at",
+    "previous_snapshot_id",
+    "source_event_refs",
+    "goals",
+    "commitments",
+    "constraints",
+    "decision_refs",
+    "blocker_refs",
+    "artifact_refs",
+    "relationships",
+    "attention_ranking_id",
+    "evidence_refs",
+    "diff_ref",
+    "state_digest"
+  ],
+  "additionalProperties": false
+}
