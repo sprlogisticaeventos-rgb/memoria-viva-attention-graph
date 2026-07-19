@@ -488,3 +488,94 @@ RunRecords, not in this file.
   authorization: implement the pure trigger application that constructs
   immutable Snapshot T1 from RuntimeBundle and Snapshot T0, without scoring or
   output persistence.
+
+## MV-BUILD-010 — Phase 1C canonical trigger and Snapshot T1
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1c-trigger-t1` |
+| Starting commit | `a4c8fd5` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1C — Pure trigger application and immutable Snapshot T1 only |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Objective and transition contract
+
+- Added the repository-versioned `MV_TRIGGER_TRANSITION_V1` contract with
+  policy ID `mv.canonical-trigger-transition`, version `1.0.0`, stable rule
+  IDs, deterministic rule ordering, and no model, oracle, network, random,
+  wall-clock, or caller-path input.
+- `apply_canonical_trigger(runtime_bundle, snapshot_t0)` accepts only the
+  validated immutable RuntimeBundle and Snapshot T0. It reads no fixture file
+  and performs no automatic correction.
+- Input validation requires the canonical T0 role, initial/predecessor state,
+  runtime-derived identity and state, exact T0 commitment and exclusion
+  membership, no trigger-derived T0 constraints, one normalized TRIGGER,
+  null `occurred_at`, communication-only authority, and the approved
+  trigger-created catalog objects.
+
+### T1 time, identity, and state
+
+- `captured_at` uses the trigger's synthetic `received_at`,
+  `2030-02-10T12:00:00Z`. T0 and T1 may share that synthetic boundary;
+  temporal role and the explicit predecessor chain establish ordering.
+- Snapshot identity uses scenario identity, role `T1`, runtime input digest,
+  predecessor ID, transition contract, policy ID, and policy version. The
+  golden deterministic ID is `SNAPSHOT-T1-8280b33463a480998d3e`.
+- Activated CMT-01 and CMT-02 while preserving CMT-03 through CMT-05, all
+  three Goals, all eight active Calendar candidates, and the two
+  excluded-but-retained candidates. No prior T0 object or evidence silently
+  disappears.
+- Added D-0 and the bounded artifact-requirement constraint to Snapshot
+  membership without changing their cataloged status or
+  `COMMUNICATION_EVIDENCE_ONLY` authority. The latter remains `PROPOSED`, so
+  membership does not claim verified official requirements.
+
+### Relationships and execution safeguards
+
+- Materialized seven stable deterministic relationships in rule order:
+  CMT-02 `depends_on` CMT-01; CMT-01 and CMT-02 each `constrained_by` D-0;
+  CMT-01 `conflicts_with` CMT-04; CMT-01 conditionally `displaces` CMT-04;
+  and CMT-02 conflicts with the two active flexible Calendar windows whose
+  committed synthetic intervals fall between trigger receipt and D-0.
+- Flexible-capacity conflicts are derived from runtime inclusion, eligibility,
+  mobility, and temporal fields. Coexistence alone never creates an edge.
+- Every edge records evidence, confidence, epistemic state, stable rule
+  identity, deterministic creator type, uncertainty in its schema-supported
+  explanation, ontology version, and trigger-derived creation time.
+- CMT-04 retains its structured condition, opportunity cost, repair,
+  founder authority, uncertainty, and `UNKNOWN` execution. Its displacement
+  relationship explicitly states that policy authorization is not movement;
+  `displaced_by_refs` remains empty. CMT-05 remains confirmation-required
+  under JOINT authority.
+
+### Immutability, privacy, digests, and validation
+
+- Reused the Phase 1B frozen, recursively immutable Snapshot representation
+  and centralized schema validation/finalization without changing its JSON
+  shape. Applying the trigger mutates neither RuntimeBundle nor Snapshot T0.
+- Snapshot T1 state digest covers every semantic field except
+  `state_digest` itself. Tests prove sensitivity to commitment and constraint
+  membership, relationships, predecessor, evidence, privacy, and uncertainty.
+- Capacity remains `UNKNOWN`; ranking and GraphDelta references remain null.
+  Generated-output privacy and review states remain unapproved, runtime
+  residual risk remains `LOW_MEDIUM`, and every publication surface remains
+  `PENDING`.
+- Ran 90 `unittest` cases and Python bytecode compilation successfully. Two
+  independent processes produced identical 30,921-byte canonical Snapshots,
+  ID, state digest, active/excluded ordering, and relationship ordering. No
+  output was written under `runs/`.
+
+### Scope boundary and next step
+
+- Implemented no component extraction, score, computed ranking, GraphDelta
+  output, RunRecord, oracle comparison, persistence, replay CLI, API, model,
+  UI, service, database, agent, integration, scheduling, or deployment work.
+- Next smallest executable step after review, commit, merge, and explicit
+  authorization: define deterministic attention-component extraction from the
+  immutable T0/T1 state while keeping ranking, GraphDelta, and persistence out
+  of scope until separately authorized.
