@@ -251,3 +251,106 @@ RunRecords, not in this file.
   product implementation, or Phase 0C2 payload was changed.
 - Phase 0C2 remains paused until this targeted correction is reviewed,
   committed, merged, and separately authorized for resumption.
+
+## MV-BUILD-006 — Phase 0C2 approved sanitized fixture construction
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-0c2-fixture` |
+| Starting commit | `9bf2329` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 0C2 — Approved sanitized fixture and human oracle |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Authority and objective
+
+- Translated the approved bounded founder semantics into repository-safe input
+  fixtures and separate human-authored ordinal and GraphDelta oracles.
+- Used the three controlling Human Accelerator artifacts and the explicitly
+  authorized sanitized Calendar candidate support artifact through stable,
+  non-path artifact references only.
+
+### Files created or migrated
+
+- Migrated `goal-hackathon.json` to `public-goals.json` with Git history
+  preserved and replaced the scaffold with the approved three-Goal model.
+- Added the Calendar T0 candidate set, public-safe evidence, five operational
+  commitments, communication-bounded constraints, one canonical trigger,
+  before/after ranking oracles, and expected GraphDelta semantics.
+- Migrated the privacy manifest and expanded the fixture README into the replay
+  and validation contract.
+
+### Sanitization and review state
+
+- Applied removal, generalization, pseudonymization, a consistently shifted
+  synthetic chronology, synthetic evidence summaries, and explicitly safe
+  retained contract values.
+- Preserved non-reversible artifact-level provenance, all required UNKNOWN
+  values, and `LOW_MEDIUM` residual aggregation risk.
+- The concrete package remains `PENDING_FIXTURE_LEVEL_HUMAN_REVIEW`; every
+  publication surface remains separately pending.
+
+### Validation and boundaries
+
+- Parsed all fixture JSON, validated canonical entities and oracles against the
+  repository schemas, resolved schema references, and exercised the complete
+  Phase 0C2 semantic and privacy gate set.
+- Confirmed the policy is byte-unchanged and totals `1.00`, local Markdown links
+  resolve, secrets and raw locators are absent, and Git whitespace checks pass.
+- Created no generated Snapshot, computed ranking, runtime GraphDelta,
+  RunRecord, application code, integration, model output, or Phase 1 behavior.
+
+### Unresolved unknowns and next step
+
+- Production scores and tie-breaks, exact capacity, CMT-04 execution and repair,
+  CMT-05 joint outcome, follow-up outcomes, submission completion, demo
+  availability, and final compliance remain unknown.
+- Next smallest executable step after human review, commit, merge, and explicit
+  authorization: define the Phase 1 deterministic replay input loader and
+  validators without changing the human oracle.
+
+## MV-BUILD-007 — Phase 0C2 privacy and wording correction
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-0c2-fixture` |
+| Milestone | Phase 0C2 — Targeted privacy and wording remediation |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Correction and supersession
+
+- Supersedes only the chronology-safety claim in MV-BUILD-006. The rejected
+  constant-offset chronology is no longer the concrete fixture method and must
+  not be treated as non-reversible.
+- Replaced it with `INDEPENDENT_SYNTHETIC_COARSE_WINDOWS`: whole-hour fixture
+  timestamps, independently synthesized Calendar intervals, representative
+  duration classes, and a synthetic fixture D-0 that is not the official
+  deadline.
+- The corrected chronology preserves only required ordering, crossing-T0,
+  coarse overlap or conflict, and urgency. It does not retain a common offset,
+  exact private gaps, unusual minute values, or exact private durations.
+- Generalized candidate, commitment, evidence, ranking, and expected
+  GraphDelta wording while preserving approved identities, lifecycle,
+  mobility, authority, eligibility, protection, lineage, ordering,
+  conditionality, and UNKNOWN states.
+- Normalized CMT-04 to the public label `Pending bounded validation`.
+
+### Review state and known input consideration
+
+- The concrete package remains `PENDING_FIXTURE_LEVEL_HUMAN_REVIEW`, residual
+  aggregation risk remains `LOW_MEDIUM`, and every public surface remains
+  `PENDING`.
+- Four repository-safe synthetic Source IDs intentionally remain non-local in
+  Phase 0C2. Resolving them as explicit replay inputs is a non-blocking Phase 1
+  input-resolution consideration; they are not raw or private locators.
+- No fixture semantics, production policy, schema, generated runtime output,
+  application code, or Phase 1 behavior was added or changed by this
+  correction.

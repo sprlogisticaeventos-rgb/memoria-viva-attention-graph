@@ -1,0 +1,56 @@
+{
+  "fixture_contract": "PUBLIC_CONSTRAINT_SET",
+  "fixture_version": "1.0.0",
+  "constraints": [
+    {
+      "schema_version": "1.0.0",
+      "constraint_id": "D-0",
+      "constraint_version": 1,
+      "condition": "The bounded opportunity window closes at an independently synthesized fixture deadline anchor; it is not the official deadline, and official sources remain controlling.",
+      "authority_scope": "COMMUNICATION_EVIDENCE_ONLY",
+      "authority_reference": "fx_evt_build_week_trigger_001",
+      "scope": [
+        "GC-01",
+        "CMT-01",
+        "CMT-02"
+      ],
+      "status": "ACTIVE",
+      "epistemic_state": "approximate",
+      "evidence_refs": [
+        "EV-EVENT-TRIGGER"
+      ],
+      "uncertainty": [
+        "Final official requirements and compliance remain unverified."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "effective_at": "2030-02-10T12:00:00Z",
+      "expires_at": "2030-02-15T18:00:00Z",
+      "supersedes_constraint_id": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "constraint_id": "C-PUBLIC-ARTIFACT-REQUIREMENTS",
+      "constraint_version": 1,
+      "condition": "Candidate public artifacts may be required for the bounded opportunity, but their exact requirements and completion remain subject to official verification.",
+      "authority_scope": "COMMUNICATION_EVIDENCE_ONLY",
+      "authority_reference": "fx_evt_build_week_trigger_001",
+      "scope": [
+        "GC-01",
+        "CMT-02"
+      ],
+      "status": "PROPOSED",
+      "epistemic_state": "uncertain",
+      "evidence_refs": [
+        "EV-EVENT-TRIGGER"
+      ],
+      "uncertainty": [
+        "Exact official artifact requirements remain unknown.",
+        "Artifact existence does not establish submission or Goal completion."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "effective_at": null,
+      "expires_at": null,
+      "supersedes_constraint_id": null
+    }
+  ]
+}

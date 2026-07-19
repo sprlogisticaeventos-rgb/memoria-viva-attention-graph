@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0.0",
+  "ontology_version": "1.0.0",
+  "public_goal_set_id": "PGS-FOUNDER-CONTROLLED-DEMO-001",
+  "model_version": "1.0.0",
+  "goals": [
+    {
+      "schema_version": "1.0.0",
+      "goal_id": "GC-01",
+      "goal_version": 1,
+      "public_title": "PRODUCT_VALIDATION",
+      "desired_outcome": "A controlled founder use case demonstrates that an AI product can convert an incoming event and existing context into a traceable, decision-relevant state change.",
+      "operational_lifecycle": "ACTIVE",
+      "controlled_demo_visibility": "INCLUDED",
+      "verification_surfaces": [
+        {
+          "surface_id": "GC-01-BOUNDED-TRANSITION",
+          "description": "A bounded user problem, observable before-and-after transition, evidence, explicit next action, and documented learning are all verified.",
+          "status": "UNVERIFIED",
+          "evidence_refs": []
+        }
+      ],
+      "completion_authority": {
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "requires_all_verification_surfaces_evidenced": true,
+        "artifact_existence_sufficient": false,
+        "completion_validation_state": "NOT_STARTED"
+      },
+      "constraint_refs": [
+        "D-0"
+      ],
+      "boundaries": [
+        "The Build Week work is a bounded experiment serving this Goal, not a fourth Goal.",
+        "Exploration cannot substitute for one bounded validation test.",
+        "Files or submission artifacts alone do not complete the Goal."
+      ],
+      "iteration_policy": "Close one evidence-backed founder test before expanding scope.",
+      "blocked_stop_condition": "Stop when required evidence or human authority is unavailable.",
+      "max_iterations": 3,
+      "evidence_status": "PARTIAL",
+      "evidence_refs": [
+        "EV-GOAL-MODEL",
+        "EV-GOAL-APPROVAL"
+      ],
+      "uncertainty": [
+        "The first production success metric and evidence threshold remain unverified."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "created_at": "2030-02-10T11:00:00Z",
+      "updated_at": "2030-02-10T11:00:00Z"
+    },
+    {
+      "schema_version": "1.0.0",
+      "goal_id": "GC-02",
+      "goal_version": 1,
+      "public_title": "FINANCIAL_AND_OPERATIONAL_CONTINUITY",
+      "desired_outcome": "Current income, delivery obligations, and operating capacity remain protected enough for deliberate product choices rather than purely reactive work.",
+      "operational_lifecycle": "ACTIVE",
+      "controlled_demo_visibility": "INCLUDED",
+      "verification_surfaces": [
+        {
+          "surface_id": "GC-02-CONTINUITY-CONTROLS",
+          "description": "Material commitments have bounded ownership, scope, acceptance conditions, timing or review cadence, and evidence of operating status.",
+          "status": "UNVERIFIED",
+          "evidence_refs": []
+        }
+      ],
+      "completion_authority": {
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "requires_all_verification_surfaces_evidenced": true,
+        "artifact_existence_sufficient": false,
+        "completion_validation_state": "NOT_STARTED"
+      },
+      "constraint_refs": [],
+      "boundaries": [
+        "Private financial amounts, counterparties, accounts, and mechanisms remain outside the fixture.",
+        "Activity without bounded scope is not sufficient strategic alignment.",
+        "Documents or dashboards alone do not complete the Goal."
+      ],
+      "iteration_policy": "Prefer bounded repairs that preserve continuity and make authority explicit.",
+      "blocked_stop_condition": "Stop before unilateral movement when another authority holder is required.",
+      "max_iterations": 3,
+      "evidence_status": "PARTIAL",
+      "evidence_refs": [
+        "EV-GOAL-MODEL",
+        "EV-GOAL-APPROVAL"
+      ],
+      "uncertainty": [
+        "Minimum continuity metrics and the complete private commitment inventory remain intentionally outside the fixture."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "created_at": "2030-02-10T11:00:00Z",
+      "updated_at": "2030-02-10T11:00:00Z"
+    },
+    {
+      "schema_version": "1.0.0",
+      "goal_id": "GC-03",
+      "goal_version": 1,
+      "public_title": "PERSONAL_AND_LEGAL_CONTINUITY",
+      "desired_outcome": "Non-displaceable personal or legal obligations remain protected so the founder can sustain lawful, stable participation in work and long-horizon plans.",
+      "operational_lifecycle": "ACTIVE",
+      "controlled_demo_visibility": "INCLUDED",
+      "verification_surfaces": [
+        {
+          "surface_id": "GC-03-PROTECTED-CONTINUITY",
+          "description": "Each protected obligation has verified requirements, authority, timing or review trigger, evidence, and an escalation path for missing information.",
+          "status": "UNVERIFIED",
+          "evidence_refs": []
+        }
+      ],
+      "completion_authority": {
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "requires_all_verification_surfaces_evidenced": true,
+        "artifact_existence_sufficient": false,
+        "completion_validation_state": "NOT_STARTED"
+      },
+      "constraint_refs": [],
+      "boundaries": [
+        "Specific personal and legal matters remain outside the public fixture.",
+        "Unknown deadlines or authorities remain unknown.",
+        "A checklist, reminder, or file alone does not complete the Goal."
+      ],
+      "iteration_policy": "Protect continuity first and escalate missing authority or evidence for human review.",
+      "blocked_stop_condition": "Stop when a protected matter requires private evidence or qualified external authority.",
+      "max_iterations": 3,
+      "evidence_status": "PARTIAL",
+      "evidence_refs": [
+        "EV-GOAL-MODEL",
+        "EV-GOAL-APPROVAL"
+      ],
+      "uncertainty": [
+        "Specific obligations, authorities, deadlines, and proof standards remain intentionally omitted."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "created_at": "2030-02-10T11:00:00Z",
+      "updated_at": "2030-02-10T11:00:00Z"
+    }
+  ],
+  "controlled_demo_omissions": [
+    {
+      "omission_id": "OMISSION-G5-CONTROLLED-DEMO",
+      "goal_reference": "G5",
+      "controlled_demo_visibility": "OMITTED_FROM_CONTROLLED_DEMO",
+      "operational_lifecycle_effect": "NONE",
+      "reason": "The omitted Goal is unnecessary for the controlled transition and would add biography-level detail.",
+      "evidence_refs": [
+        "EV-GOAL-APPROVAL"
+      ],
+      "uncertainty": [
+        "No private Goal content or lifecycle state is represented."
+      ]
+    }
+  ],
+  "approval_provenance": {
+    "provenance_id": "PROV-PUBLIC-GOAL-SET",
+    "source_class": "EXPLICIT_HUMAN_INPUT",
+    "evidence_category": "FOUNDER_GOAL_APPROVAL",
+    "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+    "authority_scope": "EXPLICIT_HUMAN_DECISION",
+    "source_derived": true,
+    "transformation_action": "GENERALIZE",
+    "reversible": false
+  },
+  "approval_artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+  "privacy_classification": "PUBLIC_SAFE",
+  "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+  "created_at": "2030-02-10T11:00:00Z"
+}

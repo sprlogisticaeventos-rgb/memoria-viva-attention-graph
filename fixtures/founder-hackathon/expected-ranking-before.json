@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0.0",
+  "contract_kind": "HUMAN_ORDINAL_TEST_ORACLE",
+  "ontology_version": "1.0.0",
+  "oracle_id": "ORACLE-ATTENTION-T0-BEFORE",
+  "snapshot_role": "T0",
+  "expected_ordered_items": [
+    {
+      "expected_rank": 1,
+      "stable_attention_item_reference": "ATTN-CALENDAR-CMT-T0-10",
+      "ordinal_invariants": [
+        "Represents CALENDAR_ONLY:CMT-T0-10.",
+        "Protected personal and legal continuity leads the pre-trigger ranking."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-10",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [
+        "CMT-T0-10"
+      ],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "The exact external deadline remains unknown."
+      ],
+      "expected_approval_requirement": "NOT_REQUIRED",
+      "approval_authority": "FOUNDER",
+      "explanation": "The founder-approved T0 oracle keeps the protected continuity candidate at rank 1."
+    },
+    {
+      "expected_rank": 2,
+      "stable_attention_item_reference": "ATTN-CMT-03",
+      "ordinal_invariants": [
+        "CMT-03 remains visible as an unresolved missed carryover.",
+        "Flexibility does not erase its repair obligation."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-02",
+        "EV-COMMITMENT-APPROVAL",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "External response and resolution remain unknown."
+      ],
+      "expected_approval_requirement": "NOT_REQUIRED",
+      "approval_authority": "FOUNDER",
+      "explanation": "The unresolved continuity obligation remains the highest non-protected T0 attention item."
+    },
+    {
+      "expected_rank": 3,
+      "stable_attention_item_reference": "ATTN-CMT-05",
+      "ordinal_invariants": [
+        "CMT-05 aggregates CMT-T0-04 and CMT-T0-05 without duplicate attention.",
+        "NEEDS_CONFIRMATION is not approval."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-04",
+        "EV-CAL-CMT-T0-05",
+        "EV-COMMITMENT-APPROVAL",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "The joint-authority outcome and release state remain unknown."
+      ],
+      "expected_approval_requirement": "PENDING",
+      "approval_authority": "JOINT",
+      "explanation": "Two Calendar evidence candidates aggregate into one confirmation-dependent operational item."
+    },
+    {
+      "expected_rank": 4,
+      "stable_attention_item_reference": "ATTN-CALENDAR-CMT-T0-01",
+      "ordinal_invariants": [
+        "Represents CALENDAR_ONLY:CMT-T0-01.",
+        "Movement requires confirmation."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-01",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "The other authority holder's availability remains unknown."
+      ],
+      "expected_approval_requirement": "PENDING",
+      "approval_authority": "JOINT",
+      "explanation": "The Calendar-only collaboration window remains visible and confirmation-dependent."
+    },
+    {
+      "expected_rank": 5,
+      "stable_attention_item_reference": "ATTN-CMT-04",
+      "ordinal_invariants": [
+        "CMT-04 remains unresolved and eligible.",
+        "Displaceable does not mean displaced."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-03",
+        "EV-COMMITMENT-APPROVAL",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "Any future movement, repair slot, and reactivation condition remain unknown."
+      ],
+      "expected_approval_requirement": "NOT_REQUIRED",
+      "approval_authority": "FOUNDER",
+      "explanation": "Pending bounded validation remains visible at T0 without an executed displacement."
+    },
+    {
+      "expected_rank": 6,
+      "stable_attention_item_reference": "ATTN-CALENDAR-CMT-T0-06",
+      "ordinal_invariants": [
+        "Represents CALENDAR_ONLY:CMT-T0-06.",
+        "Flexible capacity remains visible."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-06",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "Data access and implementation authority remain unknown."
+      ],
+      "expected_approval_requirement": "NOT_REQUIRED",
+      "approval_authority": "FOUNDER",
+      "explanation": "The Calendar-only operating block remains a flexible ranked candidate."
+    },
+    {
+      "expected_rank": 7,
+      "stable_attention_item_reference": "ATTN-CALENDAR-CMT-T0-09",
+      "ordinal_invariants": [
+        "Represents CALENDAR_ONLY:CMT-T0-09.",
+        "No active T0 obligation silently disappears."
+      ],
+      "expected_score_direction": "UNCHANGED",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-09",
+        "EV-HUMAN-EXPECTATION"
+      ],
+      "expected_protected_references": [],
+      "expected_displaced_references": [],
+      "expected_uncertainty": [
+        "Input readiness and later completion remain unknown."
+      ],
+      "expected_approval_requirement": "NOT_REQUIRED",
+      "approval_authority": "FOUNDER",
+      "explanation": "The Calendar-only consolidation block remains represented at the end of the T0 ranking."
+    }
+  ],
+  "ordinal_invariants": [
+    "Eight active Calendar candidates produce seven unique ranked attention objects.",
+    "CMT-05 aggregates CMT-T0-04 and CMT-T0-05 without duplicate attention.",
+    "CMT-T0-07 and CMT-T0-08 remain excluded but retained.",
+    "CMT-01 and CMT-02 do not exist before the trigger.",
+    "Every ranked item has public-safe evidence.",
+    "No production score or computed tie-break result is asserted."
+  ],
+  "human_authored_provenance": {
+    "provenance_id": "PROV-ORACLE-T0",
+    "source_class": "EXPLICIT_HUMAN_INPUT",
+    "evidence_category": "HUMAN_EXPECTATION",
+    "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+    "authority_scope": "EXPLICIT_HUMAN_DECISION",
+    "source_derived": true,
+    "transformation_action": "SYNTHESIZE",
+    "reversible": false
+  },
+  "approval_artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+  "privacy_classification": "PUBLIC_SAFE",
+  "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+  "created_at": "2030-02-10T11:00:00Z"
+}
