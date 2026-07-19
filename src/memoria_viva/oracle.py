@@ -1,14 +1,18 @@
-"""Ordinal-only comparison of computed rankings with human expectations."""
+"""Isolated comparison of production outputs with human-authored oracles."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Literal
 
 from .attention import AttentionRankingResult
-from .canonical import canonical_json_bytes, to_plain_json_value
+from .canonical import canonical_json_bytes, sha256_digest, to_plain_json_value
+from .contracts import SchemaRegistry
+from .graph_delta import GRAPH_DELTA_SCHEMA_ID, GraphDelta
 
 
 OracleStatus = Literal["PASS", "FAIL", "BLOCKED", "HUMAN_REVIEW_REQUIRED"]
@@ -31,6 +35,8 @@ class OracleComparison:
 
     status: OracleStatus
     oracle_id: str
+    oracle_version: str
+    oracle_digest: str
     computed_ranking_id: str
     expected_order: tuple[str, ...]
     computed_order: tuple[str, ...]
@@ -42,6 +48,42 @@ class OracleComparison:
         plain = to_plain_json_value(self)
         if not isinstance(plain, dict):
             raise TypeError("oracle comparison must project to a JSON object")
+        return plain
+
+    def canonical_bytes(self) -> bytes:
+        return canonical_json_bytes(self)
+
+
+@dataclass(frozen=True)
+class GraphDeltaOracleIssue:
+    """One stable semantic GraphDelta comparison finding."""
+
+    result: OracleStatus
+    error_code: str
+    semantic_key: str | None
+    pointer: str
+    message: str
+
+
+@dataclass(frozen=True)
+class GraphDeltaComparison:
+    """Immutable semantic comparison kept outside production generation."""
+
+    status: OracleStatus
+    oracle_id: str
+    oracle_version: str
+    oracle_digest: str
+    computed_graph_delta_id: str
+    expected_change_count: int
+    computed_change_count: int
+    matched_change_count: int
+    first_divergence: str | None
+    issues: tuple[GraphDeltaOracleIssue, ...]
+
+    def to_plain_json(self) -> dict[str, Any]:
+        plain = to_plain_json_value(self)
+        if not isinstance(plain, dict):
+            raise TypeError("GraphDelta comparison must project to a JSON object")
         return plain
 
     def canonical_bytes(self) -> bytes:
@@ -261,6 +303,10 @@ def compare_ordinal_oracle(
     return OracleComparison(
         status=status,
         oracle_id=expected_oracle["oracle_id"],
+        oracle_version=str(
+            expected_oracle.get("schema_version", "UNVERSIONED-TEST-ORACLE")
+        ),
+        oracle_digest=sha256_digest(expected_oracle),
         computed_ranking_id=computed.ranking["attention_ranking_id"],
         expected_order=expected_order,
         computed_order=computed_order,
@@ -268,6 +314,417 @@ def compare_ordinal_oracle(
         assertion_count=assertion_count,
         issues=tuple(issues),
     )
+
+
+def compare_graph_delta_oracle(
+    computed: GraphDelta | Mapping[str, Any],
+    expected_oracle: Mapping[str, Any],
+) -> GraphDeltaComparison:
+    """Compare semantic change tuples after production GraphDelta completion.
+
+    Oracle change IDs and placeholder digests are intentionally ignored. Human
+    expectation evidence marks oracle provenance and is not required as a
+    production-generation input.
+    """
+
+    if isinstance(computed, GraphDelta):
+        production = computed.to_plain_json()
+        relationship_semantics = computed.relationship_semantics
+    elif isinstance(computed, Mapping):
+        production = to_plain_json_value(computed)
+        relationship_semantics = {}
+    else:
+        raise TypeError("computed must be GraphDelta or a GraphDelta mapping")
+    if not isinstance(expected_oracle, Mapping):
+        raise TypeError("expected_oracle must be a validated mapping")
+
+    oracle_id = str(expected_oracle.get("graph_delta_id", "UNKNOWN-ORACLE"))
+    oracle_version = str(expected_oracle.get("schema_version", "UNKNOWN"))
+    oracle_digest = _graph_oracle_digest(expected_oracle)
+    computed_id = str(production.get("graph_delta_id", "UNKNOWN-GRAPH-DELTA"))
+    issues: list[GraphDeltaOracleIssue] = []
+
+    production_errors = _graph_contract_registry().validation_errors(
+        GRAPH_DELTA_SCHEMA_ID,
+        production,
+        instance_path="memory/graph-delta",
+        object_id=computed_id,
+    )
+    if production_errors:
+        issues.extend(
+            _graph_issue(
+                "BLOCKED",
+                "INVALID_PRODUCTION_GRAPH_DELTA",
+                None,
+                error.pointer,
+                error.message,
+            )
+            for error in production_errors
+        )
+        return _graph_comparison_result(
+            oracle_id,
+            oracle_version,
+            oracle_digest,
+            computed_id,
+            len(expected_oracle.get("changes", ())),
+            len(production.get("changes", ())),
+            0,
+            issues,
+        )
+
+    expected_changes = tuple(expected_oracle.get("changes", ()))
+    production_changes = tuple(production["changes"])
+    expected_descriptors = _graph_descriptors(expected_changes, {}, oracle=True)
+    production_descriptors = _graph_descriptors(
+        production_changes,
+        relationship_semantics,
+        oracle=False,
+    )
+    if expected_descriptors is None or production_descriptors is None:
+        issues.append(
+            _graph_issue(
+                "BLOCKED",
+                "UNRESOLVED_RELATIONSHIP_SEMANTICS",
+                None,
+                "/changes",
+                "one or more relationship changes cannot be reduced to typed endpoints",
+            )
+        )
+        return _graph_comparison_result(
+            oracle_id,
+            oracle_version,
+            oracle_digest,
+            computed_id,
+            len(expected_changes),
+            len(production_changes),
+            0,
+            issues,
+        )
+
+    production_by_key: dict[tuple[str, ...], list[tuple[int, Mapping[str, Any]]]] = {}
+    for index, (key, change) in enumerate(production_descriptors):
+        production_by_key.setdefault(key, []).append((index, change))
+
+    matched_production: set[int] = set()
+    matched_count = 0
+    for expected_index, (key, expected) in enumerate(expected_descriptors):
+        pointer = f"/changes/{expected_index}"
+        candidates = production_by_key.get(key, ())
+        available = tuple(item for item in candidates if item[0] not in matched_production)
+        if not available:
+            issues.append(
+                _graph_issue(
+                    "FAIL",
+                    "EXPECTED_GRAPH_CHANGE_MISSING",
+                    _semantic_key_text(key),
+                    pointer,
+                    "expected semantic change is absent from production GraphDelta",
+                )
+            )
+            continue
+        production_index, actual = available[0]
+        matched_production.add(production_index)
+        matched_count += 1
+        _compare_graph_change_fields(
+            key,
+            expected,
+            actual,
+            pointer,
+            issues,
+        )
+
+    for index, (key, change) in enumerate(production_descriptors):
+        if index in matched_production:
+            continue
+        result: OracleStatus = (
+            "FAIL" if change["affected_kind"] == "RELATIONSHIP" else "HUMAN_REVIEW_REQUIRED"
+        )
+        issues.append(
+            _graph_issue(
+                result,
+                (
+                    "UNAPPROVED_RELATIONSHIP_CHANGE"
+                    if result == "FAIL"
+                    else "STRONGER_UNSUPPORTED_OBJECT_CHANGE"
+                ),
+                _semantic_key_text(key),
+                f"/production/changes/{index}",
+                "production GraphDelta contains a semantic change absent from the human oracle",
+            )
+        )
+
+    return _graph_comparison_result(
+        oracle_id,
+        oracle_version,
+        oracle_digest,
+        computed_id,
+        len(expected_changes),
+        len(production_changes),
+        matched_count,
+        issues,
+    )
+
+
+def _graph_descriptors(
+    changes: tuple[Mapping[str, Any], ...],
+    relationship_semantics: Mapping[str, Mapping[str, str]],
+    *,
+    oracle: bool,
+) -> tuple[tuple[tuple[str, ...], Mapping[str, Any]], ...] | None:
+    descriptors: list[tuple[tuple[str, ...], Mapping[str, Any]]] = []
+    for change in changes:
+        category = change["category"]
+        if change["affected_kind"] == "OBJECT":
+            affected = change["affected_ref"]
+            entity_type = affected["entity_type"]
+            entity_id = affected["entity_id"]
+            if category == "UPDATED" and entity_type in {
+                "AttentionRanking",
+                "ExpectedAttentionRanking",
+            }:
+                key = (category, "OBJECT", "RANKING_TRANSITION")
+            elif category == "UPDATED" and entity_type == "Snapshot":
+                key = (category, "OBJECT", "SNAPSHOT_CAPACITY_TRANSITION")
+            else:
+                key = (category, "OBJECT", entity_type, entity_id)
+        else:
+            relationship_id = change["affected_relationship_id"]
+            semantics = (
+                _parse_expected_relationship(relationship_id)
+                if oracle
+                else relationship_semantics.get(relationship_id)
+            )
+            if semantics is None:
+                return None
+            key = (
+                category,
+                "RELATIONSHIP",
+                semantics["relationship_type"],
+                semantics["from_id"],
+                semantics["to_id"],
+            )
+        descriptors.append((key, change))
+    return tuple(descriptors)
+
+
+def _parse_expected_relationship(
+    relationship_id: str,
+) -> Mapping[str, str] | None:
+    if not relationship_id.startswith("REL-"):
+        return None
+    body = relationship_id[4:]
+    for marker, relationship_type in (
+        ("-DEPENDS-ON-", "depends_on"),
+        ("-CONFLICTS-", "conflicts_with"),
+        ("-DISPLACES-", "displaces"),
+    ):
+        if marker in body:
+            from_id, to_id = body.split(marker, 1)
+            return {
+                "relationship_type": relationship_type,
+                "from_id": from_id,
+                "to_id": to_id,
+            }
+    return None
+
+
+def _compare_graph_change_fields(
+    key: tuple[str, ...],
+    expected: Mapping[str, Any],
+    actual: Mapping[str, Any],
+    pointer: str,
+    issues: list[GraphDeltaOracleIssue],
+) -> None:
+    key_text = _semantic_key_text(key)
+    if actual["conditionality"] != expected["conditionality"]:
+        result: OracleStatus = (
+            "HUMAN_REVIEW_REQUIRED"
+            if expected["conditionality"] == "CONDITIONAL"
+            and actual["conditionality"] != "CONDITIONAL"
+            else "FAIL"
+        )
+        issues.append(
+            _graph_issue(
+                result,
+                "CONDITIONALITY_MISMATCH",
+                key_text,
+                f"{pointer}/conditionality",
+                f"expected {expected['conditionality']}, computed {actual['conditionality']}",
+            )
+        )
+
+    expected_execution = expected["actual_execution_state"]
+    actual_execution = actual["actual_execution_state"]
+    if actual_execution != expected_execution:
+        stronger = (
+            expected_execution in {"UNKNOWN", "NOT_EXECUTED"}
+            and actual_execution in {"AUTHORIZED", "EXECUTED"}
+        )
+        issues.append(
+            _graph_issue(
+                "HUMAN_REVIEW_REQUIRED" if stronger else "FAIL",
+                "EXECUTION_STATE_MISMATCH",
+                key_text,
+                f"{pointer}/actual_execution_state",
+                f"expected {expected_execution}, computed {actual_execution}",
+            )
+        )
+
+    expected_evidence = {
+        reference
+        for reference in expected["evidence_refs"]
+        if reference != "EV-HUMAN-EXPECTATION"
+    }
+    missing_evidence = sorted(expected_evidence - set(actual["evidence_refs"]))
+    if missing_evidence:
+        issues.append(
+            _graph_issue(
+                "FAIL",
+                "REQUIRED_EVIDENCE_MISSING",
+                key_text,
+                f"{pointer}/evidence_refs",
+                "production evidence is missing: " + ", ".join(missing_evidence),
+            )
+        )
+
+    if expected["uncertainty"] and not actual["uncertainty"]:
+        issues.append(
+            _graph_issue(
+                "FAIL",
+                "EXPECTED_UNCERTAINTY_NOT_PRESERVED",
+                key_text,
+                f"{pointer}/uncertainty",
+                "expected uncertainty is absent from production output",
+            )
+        )
+    elif not expected["uncertainty"] and actual["uncertainty"]:
+        issues.append(
+            _graph_issue(
+                "HUMAN_REVIEW_REQUIRED",
+                "STRONGER_UNSUPPORTED_UNCERTAINTY",
+                key_text,
+                f"{pointer}/uncertainty",
+                "production introduces uncertainty absent from the oracle",
+            )
+        )
+
+    if expected["condition_state"] in {"PENDING", "UNKNOWN"} and actual[
+        "condition_state"
+    ] == "SATISFIED":
+        issues.append(
+            _graph_issue(
+                "HUMAN_REVIEW_REQUIRED",
+                "STRONGER_UNSUPPORTED_CONDITION_CLAIM",
+                key_text,
+                f"{pointer}/condition_state",
+                "production claims a condition is satisfied where the oracle does not",
+            )
+        )
+
+    category = expected["category"]
+    if category == "DISPLACED":
+        required = {
+            "condition": actual["condition"],
+            "opportunity_cost": actual["opportunity_cost"],
+            "repair_requirement": actual["repair_requirement"],
+            "authority_scope": actual["authority_scope"],
+            "uncertainty": actual["uncertainty"],
+        }
+        missing = [name for name, value in required.items() if not value or value == "UNKNOWN"]
+        if missing:
+            issues.append(
+                _graph_issue(
+                    "BLOCKED",
+                    "DISPLACEMENT_SEMANTICS_INCOMPLETE",
+                    key_text,
+                    pointer,
+                    "conditional displacement is missing: " + ", ".join(missing),
+                )
+            )
+        if actual_execution == "EXECUTED":
+            issues.append(
+                _graph_issue(
+                    "HUMAN_REVIEW_REQUIRED",
+                    "UNSUPPORTED_EXECUTED_DISPLACEMENT",
+                    key_text,
+                    f"{pointer}/actual_execution_state",
+                    "human expectation does not authorize an executed-displacement claim",
+                )
+            )
+
+    state_label = str(actual["expected_new_state"].get("state_label") or "")
+    if any(token in state_label.upper() for token in ("COMPLETED", "VERIFIED")) and not any(
+        token in str(expected["expected_new_state"].get("state_label") or "").upper()
+        for token in ("COMPLETED", "VERIFIED")
+    ):
+        issues.append(
+            _graph_issue(
+                "HUMAN_REVIEW_REQUIRED",
+                "STRONGER_UNSUPPORTED_STATE_CLAIM",
+                key_text,
+                f"{pointer}/expected_new_state/state_label",
+                "production state label introduces unsupported completion or verification",
+            )
+        )
+
+
+def _graph_comparison_result(
+    oracle_id: str,
+    oracle_version: str,
+    oracle_digest: str,
+    computed_id: str,
+    expected_count: int,
+    computed_count: int,
+    matched_count: int,
+    issues: list[GraphDeltaOracleIssue],
+) -> GraphDeltaComparison:
+    status = _overall_graph_status(issues)
+    first_divergence = issues[0].message if issues else None
+    return GraphDeltaComparison(
+        status=status,
+        oracle_id=oracle_id,
+        oracle_version=oracle_version,
+        oracle_digest=oracle_digest,
+        computed_graph_delta_id=computed_id,
+        expected_change_count=expected_count,
+        computed_change_count=computed_count,
+        matched_change_count=matched_count,
+        first_divergence=first_divergence,
+        issues=tuple(issues),
+    )
+
+
+def _overall_graph_status(issues: list[GraphDeltaOracleIssue]) -> OracleStatus:
+    statuses = {issue.result for issue in issues}
+    if "BLOCKED" in statuses:
+        return "BLOCKED"
+    if "FAIL" in statuses:
+        return "FAIL"
+    if "HUMAN_REVIEW_REQUIRED" in statuses:
+        return "HUMAN_REVIEW_REQUIRED"
+    return "PASS"
+
+
+def _graph_issue(
+    result: OracleStatus,
+    error_code: str,
+    semantic_key: str | None,
+    pointer: str,
+    message: str,
+) -> GraphDeltaOracleIssue:
+    return GraphDeltaOracleIssue(result, error_code, semantic_key, pointer, message)
+
+
+def _semantic_key_text(key: tuple[str, ...]) -> str:
+    return "|".join(key)
+
+
+def _graph_oracle_digest(expected_oracle: Mapping[str, Any]) -> str:
+    projection = to_plain_json_value(expected_oracle)
+    placeholder = projection.get("transition_digest")
+    if isinstance(placeholder, str) and placeholder.startswith("UNKNOWN"):
+        projection.pop("transition_digest")
+    return sha256_digest(projection)
 
 
 def _direction_holds(
@@ -365,3 +822,8 @@ def _deep_freeze(value: Any) -> Any:
     if isinstance(value, tuple):
         return tuple(_deep_freeze(child) for child in value)
     return value
+
+
+@lru_cache(maxsize=1)
+def _graph_contract_registry() -> SchemaRegistry:
+    return SchemaRegistry(Path(__file__).resolve().parents[2] / "schemas")

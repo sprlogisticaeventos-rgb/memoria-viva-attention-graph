@@ -740,3 +740,81 @@ unrounded internal scores.
   Mode and requires later empirical recalibration before any production claim.
   Next smallest task after review and commit is deterministic GraphDelta
   generation from T0 and T1, kept separate from persistence and RunRecord work.
+
+## MV-BUILD-013 — Phase 1E deterministic replay core
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1e-replay-core` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1E — GraphDelta, RunRecord, and in-memory replay |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Objective and deterministic production outputs
+
+- Added one pure in-memory replay sequence that keeps `RuntimeBundle` and
+  `OracleBundle` separate, constructs the known T0 and T1 Snapshots and
+  rankings, completes the production GraphDelta, runs isolated comparisons,
+  and creates the RunRecord last. It performs no persistence, CLI operation,
+  network access, model call, or UI behavior.
+- `MV_GRAPH_DELTA_V1` emits 21 deterministic evidence-backed changes across
+  `ADDED`, `UPDATED`, `CONFLICTED`, `DISPLACED`, `PROTECTED`,
+  `REQUIRES_CONFIRMATION`, and `UNCHANGED`. The resulting identity is
+  `GRAPH-DELTA-T0-T1-f9f16318c40137871a5c`, with transition digest
+  `sha256:f104401e976ddd187971a884ba1d1d0565cbf4ca253fb40d34465f54dae41ccc`.
+- Production delta generation uses only RuntimeBundle, immutable Snapshots, and
+  computed rankings. It retains actual T1 relationship identities in the
+  delta and exposes a deterministic semantic index to the comparator. It never
+  imports OracleBundle, reads the expected GraphDelta, or copies human change
+  IDs or placeholder digests.
+
+### Comparator, receipt, and replay identity
+
+- The GraphDelta comparator matches semantic tuples for typed objects and
+  relationship endpoints rather than oracle change IDs. It checks required
+  evidence subsets, conditionality, execution, displacement safeguards,
+  uncertainty, missing expected semantics, unapproved relationships, invalid
+  production data, and stronger unsupported claims. The human-expectation
+  evidence reference remains oracle provenance rather than a production
+  generation input.
+- The immutable RunRecord receipts runtime, base and feature policy,
+  transition-contract, and oracle identities and digests; both Snapshots, both
+  rankings, and GraphDelta; schema and ontology versions; all comparison
+  results; approvals; unresolved questions; warnings; privacy state; and null
+  model metadata for Replay Mode. Its ID is
+  `RUN-REPLAY-b2fcd51d239acf29f5c3`, and its record digest is
+  `sha256:379d8cae3e0203531f9ab752873dc8de61920050692b92c4a0cc0ca9830adfc8`.
+- RunRecord excludes itself from `output_artifacts` and the replay-output
+  digest. Human-oracle placeholder digests are excluded from semantic input
+  identity. The complete ReplayResult canonical digest is
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+
+### Claims, warnings, validation, and boundary
+
+- Ranking-before, ranking-after, and GraphDelta comparisons are all `PASS`.
+  CMT-04 displacement remains conditional with execution `UNKNOWN`; CMT-05
+  and CMT-T0-01 remain confirmation-required; excluded objects remain retained;
+  and `attempts_to_resolve` is absent.
+- Compliance, submission completion, and Goal completion remain
+  `NOT_CLAIMED`; executed displacement remains `UNKNOWN` and explicitly
+  `NOT_CLAIMED`. The generated output remains `SANITIZED_PRIVATE` and
+  `NOT_REVIEWED`. All five publication surfaces remain `PENDING`.
+- Preserved warnings that the base policy is draft, execution is bounded Replay
+  Mode only, four repository-safe Source identities are non-local, publication
+  remains pending, final compliance is unknown, and generated output has not
+  completed publication review.
+- Added focused GraphDelta, comparator, RunRecord, replay, immutability,
+  no-oracle-leakage, and independent-process tests. All 158 `unittest` cases
+  pass, every generated instance validates against the existing closed schema
+  registry, and independent replay processes produce byte-identical IDs,
+  digests, comparisons, and canonical ReplayResult bytes.
+- Implemented no output persistence, replay CLI, model call, GPT-5.6 use, API,
+  UI, web service, database, agent, integration, scheduler, or deployment. No
+  file was written under `runs/`.
+- Next smallest task after review and commit is a separate read-only boundary
+  decision for an explicit replay CLI and local ignored persistence, without
+  adding model calls or a service architecture.
