@@ -354,3 +354,61 @@ RunRecords, not in this file.
 - No fixture semantics, production policy, schema, generated runtime output,
   application code, or Phase 1 behavior was added or changed by this
   correction.
+
+## MV-BUILD-008 — Phase 1A schema registry and fixture-bundle loader
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1a-loader` |
+| Starting commit | `cac71a4` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1A — Schema registry and fixture-bundle loader only |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Objective and stack
+
+- Added the first deterministic executable foundation using Python 3.12,
+  `jsonschema` 4.x, Draft 2020-12, and standard-library `unittest`.
+- Created `pyproject.toml`, the `src/memoria_viva` contract and fixture-loading
+  modules, and focused contract and bundle tests.
+- Kept canonical definitions in JSON Schema; no independently maintained
+  Python schema copy or application framework was introduced.
+
+### Contract boundaries
+
+- The schema registry discovers every canonical schema, rejects invalid or
+  duplicate identities, resolves references through a closed local registry,
+  and returns deterministic public-safe validation issues.
+- `RuntimeBundle` loads only the approved Goals, Calendar candidates,
+  evidence, commitments, constraints, canonical trigger, privacy manifest, and
+  attention policy.
+- `OracleBundle` separately loads the before/after ordinal rankings and
+  expected GraphDelta. There is no combined production-input bundle.
+- Deterministic read-only indexes enforce identity, lineage, evidence, Goal,
+  constraint, SourceEvent, Calendar, commitment, and attention-reference
+  integrity without changing case or identifier syntax.
+
+### Validation and preserved warnings
+
+- Ran 23 `unittest` cases covering registry closure, schema and instance
+  rejection, no-network reference behavior, fixture validation, immutability,
+  bundle separation, structural invariants, duplicate IDs, unresolved
+  evidence, warning behavior, and repeatable loading.
+- Ran Python bytecode compilation for `src` and `tests`; loading creates no
+  artifact under `runs/`.
+- Preserved structured warnings for the four approved non-local synthetic
+  Source IDs, draft policy status, null policy effective time, pending
+  publication surfaces, and unknown final compliance.
+
+### Scope boundary and next step
+
+- Created no Snapshot, state transition, score, computed ranking, GraphDelta,
+  RunRecord, oracle comparison, API call, UI, service, database, agent,
+  integration, or Phase 1B behavior.
+- Next smallest executable step after review, commit, merge, and explicit
+  authorization: define the bounded deterministic Snapshot T0 construction
+  rules and tests while keeping scoring and transition behavior out of scope.
