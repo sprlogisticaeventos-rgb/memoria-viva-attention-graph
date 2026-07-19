@@ -1,0 +1,370 @@
+{
+  "fixture_contract": "CALENDAR_T0_PUBLIC_CANDIDATE_SET",
+  "fixture_version": "1.0.0",
+  "ontology_version": "1.0.0",
+  "snapshot_role": "T0",
+  "synthetic_anchor_at": "2030-02-10T12:00:00Z",
+  "submission_boundary_at": "2030-02-15T18:00:00Z",
+  "timestamp_provenance": "SYNTHETIC",
+  "chronology_method": "INDEPENDENT_SYNTHETIC_COARSE_WINDOWS",
+  "calendar_absence_implies_available_capacity": false,
+  "candidate_count": 10,
+  "active_ranking_candidate_refs": [
+    "CMT-T0-01",
+    "CMT-T0-02",
+    "CMT-T0-03",
+    "CMT-T0-04",
+    "CMT-T0-05",
+    "CMT-T0-06",
+    "CMT-T0-09",
+    "CMT-T0-10"
+  ],
+  "excluded_but_retained_refs": [
+    "CMT-T0-07",
+    "CMT-T0-08"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "CMT-T0-01",
+      "public_title": "Collaboration pilot decision window",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "NEEDS_CONFIRMATION",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-09T00:00:00Z",
+      "scheduled_end": "2030-02-12T00:00:00Z",
+      "duration_class": "MULTI_DAY_WINDOW",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-01",
+      "public_evidence_summary": "A generalized collaboration decision window spans T0 and requires confirmation before movement.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Blocked-time status and the other authority holder's availability remain unknown."
+      ],
+      "attention_lineage_mapping": {
+        "mapping_id": "MAP-ATTN-CALENDAR-CMT-T0-01",
+        "operational_object_ref": {
+          "entity_type": "AttentionItem",
+          "entity_id": "ATTN-CALENDAR-CMT-T0-01",
+          "entity_version": 1,
+          "label": "Calendar-only collaboration decision window"
+        },
+        "source_candidate_refs": [
+          "CMT-T0-01"
+        ],
+        "derivation_type": "DIRECT_DERIVATION",
+        "identity_basis": "EXPLICIT_MAPPING",
+        "title_similarity_only": false,
+        "confidence": 0.9,
+        "uncertainty": [
+          "The attention representation does not create a separate operational Commitment."
+        ],
+        "evidence_refs": [
+          "EV-CAL-CMT-T0-01"
+        ],
+        "explanation": "Founder-approved direct Calendar-only attention mapping; identity is explicit and not inferred from title similarity.",
+        "creator_type": "HUMAN_DECISION",
+        "ontology_version": "1.0.0"
+      }
+    },
+    {
+      "candidate_id": "CMT-T0-02",
+      "public_title": "Existing obligation follow-up",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "UNRESOLVED",
+      "mobility_policy": "FLEXIBLE",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-10T06:00:00Z",
+      "scheduled_end": "2030-02-10T07:00:00Z",
+      "duration_class": "SHORT",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-02",
+      "public_evidence_summary": "An existing continuity obligation remained unresolved after its scheduled block.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Resolution details and completion state are not represented."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-03",
+      "public_title": "Read-only pilot validation",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "UNRESOLVED",
+      "mobility_policy": "FLEXIBLE",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-10T07:00:00Z",
+      "scheduled_end": "2030-02-10T11:00:00Z",
+      "duration_class": "MEDIUM",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-03",
+      "public_evidence_summary": "A setup step was represented as complete while Pending bounded validation remained outstanding.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Accuracy, cost, and operational readiness remain unverified."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-04",
+      "public_title": "Quality and scope gate",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "UNRESOLVED",
+      "mobility_policy": "NEEDS_CONFIRMATION",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-10T09:00:00Z",
+      "scheduled_end": "2030-02-10T12:00:00Z",
+      "duration_class": "MEDIUM",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-04",
+      "public_evidence_summary": "A generalized quality gate remained incomplete and required a shared decision.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "The related work and release context remain omitted."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-05",
+      "public_title": "Shared release decision",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "NEEDS_CONFIRMATION",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-10T15:00:00Z",
+      "scheduled_end": "2030-02-10T18:00:00Z",
+      "duration_class": "MEDIUM",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-05",
+      "public_evidence_summary": "A shared release decision was scheduled after T0 and required appropriate authority.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Release state and authority-holder identity remain unknown."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-06",
+      "public_title": "Operational decision block",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "FLEXIBLE",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-11T08:00:00Z",
+      "scheduled_end": "2030-02-11T10:00:00Z",
+      "duration_class": "SHORT",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-06",
+      "public_evidence_summary": "A bounded operating decision block was scheduled without verified data or external authority.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Data availability and implementation authority remain unknown."
+      ],
+      "attention_lineage_mapping": {
+        "mapping_id": "MAP-ATTN-CALENDAR-CMT-T0-06",
+        "operational_object_ref": {
+          "entity_type": "AttentionItem",
+          "entity_id": "ATTN-CALENDAR-CMT-T0-06",
+          "entity_version": 1,
+          "label": "Calendar-only operating decision block"
+        },
+        "source_candidate_refs": [
+          "CMT-T0-06"
+        ],
+        "derivation_type": "DIRECT_DERIVATION",
+        "identity_basis": "EXPLICIT_MAPPING",
+        "title_similarity_only": false,
+        "confidence": 0.7,
+        "uncertainty": [
+          "The attention representation does not create a separate operational Commitment."
+        ],
+        "evidence_refs": [
+          "EV-CAL-CMT-T0-06"
+        ],
+        "explanation": "Founder-approved direct Calendar-only attention mapping; identity is explicit and not inferred from title similarity.",
+        "creator_type": "HUMAN_DECISION",
+        "ontology_version": "1.0.0"
+      }
+    },
+    {
+      "candidate_id": "CMT-T0-07",
+      "public_title": "Strategic learning block",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "DISPLACEABLE",
+      "ranking_eligibility": "INELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-11T13:00:00Z",
+      "scheduled_end": "2030-02-11T14:00:00Z",
+      "duration_class": "SHORT",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "EXCLUDED_BUT_RETAINED",
+      "exclusion_reason": "Founder-approved controlled T0 ranking boundary; exclusion does not change lifecycle or delete the record.",
+      "supported_goal_ref": null,
+      "evidence_ref": "EV-CAL-CMT-T0-07",
+      "public_evidence_summary": "A founder-only learning block is retained as Calendar evidence but excluded from the controlled ranking.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Later completion and learning quality remain unknown."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-08",
+      "public_title": "Output production block",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "DISPLACEABLE",
+      "ranking_eligibility": "INELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-12T09:00:00Z",
+      "scheduled_end": "2030-02-12T12:00:00Z",
+      "duration_class": "MEDIUM",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "EXCLUDED_BUT_RETAINED",
+      "exclusion_reason": "Founder-approved controlled T0 ranking boundary; exclusion does not change lifecycle or delete the record.",
+      "supported_goal_ref": null,
+      "evidence_ref": "EV-CAL-CMT-T0-08",
+      "public_evidence_summary": "A founder-only output production block is retained as Calendar evidence but excluded from the controlled ranking.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Later completion and output quality remain unknown."
+      ],
+      "attention_lineage_mapping": null
+    },
+    {
+      "candidate_id": "CMT-T0-09",
+      "public_title": "Weekly operating consolidation",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "FLEXIBLE",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-13T08:00:00Z",
+      "scheduled_end": "2030-02-13T10:00:00Z",
+      "duration_class": "SHORT",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-02",
+      "evidence_ref": "EV-CAL-CMT-T0-09",
+      "public_evidence_summary": "A recurring operating consolidation block supports continuity but has no verified external deadline.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "Input readiness and later completion remain unknown."
+      ],
+      "attention_lineage_mapping": {
+        "mapping_id": "MAP-ATTN-CALENDAR-CMT-T0-09",
+        "operational_object_ref": {
+          "entity_type": "AttentionItem",
+          "entity_id": "ATTN-CALENDAR-CMT-T0-09",
+          "entity_version": 1,
+          "label": "Calendar-only operating consolidation"
+        },
+        "source_candidate_refs": [
+          "CMT-T0-09"
+        ],
+        "derivation_type": "DIRECT_DERIVATION",
+        "identity_basis": "EXPLICIT_MAPPING",
+        "title_similarity_only": false,
+        "confidence": 0.7,
+        "uncertainty": [
+          "The attention representation does not create a separate operational Commitment."
+        ],
+        "evidence_refs": [
+          "EV-CAL-CMT-T0-09"
+        ],
+        "explanation": "Founder-approved direct Calendar-only attention mapping; identity is explicit and not inferred from title similarity.",
+        "creator_type": "HUMAN_DECISION",
+        "ontology_version": "1.0.0"
+      }
+    },
+    {
+      "candidate_id": "CMT-T0-10",
+      "public_title": "Protected documentation review",
+      "source_classification": "CALENDAR_T0_PUBLIC_CANDIDATE",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "PROTECTED",
+      "ranking_eligibility": "ELIGIBLE",
+      "eligibility_scope": "CONTROLLED_T0_RANKING",
+      "scheduled_start": "2030-02-14T09:00:00Z",
+      "scheduled_end": "2030-02-14T10:00:00Z",
+      "duration_class": "SHORT",
+      "timestamp_provenance": "SYNTHETIC",
+      "inclusion_state": "ACTIVE_RANKING_CANDIDATE",
+      "exclusion_reason": null,
+      "supported_goal_ref": "GC-03",
+      "evidence_ref": "EV-CAL-CMT-T0-10",
+      "public_evidence_summary": "A generalized documentation review remains protected while its exact external deadline stays unknown.",
+      "privacy_classification": "PUBLIC_SAFE",
+      "epistemic_state": "approximate",
+      "uncertainty": [
+        "The exact requirement, authority, and external deadline remain unknown."
+      ],
+      "attention_lineage_mapping": {
+        "mapping_id": "MAP-ATTN-CALENDAR-CMT-T0-10",
+        "operational_object_ref": {
+          "entity_type": "AttentionItem",
+          "entity_id": "ATTN-CALENDAR-CMT-T0-10",
+          "entity_version": 1,
+          "label": "Calendar-only protected continuity"
+        },
+        "source_candidate_refs": [
+          "CMT-T0-10"
+        ],
+        "derivation_type": "DIRECT_DERIVATION",
+        "identity_basis": "EXPLICIT_MAPPING",
+        "title_similarity_only": false,
+        "confidence": 0.7,
+        "uncertainty": [
+          "The exact external deadline remains unknown."
+        ],
+        "evidence_refs": [
+          "EV-CAL-CMT-T0-10"
+        ],
+        "explanation": "Founder-approved direct Calendar-only attention mapping; identity is explicit and not inferred from title similarity.",
+        "creator_type": "HUMAN_DECISION",
+        "ontology_version": "1.0.0"
+      }
+    }
+  ],
+  "privacy_classification": "PUBLIC_SAFE",
+  "fixture_review_state": "APPROVED",
+  "uncertainty": [
+    "Calendar absence does not establish available capacity.",
+    "Future occurrence and completion are not inferred from scheduled records."
+  ]
+}

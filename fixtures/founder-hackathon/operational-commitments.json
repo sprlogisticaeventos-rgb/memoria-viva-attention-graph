@@ -1,0 +1,412 @@
+{
+  "fixture_contract": "OPERATIONAL_COMMITMENT_SET",
+  "fixture_version": "1.0.0",
+  "ontology_version": "1.0.0",
+  "commitments": [
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-01",
+      "commitment_version": 1,
+      "title": "Public product demonstration ready",
+      "description": "A founder-owned, end-to-end product demonstration must be verifiably ready before D-0. Optional features and private implementation details remain excluded.",
+      "owner_reference": "FOUNDER",
+      "scheduled_start": "2030-02-10T12:00:00Z",
+      "scheduled_end": null,
+      "deadline_at": "2030-02-15T18:00:00Z",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "PROTECTED",
+      "authority_mode": "FOUNDER",
+      "eligibility_state": "ELIGIBLE",
+      "protection_state": "PROTECTED",
+      "conditionality": "UNCONDITIONAL",
+      "condition": null,
+      "condition_state": "NOT_APPLICABLE",
+      "execution_state": "PLANNED",
+      "displacement_cost": {
+        "level": "HIGH",
+        "summary": "Displacement threatens the minimum verifiable demonstration path."
+      },
+      "repair_requirement": "Reduce scope to one end-to-end founder case, record the reduced claim, and preserve a verifiable demonstration path.",
+      "reactivation_condition": null,
+      "supported_goal_refs": [
+        "GC-01"
+      ],
+      "lineage_mappings": [
+        {
+          "mapping_id": "MAP-CMT-01-TRIGGER",
+          "operational_object_ref": {
+            "entity_type": "Commitment",
+            "entity_id": "CMT-01",
+            "entity_version": 1,
+            "label": "Public product demonstration ready"
+          },
+          "source_candidate_refs": [],
+          "derivation_type": "TRIGGER_CREATED",
+          "identity_basis": "EXPLICIT_MAPPING",
+          "title_similarity_only": false,
+          "confidence": 1.0,
+          "uncertainty": [
+            "Exact production scope and official requirements remain unverified."
+          ],
+          "evidence_refs": [
+            "EV-EVENT-TRIGGER",
+            "EV-COMMITMENT-APPROVAL"
+          ],
+          "explanation": "The approved trigger creates this operational commitment at T1; it has no Calendar candidate identity.",
+          "creator_type": "HUMAN_DECISION",
+          "ontology_version": "1.0.0"
+        }
+      ],
+      "displaced_by_refs": [],
+      "approval_requirement": "NOT_REQUIRED",
+      "epistemic_state": "confirmed",
+      "evidence_refs": [
+        "EV-EVENT-TRIGGER",
+        "EV-COMMITMENT-APPROVAL"
+      ],
+      "uncertainty": [
+        "Official requirements and exact demonstration scope remain unverified.",
+        "Artifact existence does not prove completion."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "provenance": {
+        "provenance_id": "PROV-CMT-01",
+        "source_class": "EXPLICIT_HUMAN_INPUT",
+        "evidence_category": "FOUNDER_COMMITMENT_APPROVAL",
+        "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "source_derived": true,
+        "transformation_action": "GENERALIZE",
+        "reversible": false
+      },
+      "supersedes_commitment_id": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-02",
+      "commitment_version": 1,
+      "title": "Submission package finalization",
+      "description": "A distinct minimum submission package is active but not complete and must be finalized by D-0 without claiming eligibility or completion from a started artifact.",
+      "owner_reference": "FOUNDER",
+      "scheduled_start": "2030-02-10T12:00:00Z",
+      "scheduled_end": null,
+      "deadline_at": "2030-02-15T18:00:00Z",
+      "lifecycle_status": "ACTIVE",
+      "mobility_policy": "PROTECTED",
+      "authority_mode": "FOUNDER",
+      "eligibility_state": "ELIGIBLE",
+      "protection_state": "PROTECTED",
+      "conditionality": "UNCONDITIONAL",
+      "condition": null,
+      "condition_state": "NOT_APPLICABLE",
+      "execution_state": "PLANNED",
+      "displacement_cost": {
+        "level": "VERY_HIGH",
+        "summary": "Post-deadline work cannot repair event eligibility."
+      },
+      "repair_requirement": "Complete the minimum required package before D-0; after D-0 retain only postmortem and public-demo work without an eligibility claim.",
+      "reactivation_condition": null,
+      "supported_goal_refs": [
+        "GC-01"
+      ],
+      "lineage_mappings": [
+        {
+          "mapping_id": "MAP-CMT-02-TRIGGER",
+          "operational_object_ref": {
+            "entity_type": "Commitment",
+            "entity_id": "CMT-02",
+            "entity_version": 1,
+            "label": "Submission package finalization"
+          },
+          "source_candidate_refs": [],
+          "derivation_type": "TRIGGER_CREATED",
+          "identity_basis": "EXPLICIT_MAPPING",
+          "title_similarity_only": false,
+          "confidence": 1.0,
+          "uncertainty": [
+            "Live submission state and exact missing fields remain unknown."
+          ],
+          "evidence_refs": [
+            "EV-EVENT-TRIGGER",
+            "EV-COMMITMENT-APPROVAL"
+          ],
+          "explanation": "The approved trigger creates this distinct operational commitment at T1; it has no Calendar candidate identity.",
+          "creator_type": "HUMAN_DECISION",
+          "ontology_version": "1.0.0"
+        }
+      ],
+      "displaced_by_refs": [],
+      "approval_requirement": "NOT_REQUIRED",
+      "epistemic_state": "confirmed",
+      "evidence_refs": [
+        "EV-EVENT-TRIGGER",
+        "EV-COMMITMENT-APPROVAL"
+      ],
+      "uncertainty": [
+        "Official requirements and live submission state remain unverified.",
+        "Artifact existence does not prove completion."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "provenance": {
+        "provenance_id": "PROV-CMT-02",
+        "source_class": "EXPLICIT_HUMAN_INPUT",
+        "evidence_category": "FOUNDER_COMMITMENT_APPROVAL",
+        "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "source_derived": true,
+        "transformation_action": "GENERALIZE",
+        "reversible": false
+      },
+      "supersedes_commitment_id": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-03",
+      "commitment_version": 1,
+      "title": "Unresolved external follow-up",
+      "description": "A generalized unresolved external obligation carried into T0 and continues to consume attention. Source-specific details are excluded.",
+      "owner_reference": "FOUNDER",
+      "scheduled_start": null,
+      "scheduled_end": null,
+      "deadline_at": null,
+      "lifecycle_status": "UNRESOLVED_MISSED_CARRYOVER",
+      "mobility_policy": "FLEXIBLE",
+      "authority_mode": "FOUNDER",
+      "eligibility_state": "ELIGIBLE",
+      "protection_state": "NOT_PROTECTED",
+      "conditionality": "UNCONDITIONAL",
+      "condition": null,
+      "condition_state": "NOT_APPLICABLE",
+      "execution_state": "NOT_EXECUTED",
+      "displacement_cost": {
+        "level": "HIGH",
+        "summary": "Repeated deferral extends unresolved continuity risk."
+      },
+      "repair_requirement": "Within 24 hours, reconcile the outstanding scope, request written resolution details, and record response or non-response.",
+      "reactivation_condition": null,
+      "supported_goal_refs": [
+        "GC-02"
+      ],
+      "lineage_mappings": [
+        {
+          "mapping_id": "MAP-CMT-03-CMT-T0-02",
+          "operational_object_ref": {
+            "entity_type": "Commitment",
+            "entity_id": "CMT-03",
+            "entity_version": 1,
+            "label": "Unresolved external follow-up"
+          },
+          "source_candidate_refs": [
+            "CMT-T0-02"
+          ],
+          "derivation_type": "DIRECT_DERIVATION",
+          "identity_basis": "EXPLICIT_MAPPING",
+          "title_similarity_only": false,
+          "confidence": 1.0,
+          "uncertainty": [
+            "External response and resolution remain unknown."
+          ],
+          "evidence_refs": [
+            "EV-CAL-CMT-T0-02",
+            "EV-COMMITMENT-APPROVAL"
+          ],
+          "explanation": "Founder-approved explicit direct derivation from the sanitized Calendar candidate; no title inference is used.",
+          "creator_type": "HUMAN_DECISION",
+          "ontology_version": "1.0.0"
+        }
+      ],
+      "displaced_by_refs": [],
+      "approval_requirement": "NOT_REQUIRED",
+      "epistemic_state": "approximate",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-02",
+        "EV-COMMITMENT-APPROVAL"
+      ],
+      "uncertainty": [
+        "External response and resolution state remain unknown.",
+        "External confirmation is outside founder-only authority."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "provenance": {
+        "provenance_id": "PROV-CMT-03",
+        "source_class": "EXPLICIT_HUMAN_INPUT",
+        "evidence_category": "FOUNDER_COMMITMENT_APPROVAL",
+        "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "source_derived": true,
+        "transformation_action": "GENERALIZE",
+        "reversible": false
+      },
+      "supersedes_commitment_id": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-04",
+      "commitment_version": 1,
+      "title": "Pending bounded validation",
+      "description": "Pending bounded validation follows a completed setup step and may be displaced only through the approved conditional repair policy.",
+      "owner_reference": "FOUNDER",
+      "scheduled_start": null,
+      "scheduled_end": null,
+      "deadline_at": null,
+      "lifecycle_status": "UNRESOLVED_MISSED_CARRYOVER",
+      "mobility_policy": "DISPLACEABLE",
+      "authority_mode": "FOUNDER",
+      "eligibility_state": "ELIGIBLE",
+      "protection_state": "NOT_PROTECTED",
+      "conditionality": "CONDITIONAL",
+      "condition": "Displacement is authorized only if a bounded scan with a small input batch and explicit Definition of Done is scheduled, or explicit deferment records a reactivation condition.",
+      "condition_state": "PENDING",
+      "execution_state": "UNKNOWN",
+      "displacement_cost": {
+        "level": "MEDIUM",
+        "summary": "Displacement delays Pending bounded validation; no fixed deadline or third-party obligation is evidenced."
+      },
+      "repair_requirement": "Schedule one bounded scan with a small input batch and explicit Definition of Done, or explicitly defer it with a reactivation condition.",
+      "reactivation_condition": null,
+      "supported_goal_refs": [
+        "GC-02"
+      ],
+      "lineage_mappings": [
+        {
+          "mapping_id": "MAP-CMT-04-CMT-T0-03",
+          "operational_object_ref": {
+            "entity_type": "Commitment",
+            "entity_id": "CMT-04",
+            "entity_version": 1,
+            "label": "Pending bounded validation"
+          },
+          "source_candidate_refs": [
+            "CMT-T0-03"
+          ],
+          "derivation_type": "DIRECT_DERIVATION",
+          "identity_basis": "EXPLICIT_MAPPING",
+          "title_similarity_only": false,
+          "confidence": 1.0,
+          "uncertainty": [
+            "Actual movement, repair slot, and reactivation condition remain unknown."
+          ],
+          "evidence_refs": [
+            "EV-CAL-CMT-T0-03",
+            "EV-COMMITMENT-APPROVAL"
+          ],
+          "explanation": "Founder-approved explicit direct derivation from the sanitized Calendar candidate; no title inference is used.",
+          "creator_type": "HUMAN_DECISION",
+          "ontology_version": "1.0.0"
+        }
+      ],
+      "displaced_by_refs": [],
+      "approval_requirement": "APPROVED",
+      "epistemic_state": "approximate",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-03",
+        "EV-COMMITMENT-APPROVAL"
+      ],
+      "uncertainty": [
+        "Conditional authorization does not prove execution.",
+        "Actual movement, repair slot, and reactivation condition remain unknown."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "provenance": {
+        "provenance_id": "PROV-CMT-04",
+        "source_class": "EXPLICIT_HUMAN_INPUT",
+        "evidence_category": "FOUNDER_COMMITMENT_APPROVAL",
+        "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "source_derived": true,
+        "transformation_action": "GENERALIZE",
+        "reversible": false
+      },
+      "supersedes_commitment_id": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "CMT-05",
+      "commitment_version": 1,
+      "title": "Shared release-readiness gate",
+      "description": "A generalized item remains at a shared release-readiness gate. It cannot move or release without a recorded joint decision.",
+      "owner_reference": null,
+      "scheduled_start": null,
+      "scheduled_end": null,
+      "deadline_at": null,
+      "lifecycle_status": "UNRESOLVED",
+      "mobility_policy": "NEEDS_CONFIRMATION",
+      "authority_mode": "JOINT",
+      "eligibility_state": "ELIGIBLE",
+      "protection_state": "NEEDS_CONFIRMATION",
+      "conditionality": "CONDITIONAL",
+      "condition": "A joint decision with the relevant authority holder must be recorded before movement or release.",
+      "condition_state": "PENDING",
+      "execution_state": "NOT_EXECUTED",
+      "displacement_cost": {
+        "level": "MEDIUM_HIGH",
+        "summary": "Premature movement or release can create quality and authority risk."
+      },
+      "repair_requirement": "Send one consolidated brief with quality criteria, the requested decision, and a proposed next time; do not release until the joint decision is recorded.",
+      "reactivation_condition": null,
+      "supported_goal_refs": [
+        "GC-02"
+      ],
+      "lineage_mappings": [
+        {
+          "mapping_id": "MAP-CMT-05-AGGREGATED",
+          "operational_object_ref": {
+            "entity_type": "Commitment",
+            "entity_id": "CMT-05",
+            "entity_version": 1,
+            "label": "Shared release-readiness gate"
+          },
+          "source_candidate_refs": [
+            "CMT-T0-04",
+            "CMT-T0-05"
+          ],
+          "derivation_type": "AGGREGATED_DERIVATION",
+          "identity_basis": "EXPLICIT_MAPPING",
+          "title_similarity_only": false,
+          "confidence": 1.0,
+          "uncertainty": [
+            "Approver identity, release condition, and outcome remain unknown."
+          ],
+          "evidence_refs": [
+            "EV-CAL-CMT-T0-04",
+            "EV-CAL-CMT-T0-05",
+            "EV-COMMITMENT-APPROVAL"
+          ],
+          "explanation": "Founder-approved aggregation prevents two Calendar evidence candidates from duplicating one operational attention obligation.",
+          "creator_type": "HUMAN_DECISION",
+          "ontology_version": "1.0.0"
+        }
+      ],
+      "displaced_by_refs": [],
+      "approval_requirement": "PENDING",
+      "epistemic_state": "approximate",
+      "evidence_refs": [
+        "EV-CAL-CMT-T0-04",
+        "EV-CAL-CMT-T0-05",
+        "EV-COMMITMENT-APPROVAL"
+      ],
+      "uncertainty": [
+        "The other authority holder's identity is intentionally omitted.",
+        "The joint-authority outcome and release state remain unknown."
+      ],
+      "privacy_classification": "PUBLIC_SAFE",
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "provenance": {
+        "provenance_id": "PROV-CMT-05",
+        "source_class": "EXPLICIT_HUMAN_INPUT",
+        "evidence_category": "FOUNDER_COMMITMENT_APPROVAL",
+        "artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+        "authority_scope": "EXPLICIT_HUMAN_DECISION",
+        "source_derived": true,
+        "transformation_action": "GENERALIZE",
+        "reversible": false
+      },
+      "supersedes_commitment_id": null
+    }
+  ],
+  "fixture_review_state": "APPROVED"
+}

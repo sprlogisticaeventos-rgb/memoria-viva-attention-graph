@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "source_event_id": "fx_evt_build_week_trigger_001",
+  "source_event_version": 1,
+  "event_role": "TRIGGER",
+  "event_type": "OPPORTUNITY_ANNOUNCEMENT",
+  "title": "OpenAI Build Week opportunity announced",
+  "summary": "A public-safe communication announced a bounded opportunity window under GC-01; its deadline pressure is represented by an independent synthetic fixture anchor.",
+  "source_id": "SRC-COMMUNICATION-PUBLIC",
+  "source_record_reference": null,
+  "follow_up_to": null,
+  "related_goal_refs": [
+    "GC-01"
+  ],
+  "received_at": "2030-02-10T12:00:00Z",
+  "occurred_at": null,
+  "deadline_at": "2030-02-15T18:00:00Z",
+  "authority_scope": "COMMUNICATION_EVIDENCE_ONLY",
+  "evidence_refs": [
+    "EV-EVENT-TRIGGER"
+  ],
+  "normalization_status": "normalized",
+  "normalization_warnings": [
+    "occurred_at is unknown and is not inferred from received_at.",
+    "deadline_at is an independently synthesized fixture anchor, not the official deadline or a constant-offset copy.",
+    "Communication evidence does not establish official rules, eligibility, project completion, submission completion, or Goal completion.",
+    "Participation confirmation, draft-started evidence, and deadline reminder are follow-ups excluded from T1."
+  ],
+  "epistemic_state": "confirmed",
+  "uncertainty": [
+    "Exact occurrence time is unknown.",
+    "Official constraints and final compliance require separate authoritative verification."
+  ],
+  "privacy_classification": "PUBLIC_SAFE",
+  "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+  "provenance": {
+    "provenance_id": "PROV-EVENT-TRIGGER",
+    "source_class": "COMMUNICATION",
+    "evidence_category": "EVENT_TRIGGER_EMAIL",
+    "artifact_reference": "HA-EVENT-PUBLIC-CANDIDATE",
+    "authority_scope": "COMMUNICATION_EVIDENCE_ONLY",
+    "source_derived": true,
+    "transformation_action": "SYNTHESIZE",
+    "reversible": false
+  },
+  "recorded_at": "2030-02-10T12:00:00Z"
+}

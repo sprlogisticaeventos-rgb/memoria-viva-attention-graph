@@ -1,37 +1,191 @@
 {
+  "schema_version": "1.0.0",
+  "manifest_id": "PRIVACY-FOUNDER-HACKATHON-PHASE-0C2",
   "manifest_version": "1.0.0",
-  "fixture_id": "founder_hackathon_v1",
-  "fixture_status": "scaffold_only",
-  "sanitization_status": "NOT_STARTED",
-  "permitted_public_data_classes": [
-    "sanitized_goal_contract",
-    "synthetic_identifiers",
-    "non_personal_project_metadata"
+  "fixture_identity": {
+    "artifact_id": "FOUNDER-HACKATHON-PHASE-0C2",
+    "artifact_version": "1.0.0",
+    "artifact_digest": null
+  },
+  "source_classes": [
+    "COMMUNICATION",
+    "CALENDAR",
+    "DOCUMENT",
+    "EXPLICIT_HUMAN_INPUT",
+    "SYNTHETIC"
   ],
-  "prohibited_data_classes": [
-    "real_names",
-    "email_addresses",
-    "phone_numbers",
-    "private_calendar_details",
-    "private_message_content",
-    "account_identifiers",
-    "credentials",
-    "tokens",
-    "private_repository_data"
-  ],
-  "pii_review_status": "NOT_REVIEWED",
-  "field_origins": [
+  "field_transformations": [
     {
-      "field_scope": "goal-hackathon.json contract values",
-      "origin_type": "source_derived",
-      "source_reference": "docs/CONSTRUCTION_BLUEPRINT.md#7-goal-contract-para-el-hackathon"
+      "field_scope": "Raw source identifiers, locators, account references, paths, links, and reversible mappings",
+      "original_class": "RAW_LOCATOR",
+      "transformation_action": "REMOVE",
+      "sanitized_class": "REMOVED",
+      "reason": "Raw locators are unnecessary for the public replay and could restore private source context.",
+      "source_derived": true,
+      "reversible": false,
+      "permitted_in_repository": false,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "NOT_REQUIRED", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "NOT_REQUIRED", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "NOT_REQUIRED", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "NOT_REQUIRED", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "NOT_REQUIRED", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "NOT_REQUIRED",
+      "evidence_refs": [
+        "EV-HUMAN-EXPECTATION"
+      ]
     },
     {
-      "field_scope": "schema and fixture metadata",
-      "origin_type": "synthetic",
-      "source_reference": null
+      "field_scope": "Private names, counterparties, organizations, commitments, financial context, legal context, health context, family context, and artistic context",
+      "original_class": "SENSITIVE_DATA",
+      "transformation_action": "GENERALIZE",
+      "sanitized_class": "GENERALIZED",
+      "reason": "Only functional public meaning is required; biography-level and sensitive context is prohibited.",
+      "source_derived": true,
+      "reversible": false,
+      "permitted_in_repository": true,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "PENDING",
+      "evidence_refs": [
+        "EV-GOAL-APPROVAL",
+        "EV-COMMITMENT-APPROVAL"
+      ]
+    },
+    {
+      "field_scope": "Source identities and operational object identities",
+      "original_class": "PERSONAL_DATA",
+      "transformation_action": "PSEUDONYMIZE",
+      "sanitized_class": "PSEUDONYMIZED",
+      "reason": "Stable synthetic IDs preserve lineage without retaining source-system identifiers or private identity signals.",
+      "source_derived": true,
+      "reversible": false,
+      "permitted_in_repository": true,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "PENDING",
+      "evidence_refs": [
+        "EV-COMMITMENT-APPROVAL"
+      ]
+    },
+    {
+      "field_scope": "All public fixture timestamp fields, including Calendar intervals, trigger boundaries, evidence records, oracle records, and the fixture deadline anchor",
+      "original_class": "PRIVATE_TEMPORAL_DATA",
+      "transformation_action": "SYNTHESIZE",
+      "sanitized_class": "INDEPENDENT_SYNTHETIC_COARSE_TIME",
+      "reason": "Preserve only required ordering, overlap, and urgency while preventing recovery of private chronology.",
+      "source_derived": false,
+      "reversible": false,
+      "permitted_in_repository": true,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "PENDING",
+      "evidence_refs": [
+        "EV-EVENT-TRIGGER",
+        "EV-HUMAN-EXPECTATION"
+      ]
+    },
+    {
+      "field_scope": "Evidence excerpts, factual claims, and source metadata",
+      "original_class": "SOURCE_TEXT",
+      "transformation_action": "SYNTHESIZE",
+      "sanitized_class": "SYNTHETIC",
+      "reason": "Short artifact-level summaries preserve approved facts and uncertainty without raw source text.",
+      "source_derived": true,
+      "reversible": false,
+      "permitted_in_repository": true,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "PENDING",
+      "evidence_refs": [
+        "EV-HUMAN-EXPECTATION"
+      ]
+    },
+    {
+      "field_scope": "Approved ontology values, Goal labels, mobility values, ordinal ranks, and GraphDelta categories",
+      "original_class": "PUBLIC",
+      "transformation_action": "KEEP",
+      "sanitized_class": "PUBLIC_SAFE_KEPT",
+      "reason": "These explicit human-approved contract values are necessary to make the replay intelligible and testable.",
+      "source_derived": true,
+      "reversible": false,
+      "permitted_in_repository": true,
+      "publication_approvals": [
+        {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+        {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+      ],
+      "privacy_review_state": "APPROVED_WITH_TRANSFORMATIONS",
+      "founder_approval_state": "APPROVED",
+      "publication_approval_state": "PENDING",
+      "evidence_refs": [
+        "EV-GOAL-APPROVAL",
+        "EV-COMMITMENT-APPROVAL",
+        "EV-HUMAN-EXPECTATION"
+      ]
     }
   ],
-  "reviewer_status": "UNASSIGNED",
-  "approval_status": "NOT_APPROVED"
+  "publication_approvals": [
+    {"publication_surface": "PUBLIC_FIXTURE", "approval_state": "PENDING", "evidence_refs": []},
+    {"publication_surface": "REPOSITORY_DOCS", "approval_state": "PENDING", "evidence_refs": []},
+    {"publication_surface": "DEMO_UI", "approval_state": "PENDING", "evidence_refs": []},
+    {"publication_surface": "DEMO_VIDEO", "approval_state": "PENDING", "evidence_refs": []},
+    {"publication_surface": "DEVPOST_SUBMISSION", "approval_state": "PENDING", "evidence_refs": []}
+  ],
+  "privacy_review_state": "APPROVED",
+  "founder_approval_state": "APPROVED",
+  "publication_approval_state": "PENDING",
+  "residual_aggregation_risk": "LOW_MEDIUM",
+  "reviewer_reference": null,
+  "approval_artifact_reference": "HA-LANE-A-FOUNDER-APPROVAL",
+  "warnings": [
+    "FOUNDER_FIXTURE_REVIEW_APPROVED",
+    "PRIVATE_REPOSITORY_COMMIT_AUTHORIZED",
+    "Underlying human semantics are approved, but the concrete repository fixture package is not yet approved for publication.",
+    "Fixture timestamps use independently synthesized whole-hour windows; no common offset or exact private duration is retained.",
+    "The public D-0 value is a synthetic fixture deadline anchor and is not the official deadline.",
+    "Approval for one publication surface must not be interpreted as approval for another surface.",
+    "Any new concrete date, narrative detail, identity signal, raw-like evidence, or publication surface requires targeted aggregation privacy review."
+  ],
+  "prohibited_content_confirmation": {
+    "no_raw_locators": true,
+    "no_secrets": true,
+    "no_unnecessary_personal_data": true,
+    "no_reversible_mappings": true,
+    "no_raw_source_text": true
+  },
+  "created_at": "2030-02-10T13:00:00Z"
 }
