@@ -134,3 +134,88 @@ RunRecords, not in this file.
   residence, age, or exclusion status has been inferred or verified.
 - The Rules-versus-Schedule discrepancy remains `DISPUTED` and requires a final
   official-source recheck before submission.
+
+## MV-BUILD-004 — Phase 0D2 approved contract reconciliation
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-18 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-0d-contract-reconciliation` |
+| Starting commit | `bd9711d` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 0D2 — Approved contract reconciliation only |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Authority and objective
+
+- Reconciled canonical product contracts against
+  `LANE_A_V2_FOUNDER_APPROVAL.md`, `CODEX_PRIMARY_HANDOFF_V1.md`,
+  `LANE_A_V2_HANDOFF(1).md`, and accepted `MV-ADR-009`.
+- Translated approved founder semantics into generic documentation and JSON
+  Schema capabilities without encoding fixture-specific Goal, Commitment,
+  candidate, count, or rank assertions in generic schemas.
+
+### Files changed
+
+- Updated `docs/CONSTRUCTION_BLUEPRINT.md`, `docs/ontology.md`, and
+  `docs/privacy.md`.
+- Updated shared, source, event, evidence, constraint, Goal, Commitment,
+  Snapshot, production ranking, GraphDelta, and RunRecord schemas.
+- Added `schemas/public-goal-set.schema.json`,
+  `schemas/expected-attention-ranking.schema.json`, and
+  `schemas/privacy-manifest.schema.json`.
+- Updated only the future-fixture contract guidance in
+  `fixtures/founder-hackathon/README.md`.
+
+### Semantic effects
+
+- Separated operational Goal lifecycle from controlled-demo visibility and
+  enforced evidence-backed completion authority.
+- Separated trigger/follow-up roles, temporal fields, Calendar and operational
+  identities, commitment dimensions, Snapshot membership, conditional
+  authorization, and actual execution.
+- Preserved the fixed attention policy while separating computed numeric
+  rankings from the human ordinal test oracle.
+- Added the approved GraphDelta categories, bounded relationship vocabulary,
+  historical transition provenance, replay identities, claim guards, and
+  per-publication-surface privacy approval with `LOW_MEDIUM` residual risk.
+- Kept `attempts_to_resolve` deferred for a versioned repair-loop extension.
+
+### Validation evidence
+
+- Parsed every repository JSON file; validated all schemas against Draft
+  2020-12; resolved all `$ref` values; checked unique `$id` values and closed
+  object declarations.
+- Validated in-memory examples for the public Goal set, trigger SourceEvent,
+  lineage, conditional Commitment, Snapshot membership, production ranking,
+  human oracle, GraphDelta, Replay RunRecord, and privacy manifest.
+- Confirmed the oracle rejects production scores, non-initial Snapshots require
+  predecessors, conditional execution requires a satisfied condition, and
+  completion or executed-displacement claims require evidence and validation.
+- Confirmed policy weights total `1.00`, the policy file is byte-unchanged,
+  local Markdown links resolve, and Git whitespace checks pass.
+
+### Compatibility and boundaries
+
+- `EXPECTED_SUPERSEDED_FIXTURE_BREAK`: the untouched
+  `goal-hackathon.json` scaffold does not validate against the corrected Goal
+  contract and requires the authorized Phase 0C2 Git-aware migration to
+  `public-goals.json`.
+- `EXPECTED_SUPERSEDED_FIXTURE_BREAK`: the untouched privacy-manifest scaffold
+  requires an authorized Phase 0C2 field-level, per-surface migration.
+- No fixture payload, application code, test framework, API call, UI, runtime,
+  Phase 1 implementation, or external handoff artifact was created or changed.
+
+### Unresolved risks and next step
+
+- Fixture-specific quantities, identities, ranks, exact relationships, and the
+  T0 → T1 oracle still require Phase 0C2 fixture construction and validation.
+- Cross-artifact replay and no-silent-disappearance checks remain deterministic
+  Phase 1 validators after the approved fixture exists.
+- Next smallest executable step: after review, commit, merge, and explicit
+  authorization, perform the Git-aware `goal-hackathon.json` →
+  `public-goals.json` migration and construct only the approved Phase 0C2
+  sanitized fixture and human oracle.

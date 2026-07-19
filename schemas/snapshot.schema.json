@@ -2,19 +2,40 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:snapshot:1.0.0",
   "title": "Snapshot",
-  "description": "An immutable capture of known state linked to its predecessor.",
+  "description": "An immutable capture of known state with explicit predecessor, temporal role, active and excluded membership, capacity uncertainty, and privacy review state.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
     "ontology_version": {"type": "string"},
-    "snapshot_id": {"type": "string"},
+    "snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "snapshot_version": {"type": "integer", "minimum": 1},
+    "is_initial": {"type": "boolean"},
+    "temporal_role": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/snapshot_temporal_role"},
     "captured_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
-    "previous_snapshot_id": {"type": ["string", "null"]},
+    "previous_snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
     "source_event_refs": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
+    },
+    "active_object_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"}
+    },
+    "excluded_but_retained_objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_ref": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"},
+          "exclusion_reason": {"type": "string"},
+          "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+          "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"}
+        },
+        "required": ["object_ref", "exclusion_reason", "evidence_refs", "uncertainty"],
+        "additionalProperties": false
+      }
     },
     "goals": {
       "type": "array",
@@ -44,19 +65,27 @@
       "type": "array",
       "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
     },
-    "attention_ranking_id": {"type": ["string", "null"]},
+    "attention_ranking_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
+    "graph_delta_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
     "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
-    "diff_ref": {"type": ["string", "null"]},
-    "state_digest": {"type": ["string", "null"]}
+    "capacity_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/capacity_state"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/review_state"},
+    "state_digest": {"type": "string", "minLength": 1}
   },
   "required": [
     "schema_version",
     "ontology_version",
     "snapshot_id",
     "snapshot_version",
+    "is_initial",
+    "temporal_role",
     "captured_at",
     "previous_snapshot_id",
     "source_event_refs",
+    "active_object_refs",
+    "excluded_but_retained_objects",
     "goals",
     "commitments",
     "constraints",
@@ -65,9 +94,24 @@
     "artifact_refs",
     "relationships",
     "attention_ranking_id",
+    "graph_delta_id",
     "evidence_refs",
-    "diff_ref",
+    "capacity_state",
+    "privacy_classification",
+    "privacy_review_state",
+    "review_state",
     "state_digest"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"is_initial": {"const": true}}, "required": ["is_initial"]},
+      "then": {"properties": {"previous_snapshot_id": {"type": "null"}}},
+      "else": {
+        "properties": {
+          "previous_snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"}
+        }
+      }
+    }
   ],
   "additionalProperties": false
 }

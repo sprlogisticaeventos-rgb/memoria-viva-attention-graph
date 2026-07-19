@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:expected-attention-ranking:1.0.0",
+  "title": "ExpectedAttentionRanking",
+  "description": "A human-authored ordinal test oracle. It contains no computed production score or component contribution fields.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "contract_kind": {"type": "string", "const": "HUMAN_ORDINAL_TEST_ORACLE"},
+    "ontology_version": {"type": "string"},
+    "oracle_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "snapshot_role": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/snapshot_temporal_role"},
+    "expected_ordered_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "expected_rank": {"type": "integer", "minimum": 1},
+          "stable_attention_item_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+          "ordinal_invariants": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+          "expected_score_direction": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/ordinal_expectation_direction"},
+          "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+          "expected_protected_references": {
+            "type": "array",
+            "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+            "uniqueItems": true
+          },
+          "expected_displaced_references": {
+            "type": "array",
+            "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+            "uniqueItems": true
+          },
+          "expected_uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+          "expected_approval_requirement": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/approval_state"},
+          "approval_authority": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_authority_scope"},
+          "explanation": {"type": "string"}
+        },
+        "required": [
+          "expected_rank",
+          "stable_attention_item_reference",
+          "ordinal_invariants",
+          "expected_score_direction",
+          "evidence_refs",
+          "expected_protected_references",
+          "expected_displaced_references",
+          "expected_uncertainty",
+          "expected_approval_requirement",
+          "approval_authority",
+          "explanation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ordinal_invariants": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "human_authored_provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"},
+    "approval_artifact_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "created_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+  },
+  "required": [
+    "schema_version",
+    "contract_kind",
+    "ontology_version",
+    "oracle_id",
+    "snapshot_role",
+    "expected_ordered_items",
+    "ordinal_invariants",
+    "human_authored_provenance",
+    "approval_artifact_reference",
+    "privacy_classification",
+    "privacy_review_state",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:public-goal-set:1.0.0",
+  "title": "PublicGoalSet",
+  "description": "A versioned collection of public Goals plus neutral controlled-demo omission records. Fixture-specific Goal IDs and counts are enforced outside this generic schema.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "ontology_version": {"type": "string"},
+    "public_goal_set_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "model_version": {"type": "string"},
+    "goals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:goal:1.0.0"}
+    },
+    "controlled_demo_omissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "omission_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+          "goal_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+          "controlled_demo_visibility": {"type": "string", "const": "OMITTED_FROM_CONTROLLED_DEMO"},
+          "operational_lifecycle_effect": {"type": "string", "const": "NONE"},
+          "reason": {"type": "string"},
+          "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+          "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"}
+        },
+        "required": [
+          "omission_id",
+          "goal_reference",
+          "controlled_demo_visibility",
+          "operational_lifecycle_effect",
+          "reason",
+          "evidence_refs",
+          "uncertainty"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "approval_provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"},
+    "approval_artifact_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "created_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+  },
+  "required": [
+    "schema_version",
+    "ontology_version",
+    "public_goal_set_id",
+    "model_version",
+    "goals",
+    "controlled_demo_omissions",
+    "approval_provenance",
+    "approval_artifact_reference",
+    "privacy_classification",
+    "privacy_review_state",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

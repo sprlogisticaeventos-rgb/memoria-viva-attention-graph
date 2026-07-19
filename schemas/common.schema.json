@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:common:1.0.0",
   "title": "Memoria Viva Phase 0 shared definitions",
-  "description": "Canonical reusable value objects. This file does not define a standalone domain entity.",
+  "description": "Canonical reusable value objects for the bounded Phase 0 contracts. This file does not define a standalone domain entity.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {},
@@ -11,11 +11,27 @@
   "$defs": {
     "timestamp": {
       "type": "string",
+      "format": "date-time",
+      "pattern": "Z$",
       "description": "RFC 3339 UTC timestamp with a Z suffix."
     },
     "nullable_timestamp": {
-      "type": ["string", "null"],
-      "description": "RFC 3339 UTC timestamp with a Z suffix, or null when unknown or not applicable."
+      "anyOf": [
+        {"$ref": "#/$defs/timestamp"},
+        {"type": "null"}
+      ],
+      "description": "UTC timestamp, or null when the value is explicitly unknown or not applicable."
+    },
+    "repository_safe_reference": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+      "description": "Synthetic or artifact-level reference that cannot encode a URL, filesystem path, email address, account identifier, or reversible raw locator."
+    },
+    "nullable_repository_safe_reference": {
+      "anyOf": [
+        {"$ref": "#/$defs/repository_safe_reference"},
+        {"type": "null"}
+      ]
     },
     "epistemic_state": {
       "type": "string",
@@ -28,29 +44,184 @@
     },
     "evidence_refs": {
       "type": "array",
-      "items": {
-        "type": "string"
-      },
+      "items": {"$ref": "#/$defs/repository_safe_reference"},
+      "uniqueItems": true
+    },
+    "nonempty_evidence_refs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/repository_safe_reference"},
+      "minItems": 1,
       "uniqueItems": true
     },
     "string_list": {
       "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "uncertainty": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true,
+      "description": "Explicit unknowns or qualifications. An empty array means no known uncertainty was recorded, never that missing data equals zero."
     },
     "permissions": {
       "type": "object",
       "properties": {
         "read": {"type": "boolean"},
         "write": {"type": "boolean"},
-        "scope": {
-          "type": "array",
-          "items": {"type": "string"}
-        }
+        "scope": {"$ref": "#/$defs/string_list"}
       },
       "required": ["read", "write", "scope"],
       "additionalProperties": false
+    },
+    "controlled_demo_visibility": {
+      "type": "string",
+      "enum": ["INCLUDED", "OMITTED_FROM_CONTROLLED_DEMO", "NOT_APPLICABLE", "UNKNOWN"]
+    },
+    "event_role": {
+      "type": "string",
+      "enum": ["TRIGGER", "FOLLOW_UP", "CONTEXT_EVENT"]
+    },
+    "authority_scope": {
+      "type": "string",
+      "enum": [
+        "COMMUNICATION_EVIDENCE_ONLY",
+        "OFFICIAL_RULE",
+        "EXPLICIT_HUMAN_DECISION",
+        "FOUNDER",
+        "JOINT",
+        "EXTERNAL_AUTHORITY",
+        "POLICY",
+        "SYSTEM",
+        "INTERNAL_INTERPRETATION",
+        "OTHER",
+        "UNKNOWN"
+      ]
+    },
+    "nullable_authority_scope": {
+      "anyOf": [
+        {"$ref": "#/$defs/authority_scope"},
+        {"type": "null"}
+      ]
+    },
+    "derivation_type": {
+      "type": "string",
+      "enum": [
+        "DIRECT_DERIVATION",
+        "AGGREGATED_DERIVATION",
+        "TRIGGER_CREATED",
+        "CONTEXT_SUPPORTED",
+        "NO_DIRECT_CALENDAR_SOURCE"
+      ]
+    },
+    "mobility_state": {
+      "type": "string",
+      "enum": ["PROTECTED", "FLEXIBLE", "DISPLACEABLE", "NEEDS_CONFIRMATION", "CANCELABLE", "UNKNOWN"]
+    },
+    "nullable_mobility_state": {
+      "anyOf": [
+        {"$ref": "#/$defs/mobility_state"},
+        {"type": "null"}
+      ]
+    },
+    "protection_state": {
+      "type": "string",
+      "enum": ["PROTECTED", "NOT_PROTECTED", "NEEDS_CONFIRMATION", "UNKNOWN"]
+    },
+    "nullable_protection_state": {
+      "anyOf": [
+        {"$ref": "#/$defs/protection_state"},
+        {"type": "null"}
+      ]
+    },
+    "eligibility_state": {
+      "type": "string",
+      "enum": ["ELIGIBLE", "INELIGIBLE", "NEEDS_CONFIRMATION", "UNKNOWN"]
+    },
+    "nullable_eligibility_state": {
+      "anyOf": [
+        {"$ref": "#/$defs/eligibility_state"},
+        {"type": "null"}
+      ]
+    },
+    "conditionality": {
+      "type": "string",
+      "enum": ["UNCONDITIONAL", "CONDITIONAL", "NOT_APPLICABLE", "UNKNOWN"]
+    },
+    "condition_state": {
+      "type": "string",
+      "enum": ["NOT_EVALUATED", "PENDING", "SATISFIED", "NOT_SATISFIED", "NOT_APPLICABLE", "UNKNOWN"]
+    },
+    "execution_state": {
+      "type": "string",
+      "enum": ["NOT_EXECUTED", "PLANNED", "AUTHORIZED", "EXECUTED", "BLOCKED", "UNKNOWN"]
+    },
+    "privacy_classification": {
+      "type": "string",
+      "enum": ["PUBLIC_SAFE", "SANITIZED_PRIVATE", "PRIVATE_PROHIBITED", "UNKNOWN"]
+    },
+    "privacy_review_state": {
+      "type": "string",
+      "enum": ["NOT_REVIEWED", "IN_REVIEW", "APPROVED_WITH_TRANSFORMATIONS", "APPROVED", "BLOCKED"]
+    },
+    "review_state": {
+      "type": "string",
+      "enum": ["NOT_REVIEWED", "IN_REVIEW", "APPROVED", "BLOCKED"]
+    },
+    "publication_surface": {
+      "type": "string",
+      "enum": ["PUBLIC_FIXTURE", "REPOSITORY_DOCS", "DEMO_UI", "DEMO_VIDEO", "DEVPOST_SUBMISSION"]
+    },
+    "residual_aggregation_risk": {
+      "type": "string",
+      "enum": ["LOW", "LOW_MEDIUM", "MEDIUM", "HIGH", "UNKNOWN"]
+    },
+    "graph_delta_category": {
+      "type": "string",
+      "enum": ["ADDED", "UPDATED", "CONFLICTED", "DISPLACED", "PROTECTED", "REQUIRES_CONFIRMATION", "UNCHANGED"]
+    },
+    "relationship_creator_type": {
+      "type": "string",
+      "enum": ["HUMAN_DECISION", "HUMAN_EXPECTATION", "DETERMINISTIC_RULE", "MODEL_INFERENCE", "SOURCE_NORMALIZATION"]
+    },
+    "relationship_explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_state": {
+      "type": "string",
+      "enum": ["NOT_REQUIRED", "NOT_REVIEWED", "PENDING", "APPROVED", "REJECTED", "BLOCKED", "UNKNOWN"]
+    },
+    "ordinal_expectation_direction": {
+      "type": "string",
+      "enum": ["INCREASE", "DECREASE", "UNCHANGED", "NEW_ENTRY", "REMOVED"]
+    },
+    "snapshot_temporal_role": {
+      "type": "string",
+      "enum": ["INITIAL", "T0", "T1", "INTERMEDIATE"]
+    },
+    "transformation_action": {
+      "type": "string",
+      "enum": ["KEEP", "GENERALIZE", "PSEUDONYMIZE", "REMOVE", "SHIFT_DATE", "SYNTHESIZE"]
+    },
+    "source_class": {
+      "type": "string",
+      "enum": ["COMMUNICATION", "CALENDAR", "DOCUMENT", "REPOSITORY", "RULE", "EXPLICIT_HUMAN_INPUT", "SYNTHETIC", "OTHER"]
+    },
+    "public_evidence_category": {
+      "type": "string",
+      "enum": [
+        "EVENT_TRIGGER_EMAIL",
+        "REGISTRATION_CONFIRMATION_EMAIL",
+        "SUBMISSION_DRAFT_EVIDENCE",
+        "DEADLINE_REMINDER_EMAIL",
+        "CALENDAR_T0_PUBLIC_CANDIDATE",
+        "GOAL_MODEL_PUBLIC_COMPRESSION",
+        "FOUNDER_GOAL_APPROVAL",
+        "FOUNDER_COMMITMENT_APPROVAL",
+        "HUMAN_EXPECTATION",
+        "OTHER_APPROVED_PUBLIC_SAFE"
+      ]
     },
     "entity_ref": {
       "type": "object",
@@ -62,46 +233,106 @@
             "SourceEvent",
             "Evidence",
             "Goal",
+            "PublicGoalSet",
             "Constraint",
+            "CalendarCandidate",
             "Commitment",
             "Snapshot",
             "AttentionItem",
             "AttentionRanking",
+            "ExpectedAttentionRanking",
             "Relationship",
             "GraphDelta",
             "RunRecord",
+            "PrivacyManifest",
             "Decision",
             "Blocker",
             "Artifact"
           ]
         },
-        "entity_id": {"type": "string"},
+        "entity_id": {"$ref": "#/$defs/repository_safe_reference"},
         "entity_version": {"type": ["integer", "null"], "minimum": 1},
         "label": {"type": ["string", "null"]}
       },
       "required": ["entity_type", "entity_id", "entity_version", "label"],
       "additionalProperties": false
     },
+    "nullable_entity_ref": {
+      "anyOf": [
+        {"$ref": "#/$defs/entity_ref"},
+        {"type": "null"}
+      ]
+    },
     "lightweight_reference": {
       "type": "object",
       "description": "Reference only; it does not define lifecycle state for a deferred entity.",
       "properties": {
-        "reference_type": {
-          "type": "string",
-          "enum": ["Decision", "Blocker", "Artifact"]
-        },
-        "reference_id": {"type": "string"},
+        "reference_type": {"type": "string", "enum": ["Decision", "Blocker", "Artifact"]},
+        "reference_id": {"$ref": "#/$defs/repository_safe_reference"},
         "reference_version": {"type": ["integer", "null"], "minimum": 1},
-        "label": {"type": ["string", "null"]
-        }
+        "label": {"type": ["string", "null"]}
       },
       "required": ["reference_type", "reference_id", "reference_version", "label"],
+      "additionalProperties": false
+    },
+    "public_safe_provenance": {
+      "type": "object",
+      "properties": {
+        "provenance_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "source_class": {"$ref": "#/$defs/source_class"},
+        "evidence_category": {"$ref": "#/$defs/public_evidence_category"},
+        "artifact_reference": {"$ref": "#/$defs/repository_safe_reference"},
+        "authority_scope": {"$ref": "#/$defs/authority_scope"},
+        "source_derived": {"type": "boolean"},
+        "transformation_action": {"$ref": "#/$defs/transformation_action"},
+        "reversible": {"type": "boolean", "const": false}
+      },
+      "required": [
+        "provenance_id",
+        "source_class",
+        "evidence_category",
+        "artifact_reference",
+        "authority_scope",
+        "source_derived",
+        "transformation_action",
+        "reversible"
+      ],
+      "additionalProperties": false
+    },
+    "lineage_mapping": {
+      "type": "object",
+      "properties": {
+        "mapping_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "operational_object_ref": {"$ref": "#/$defs/entity_ref"},
+        "source_candidate_refs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/repository_safe_reference"},
+          "uniqueItems": true
+        },
+        "derivation_type": {"$ref": "#/$defs/derivation_type"},
+        "identity_basis": {"type": "string", "const": "EXPLICIT_MAPPING"},
+        "title_similarity_only": {"type": "boolean", "const": false},
+        "confidence": {"$ref": "#/$defs/confidence_score"},
+        "uncertainty": {"$ref": "#/$defs/uncertainty"},
+        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"}
+      },
+      "required": [
+        "mapping_id",
+        "operational_object_ref",
+        "source_candidate_refs",
+        "derivation_type",
+        "identity_basis",
+        "title_similarity_only",
+        "confidence",
+        "uncertainty",
+        "evidence_refs"
+      ],
       "additionalProperties": false
     },
     "relationship": {
       "type": "object",
       "properties": {
-        "relationship_id": {"type": "string"},
+        "relationship_id": {"$ref": "#/$defs/repository_safe_reference"},
         "relationship_type": {
           "type": "string",
           "enum": [
@@ -117,7 +348,6 @@
             "constrained_by",
             "verified_by",
             "produced_by",
-            "attempts_to_resolve",
             "changes_between"
           ]
         },
@@ -125,15 +355,14 @@
         "to_ref": {"$ref": "#/$defs/entity_ref"},
         "epistemic_state": {"$ref": "#/$defs/epistemic_state"},
         "confidence": {"$ref": "#/$defs/confidence_score"},
-        "evidence_refs": {"$ref": "#/$defs/evidence_refs"},
-        "created_by": {"type": "string"},
+        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"},
+        "created_by": {"$ref": "#/$defs/repository_safe_reference"},
+        "creator_type": {"$ref": "#/$defs/relationship_creator_type"},
+        "explanation": {"$ref": "#/$defs/relationship_explanation"},
         "created_at": {"$ref": "#/$defs/timestamp"},
         "ontology_version": {"type": "string"},
-        "status": {
-          "type": "string",
-          "enum": ["active", "superseded", "removed"]
-        },
-        "supersedes_relationship_id": {"type": ["string", "null"]}
+        "status": {"type": "string", "enum": ["active", "superseded", "deactivated"]},
+        "supersedes_relationship_id": {"$ref": "#/$defs/nullable_repository_safe_reference"}
       },
       "required": [
         "relationship_id",
@@ -144,10 +373,25 @@
         "confidence",
         "evidence_refs",
         "created_by",
+        "creator_type",
+        "explanation",
         "created_at",
         "ontology_version",
         "status",
         "supersedes_relationship_id"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {"status": {"enum": ["superseded", "deactivated"]}},
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "supersedes_relationship_id": {"$ref": "#/$defs/repository_safe_reference"}
+            }
+          }
+        }
       ],
       "additionalProperties": false
     },
@@ -155,61 +399,178 @@
       "type": "object",
       "properties": {
         "component_id": {
-          "type": "string",
-          "enum": [
-            "temporal_urgency",
-            "downstream_impact",
-            "strategic_alignment",
-            "conflict_or_displacement",
-            "event_novelty",
-            "evidence_confidence"
-          ]
+          "$ref": "urn:memoria-viva:attention-graph:schema:attention-policy:1.0.0#/properties/components/items/properties/component_id"
         },
         "normalized_value": {"type": "number", "minimum": 0, "maximum": 1},
         "weight": {"type": "number", "minimum": 0, "maximum": 1},
         "weighted_value": {"type": "number", "minimum": 0, "maximum": 1},
-        "explanation": {"type": "string"},
-        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+        "explanation": {"$ref": "#/$defs/relationship_explanation"},
+        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"}
+      },
+      "required": ["component_id", "normalized_value", "weight", "weighted_value", "explanation", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "state_value": {
+      "type": "object",
+      "properties": {
+        "state_id": {"$ref": "#/$defs/nullable_repository_safe_reference"},
+        "state_version": {"type": ["integer", "null"], "minimum": 1},
+        "state_digest": {"type": ["string", "null"]},
+        "state_label": {"type": ["string", "null"]}
+      },
+      "required": ["state_id", "state_version", "state_digest", "state_label"],
+      "additionalProperties": false
+    },
+    "graph_change": {
+      "type": "object",
+      "properties": {
+        "change_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "category": {"$ref": "#/$defs/graph_delta_category"},
+        "affected_kind": {"type": "string", "enum": ["OBJECT", "RELATIONSHIP"]},
+        "affected_ref": {"$ref": "#/$defs/nullable_entity_ref"},
+        "affected_relationship_id": {"$ref": "#/$defs/nullable_repository_safe_reference"},
+        "previous_state": {"$ref": "#/$defs/state_value"},
+        "expected_new_state": {"$ref": "#/$defs/state_value"},
+        "actual_execution_state": {"$ref": "#/$defs/execution_state"},
+        "conditionality": {"$ref": "#/$defs/conditionality"},
+        "condition_state": {"$ref": "#/$defs/condition_state"},
+        "condition": {"type": ["string", "null"]},
+        "reason": {"type": "string"},
+        "opportunity_cost": {"$ref": "#/$defs/string_list"},
+        "repair_requirement": {"type": ["string", "null"]},
+        "authority_scope": {"$ref": "#/$defs/authority_scope"},
+        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"},
+        "confidence": {"$ref": "#/$defs/confidence_score"},
+        "uncertainty": {"$ref": "#/$defs/uncertainty"},
+        "explanation": {"$ref": "#/$defs/relationship_explanation"},
+        "creator_type": {"$ref": "#/$defs/relationship_creator_type"},
+        "ontology_version": {"type": "string"},
+        "recorded_at": {"$ref": "#/$defs/timestamp"}
       },
       "required": [
-        "component_id",
-        "normalized_value",
-        "weight",
-        "weighted_value",
+        "change_id",
+        "category",
+        "affected_kind",
+        "affected_ref",
+        "affected_relationship_id",
+        "previous_state",
+        "expected_new_state",
+        "actual_execution_state",
+        "conditionality",
+        "condition_state",
+        "condition",
+        "reason",
+        "opportunity_cost",
+        "repair_requirement",
+        "authority_scope",
+        "evidence_refs",
+        "confidence",
+        "uncertainty",
         "explanation",
-        "evidence_refs"
+        "creator_type",
+        "ontology_version",
+        "recorded_at"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "conditionality": {"const": "CONDITIONAL"},
+              "actual_execution_state": {"const": "EXECUTED"}
+            },
+            "required": ["conditionality", "actual_execution_state"]
+          },
+          "then": {
+            "properties": {"condition_state": {"const": "SATISFIED"}}
+          }
+        }
       ],
       "additionalProperties": false
     },
-    "object_change": {
+    "capacity_state": {
       "type": "object",
       "properties": {
-        "object_ref": {"$ref": "#/$defs/entity_ref"},
-        "change_type": {
-          "type": "string",
-          "enum": ["added", "updated", "superseded"]
-        },
-        "changed_fields": {"$ref": "#/$defs/string_list"},
-        "before_digest": {"type": ["string", "null"]},
-        "after_digest": {"type": ["string", "null"]},
-        "explanation": {"type": "string"},
+        "availability": {"type": "string", "enum": ["UNKNOWN", "CONSTRAINED", "AVAILABLE", "UNAVAILABLE"]},
+        "epistemic_state": {"$ref": "#/$defs/epistemic_state"},
+        "calendar_absence_implies_availability": {"type": "boolean", "const": false},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"},
+        "uncertainty": {"$ref": "#/$defs/uncertainty"}
+      },
+      "required": ["availability", "epistemic_state", "calendar_absence_implies_availability", "evidence_refs", "uncertainty"],
+      "additionalProperties": false
+    },
+    "artifact_identity": {
+      "type": "object",
+      "properties": {
+        "artifact_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "artifact_version": {"type": ["string", "null"]},
+        "artifact_digest": {"type": ["string", "null"]}
+      },
+      "required": ["artifact_id", "artifact_version", "artifact_digest"],
+      "additionalProperties": false
+    },
+    "approval_record": {
+      "type": "object",
+      "properties": {
+        "approval_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "approval_state": {"$ref": "#/$defs/approval_state"},
+        "authority_scope": {"$ref": "#/$defs/authority_scope"},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"},
+        "recorded_at": {"$ref": "#/$defs/timestamp"}
+      },
+      "required": ["approval_id", "approval_state", "authority_scope", "evidence_refs", "recorded_at"],
+      "additionalProperties": false
+    },
+    "publication_approval": {
+      "type": "object",
+      "properties": {
+        "publication_surface": {"$ref": "#/$defs/publication_surface"},
+        "approval_state": {"$ref": "#/$defs/approval_state"},
         "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
       },
-      "required": [
-        "object_ref",
-        "change_type",
-        "changed_fields",
-        "before_digest",
-        "after_digest",
-        "explanation",
-        "evidence_refs"
+      "required": ["publication_surface", "approval_state", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "unresolved_question": {
+      "type": "object",
+      "properties": {
+        "question_id": {"$ref": "#/$defs/repository_safe_reference"},
+        "question": {"type": "string"},
+        "status": {"type": "string", "enum": ["OPEN", "BLOCKED", "RESOLVED"]},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
+      },
+      "required": ["question_id", "question", "status", "evidence_refs"],
+      "additionalProperties": false
+    },
+    "verification_claim": {
+      "type": "object",
+      "properties": {
+        "state": {"type": "string", "enum": ["NOT_CLAIMED", "EVIDENCED", "VERIFIED", "BLOCKED", "DISPUTED", "UNKNOWN"]},
+        "evidence_refs": {"$ref": "#/$defs/evidence_refs"},
+        "validation_refs": {"type": "array", "items": {"$ref": "#/$defs/repository_safe_reference"}, "uniqueItems": true},
+        "explanation": {"type": "string"}
+      },
+      "required": ["state", "evidence_refs", "validation_refs", "explanation"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {"state": {"enum": ["EVIDENCED", "VERIFIED"]}},
+            "required": ["state"]
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {"minItems": 1},
+              "validation_refs": {"minItems": 1}
+            }
+          }
+        }
       ],
       "additionalProperties": false
     },
     "run_observation": {
       "type": "object",
       "properties": {
-        "observation_id": {"type": "string"},
+        "observation_id": {"$ref": "#/$defs/repository_safe_reference"},
         "summary": {"type": "string"},
         "epistemic_state": {"$ref": "#/$defs/epistemic_state"},
         "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
@@ -220,16 +581,10 @@
     "run_recommendation": {
       "type": "object",
       "properties": {
-        "recommendation_id": {"type": "string"},
+        "recommendation_id": {"$ref": "#/$defs/repository_safe_reference"},
         "summary": {"type": "string"},
-        "status": {
-          "type": "string",
-          "enum": ["proposed", "accepted", "rejected", "deferred", "blocked"]
-        },
-        "attention_item_refs": {
-          "type": "array",
-          "items": {"type": "string"}
-        },
+        "status": {"type": "string", "enum": ["proposed", "accepted", "rejected", "deferred", "blocked"]},
+        "attention_item_refs": {"type": "array", "items": {"$ref": "#/$defs/repository_safe_reference"}, "uniqueItems": true},
         "decision_ref": {
           "anyOf": [
             {"$ref": "#/$defs/lightweight_reference"},
@@ -238,25 +593,15 @@
         },
         "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
       },
-      "required": [
-        "recommendation_id",
-        "summary",
-        "status",
-        "attention_item_refs",
-        "decision_ref",
-        "evidence_refs"
-      ],
+      "required": ["recommendation_id", "summary", "status", "attention_item_refs", "decision_ref", "evidence_refs"],
       "additionalProperties": false
     },
     "run_validation": {
       "type": "object",
       "properties": {
-        "validation_id": {"type": "string"},
+        "validation_id": {"$ref": "#/$defs/repository_safe_reference"},
         "criterion": {"type": "string"},
-        "status": {
-          "type": "string",
-          "enum": ["not_started", "passed", "failed", "blocked"]
-        },
+        "status": {"type": "string", "enum": ["not_started", "passed", "failed", "blocked"]},
         "details": {"type": ["string", "null"]},
         "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
       },
@@ -266,9 +611,9 @@
     "run_warning": {
       "type": "object",
       "properties": {
-        "warning_id": {"type": "string"},
+        "warning_id": {"$ref": "#/$defs/repository_safe_reference"},
         "severity": {"type": "string", "enum": ["info", "warning", "error"]},
-        "code": {"type": "string"},
+        "code": {"$ref": "#/$defs/repository_safe_reference"},
         "message": {"type": "string"},
         "evidence_refs": {"$ref": "#/$defs/evidence_refs"}
       },

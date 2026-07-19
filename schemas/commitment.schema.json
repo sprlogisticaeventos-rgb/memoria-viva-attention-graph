@@ -2,38 +2,64 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:commitment:1.0.0",
   "title": "Commitment",
-  "description": "A sourced obligation with timing, ownership, protection, and displacement state.",
+  "description": "A sourced obligation whose lifecycle, mobility, authority, eligibility, protection, conditionality, execution, repair, and lineage remain independent.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "commitment_id": {"type": "string"},
+    "commitment_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "commitment_version": {"type": "integer", "minimum": 1},
     "title": {"type": "string"},
     "description": {"type": "string"},
-    "owner_ref": {"type": ["string", "null"]},
+    "owner_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
     "scheduled_start": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
     "scheduled_end": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
-    "deadline": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
-    "status": {
+    "deadline_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "lifecycle_status": {
       "type": "string",
-      "enum": ["proposed", "active", "completed", "cancelled", "superseded", "blocked"]
+      "enum": ["PROPOSED", "ACTIVE", "UNRESOLVED", "UNRESOLVED_MISSED_CARRYOVER", "COMPLETED", "CANCELLED", "SUPERSEDED", "BLOCKED"]
     },
-    "protected_state": {
-      "type": "string",
-      "enum": ["protected", "flexible", "unprotected", "unknown"]
+    "mobility_policy": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/mobility_state"},
+    "authority_mode": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/authority_scope"},
+    "eligibility_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/eligibility_state"},
+    "protection_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/protection_state"},
+    "conditionality": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/conditionality"},
+    "condition": {"type": ["string", "null"]},
+    "condition_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/condition_state"},
+    "execution_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/execution_state"},
+    "displacement_cost": {
+      "type": "object",
+      "properties": {
+        "level": {"type": "string", "enum": ["NONE", "LOW", "MEDIUM", "MEDIUM_HIGH", "HIGH", "VERY_HIGH", "UNKNOWN"]},
+        "summary": {"type": ["string", "null"]}
+      },
+      "required": ["level", "summary"],
+      "additionalProperties": false
     },
-    "displacement_state": {
-      "type": "string",
-      "enum": ["none", "at_risk", "proposed", "displaced", "confirmed"]
+    "repair_requirement": {"type": ["string", "null"]},
+    "reactivation_condition": {"type": ["string", "null"]},
+    "supported_goal_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "lineage_mappings": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lineage_mapping"}
     },
     "displaced_by_refs": {
       "type": "array",
       "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"}
     },
+    "approval_requirement": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/approval_state"},
     "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
-    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
-    "supersedes_commitment_id": {"type": ["string", "null"]}
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"},
+    "supersedes_commitment_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"}
   },
   "required": [
     "schema_version",
@@ -41,17 +67,47 @@
     "commitment_version",
     "title",
     "description",
-    "owner_ref",
+    "owner_reference",
     "scheduled_start",
     "scheduled_end",
-    "deadline",
-    "status",
-    "protected_state",
-    "displacement_state",
+    "deadline_at",
+    "lifecycle_status",
+    "mobility_policy",
+    "authority_mode",
+    "eligibility_state",
+    "protection_state",
+    "conditionality",
+    "condition",
+    "condition_state",
+    "execution_state",
+    "displacement_cost",
+    "repair_requirement",
+    "reactivation_condition",
+    "supported_goal_refs",
+    "lineage_mappings",
     "displaced_by_refs",
+    "approval_requirement",
     "epistemic_state",
     "evidence_refs",
+    "uncertainty",
+    "privacy_classification",
+    "privacy_review_state",
+    "provenance",
     "supersedes_commitment_id"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "conditionality": {"const": "CONDITIONAL"},
+          "execution_state": {"const": "EXECUTED"}
+        },
+        "required": ["conditionality", "execution_state"]
+      },
+      "then": {
+        "properties": {"condition_state": {"const": "SATISFIED"}}
+      }
+    }
   ],
   "additionalProperties": false
 }
