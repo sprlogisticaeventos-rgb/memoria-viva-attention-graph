@@ -906,3 +906,54 @@ unrounded internal scores.
 - No schema, model, deterministic core semantic, ranking, evidence, validation,
   fixture, policy, GraphDelta, or UI behavior changed. No additional live API
   request was made during this correction.
+
+## MV-BUILD-015 — Public demo release validation
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/release-metadata` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Final release metadata — deployed demo validation |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Deployment and verified release surface
+
+- Public deployment URL:
+  <https://memoria-viva-attention-graph-kmhfgbtexurbgcqvhaht8v.streamlit.app/>
+- Deployment platform is Streamlit Community Cloud; deployment branch is
+  `main`.
+- `DEPLOYED_SMOKE: PASS` and `PUBLIC_APP_ACCESS: PASS`. Human verification in
+  incognito/no-login mode confirmed that the public app loads, all four tabs
+  render, deterministic replay works, and the GPT-5.6 Decision Brief works.
+- `LIVE_GPT_5_6_SMOKE: PASS`. The deterministic-engine authority boundary and
+  exact ranking, score, execution-state, conditionality, evidence,
+  uncertainty, confirmation, and approval semantics remained intact.
+- Sanitized JSON download review is `PASS`. No secret, private path, raw private
+  evidence, or external source material was exposed.
+- The deployed ReplayResult digest remains
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- Release validation remains 200 passing tests, with CLI smoke, Streamlit local
+  smoke, deployed smoke, and all three oracle comparisons at `PASS`.
+
+### Publication authority and remaining gates
+
+- `PUBLIC_FIXTURE: APPROVED` only for the committed sanitized canonical fixture
+  and sanitized replay projection reviewed through the deployed UI and
+  downloadable JSON. This approval does not include raw private evidence or
+  external source material.
+- `DEMO_UI: APPROVED`.
+- `REPOSITORY_DOCS: PENDING_FINAL_REVIEW`.
+- `DEMO_VIDEO: PENDING`.
+- `DEVPOST_SUBMISSION: PENDING`.
+- `FINAL_COMPLIANCE: UNVERIFIED`.
+- GPT-5.6 remains an explanation layer over deterministic results. The feature
+  policy remains bounded-Replay only; communication evidence remains distinct
+  from official-rule authority; and no real Gmail or Calendar integration was
+  introduced.
+- This milestone changes release metadata only. No deterministic core, replay,
+  scoring, GraphDelta, schema, fixture, policy, Streamlit behavior, explainer
+  behavior, test, dependency, or generated output changed.
