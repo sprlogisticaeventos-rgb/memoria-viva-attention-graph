@@ -8,6 +8,26 @@ ranking, and an auditable replay receipt.
 
 Built during OpenAI Build Week 2026 for the **Work & Productivity** track.
 
+## Live Demo
+
+**[Run the public Memoria Viva demo](https://memoria-viva-attention-graph-kmhfgbtexurbgcqvhaht8v.streamlit.app/)**
+
+The deployed app is a public-safe synthetic replay of the reviewed canonical
+fixture. It requires no login and exposes no raw private evidence, secret,
+private path, or external source material.
+
+| Current validation | Status |
+|---|---|
+| Unit tests | `200 PASSING` |
+| CLI smoke | `PASS` |
+| Streamlit local smoke | `PASS` |
+| Deployed smoke | `PASS` |
+| Public app access | `PASS` |
+| Live GPT-5.6 smoke | `PASS` |
+| Ranking-before oracle | `PASS` |
+| Ranking-after oracle | `PASS` |
+| GraphDelta oracle | `PASS` |
+
 ## 1. Product statement
 
 Memoria Viva answers four practical questions:
@@ -17,9 +37,9 @@ Memoria Viva answers four practical questions:
 3. What must remain protected?
 4. What still requires evidence or human approval?
 
-The deterministic engine—not a language model—constructs state, scores,
-rankings, GraphDelta, and claims. GPT-5.6 is an optional explanation layer over
-those completed outputs.
+The deterministic engine—not a language model—constructs state transitions,
+scores, rankings, GraphDelta, and claims. GPT-5.6 explains those completed
+results; it does not determine or modify them.
 
 ## 2. The founder problem
 
@@ -49,8 +69,9 @@ The replay:
 - produces an immutable RunRecord and ReplayResult digest;
 - passes all three oracle comparisons.
 
-No screenshot or deployed-demo URL is committed yet. Deployment and every
-public surface remain pending separate human approval.
+The same replay is deployed through Streamlit Community Cloud from `main`. Its
+public access, deterministic replay, optional GPT-5.6 brief, four-tab render,
+and sanitized JSON download have passed human smoke review.
 
 ## 4. Quick start
 
@@ -172,12 +193,17 @@ evidence is not official-rule authority.
 - No raw provider IDs, private paths, URLs, accounts, or reversible mappings
   enter the demo.
 - Residual aggregation risk remains `LOW_MEDIUM`.
-- Generated replay output is not publication-reviewed.
-- `PUBLIC_FIXTURE`, `REPOSITORY_DOCS`, `DEMO_UI`, `DEMO_VIDEO`, and
-  `DEVPOST_SUBMISSION` remain `PENDING`.
+- `PUBLIC_FIXTURE` is `APPROVED` only for the committed sanitized canonical
+  fixture and sanitized replay projection reviewed through the deployed UI and
+  downloadable JSON. This does not authorize raw private evidence or external
+  source material.
+- `DEMO_UI` is `APPROVED`; `PUBLIC_APP_ACCESS` and `DEPLOYED_SMOKE` are `PASS`.
+- `REPOSITORY_DOCS` is `PENDING_FINAL_REVIEW`.
+- `DEMO_VIDEO` and `DEVPOST_SUBMISSION` remain `PENDING`.
+- `FINAL_COMPLIANCE` remains `UNVERIFIED`.
 
-Private-repository approval does not authorize public release. See
-[`docs/privacy.md`](docs/privacy.md) and the fixture privacy manifest.
+Approval is surface-specific and does not extend beyond the statuses above.
+See [`docs/privacy.md`](docs/privacy.md) and the fixture privacy manifest.
 
 ## 12. Test suite
 
@@ -191,7 +217,7 @@ Snapshots, transition semantics, scoring, oracle isolation, GraphDelta,
 RunRecord, replay determinism, CLI export controls, public-safe presentation,
 mocked strict GPT output, safe fallback behavior, and Streamlit rendering. No
 automated test makes a paid API request. The Phase 2 validation baseline is
-**197 passing tests**.
+**200 passing tests**.
 
 ## 13. Codex collaboration
 
@@ -221,8 +247,9 @@ streamlit_app.py              one-page judge demo
 ## 15. Known limits
 
 - One sanitized fixture scenario only.
-- Replay and feature policies are bounded-Replay controls, not production-active
-  policy claims; the base policy remains `draft` with `effective_at: null`.
+- The feature policy remains approved only for bounded Replay Mode; it is not a
+  production-active policy claim. The base policy remains `draft` with
+  `effective_at: null`.
 - GPT-5.6 explains completed deterministic output but is not required for replay.
 - No real Gmail, Calendar, database, authentication, agents, scheduler, or
   external writes.
@@ -231,7 +258,18 @@ streamlit_app.py              one-page judge demo
 
 ## 16. Deployment instructions
 
-The repository is prepared for Streamlit Community Cloud but is not deployed.
+The public demo is deployed on Streamlit Community Cloud from `main`:
+
+<https://memoria-viva-attention-graph-kmhfgbtexurbgcqvhaht8v.streamlit.app/>
+
+Current deployment validation:
+
+- `DEMO_UI: APPROVED`
+- `PUBLIC_APP_ACCESS: PASS`
+- `DEPLOYED_SMOKE: PASS`
+- `LIVE_GPT_5_6_SMOKE: PASS`
+
+For a future deployment update:
 
 1. Select this repository and the approved deployment branch.
 2. Use `streamlit_app.py` as the entrypoint.
@@ -240,18 +278,21 @@ The repository is prepared for Streamlit Community Cloud but is not deployed.
 5. Add `OPENAI_API_KEY` and optional `OPENAI_MODEL` as server-side secrets.
 6. Verify the deterministic initial render before testing the optional GPT
    button.
-7. Complete a separate privacy and public-surface review before publication.
+7. Preserve the existing surface-specific privacy and publication gates.
 
 Paths are repository-relative and Linux-compatible. No Mac-specific behavior or
 local absolute path is required.
 
 ## 17. Hackathon status
 
-The executable replay core is complete and its three oracle comparisons pass.
-The judge-facing local CLI and Streamlit experience are under review. A live
-GPT-5.6 smoke test, deployment, video, Devpost entry, repository-access review,
-licensing review, privacy review, and final submission verification remain
-pending.
+The executable replay core and all three oracle comparisons pass. The public
+Streamlit deployment, no-login access, deterministic replay, GPT-5.6 brief, and
+sanitized JSON download have passed human smoke review. `PUBLIC_FIXTURE` and
+`DEMO_UI` are approved within their bounded sanitized scopes.
+
+`REPOSITORY_DOCS` remains `PENDING_FINAL_REVIEW`; `DEMO_VIDEO` and
+`DEVPOST_SUBMISSION` remain `PENDING`; and `FINAL_COMPLIANCE` remains
+`UNVERIFIED`.
 
 Official hackathon sources have been captured as evidence. Compliance remains
 unverified pending final implementation artifacts, current-source recheck, and
