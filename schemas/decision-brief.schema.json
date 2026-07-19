@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:decision-brief:1.0.0",
+  "title": "DecisionBrief",
+  "description": "A strict human-readable explanation of an already-computed deterministic replay. It cannot modify core outputs or claims.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "brief_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "headline": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 180
+    },
+    "executive_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1400
+    },
+    "what_changed": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "what_to_protect": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "what_to_review_or_move": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "what_requires_confirmation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "next_smallest_action": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "uncertainties": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+      },
+      "uniqueItems": true
+    },
+    "deterministic_authority_statement": {
+      "type": "string",
+      "const": "The deterministic engine produced the state transition, scores, rankings, GraphDelta, and claims. GPT-5.6 generated only this human-readable explanation."
+    }
+  },
+  "required": [
+    "brief_version",
+    "model",
+    "replay_digest",
+    "headline",
+    "executive_summary",
+    "what_changed",
+    "what_to_protect",
+    "what_to_review_or_move",
+    "what_requires_confirmation",
+    "next_smallest_action",
+    "uncertainties",
+    "evidence_refs",
+    "deterministic_authority_statement"
+  ],
+  "additionalProperties": false
+}
