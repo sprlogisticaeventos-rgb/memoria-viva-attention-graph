@@ -27,7 +27,7 @@ SNAPSHOT_IDENTITY_CONTRACT = "MV_SNAPSHOT_IDENTITY_V1"
 
 @dataclass(frozen=True)
 class SnapshotT0:
-    """Immutable public representation of the initial controlled Snapshot."""
+    """Immutable public representation shared by controlled Snapshots."""
 
     schema_version: str
     ontology_version: str
@@ -68,6 +68,11 @@ class SnapshotT0:
         """Return canonical bytes without exposing mutable internal values."""
 
         return canonical_json_bytes(self)
+
+
+# Backward-compatible generic name used by post-T0 transition code. The
+# underlying frozen representation remains exactly the Phase 1B contract.
+Snapshot = SnapshotT0
 
 
 def runtime_input_bundle_projection(runtime_bundle: RuntimeBundle) -> dict[str, Any]:
@@ -193,15 +198,44 @@ def build_snapshot_t0(runtime_bundle: RuntimeBundle) -> SnapshotT0:
         "privacy_review_state": "NOT_REVIEWED",
         "review_state": "NOT_REVIEWED",
     }
-    state = to_plain_json_value(state)
-    state["state_digest"] = sha256_digest(snapshot_state_projection(state))
+    return finalize_snapshot(state, instance_path="generated/snapshot-t0")
+
+
+def finalize_snapshot(
+    state: Mapping[str, Any],
+    *,
+    instance_path: str,
+) -> Snapshot:
+    """Digest, validate, and recursively freeze one complete Snapshot state."""
+
+    plain = to_plain_json_value(state)
+    if not isinstance(plain, dict):
+        raise TypeError("Snapshot state must be a JSON object")
+    if "state_digest" in plain:
+        raise ValueError("Snapshot finalization requires an undigested state")
+    plain["state_digest"] = sha256_digest(snapshot_state_projection(plain))
+    validate_snapshot_instance(
+        plain,
+        instance_path=instance_path,
+        object_id=plain.get("snapshot_id"),
+    )
+    return _snapshot_from_plain(plain)
+
+
+def validate_snapshot_instance(
+    instance: Snapshot | Mapping[str, Any],
+    *,
+    instance_path: str,
+    object_id: str | None = None,
+) -> None:
+    """Validate a Snapshot through the closed canonical schema registry."""
+
     _contract_registry().validate(
         SNAPSHOT_SCHEMA_ID,
-        state,
-        instance_path="generated/snapshot-t0",
-        object_id=snapshot_id,
+        to_plain_json_value(instance),
+        instance_path=instance_path,
+        object_id=object_id,
     )
-    return _snapshot_from_plain(state)
 
 
 def _snapshot_identity(scenario_id: str, runtime_digest: str) -> str:
