@@ -190,3 +190,122 @@ decisions. A later decision must name the record it supersedes.
 - **Authorization boundary:** This ADR-only step authorizes no schema, blueprint,
   ontology, fixture, policy, README, test, application, or other repository
   change. Those changes require a later explicit instruction.
+
+## MV-ADR-010 — Bounded replay attention extraction and ranking policy
+
+- **Status:** ACCEPTED
+- **Date:** 2026-07-19
+- **Context:** The versioned base attention policy owns six fixed weights and
+  score guardrails but intentionally does not define how runtime state becomes
+  normalized component values. Phase 1D requires deterministic extraction,
+  scoring, ranking, and independent comparison with the human ordinal oracle
+  without using expectations as production inputs.
+- **Decision — authorization:** `config/attention-policy.v1.json` remains
+  `draft` with `effective_at: null`. It is authorized only for
+  `BOUNDED_REPLAY_MODE`; this decision makes no production-active policy claim.
+  Every computed item and ranking must preserve that warning.
+- **Decision — feature authority:**
+  `config/attention-feature-policy.v1.json`, validated by its canonical schema,
+  is the single versioned authority for deterministic feature extraction and
+  ranking guardrails. It references the base policy for weights and must not
+  duplicate them. Changes require a new version and human approval.
+- **Decision — temporal urgency:** First map an unresolved missed carryover or
+  unresolved item whose supporting interval ended before Snapshot time to
+  `1.00`. For remaining items, apply evidence precedence in this order: active
+  constrained deadline, explicit commitment due time, direct or aggregated
+  lineage Calendar windows, Calendar-only windows, and unresolved-carryover
+  lifecycle. Map deadline windows to `1.00`, `0.95`,
+  `0.80`, `0.60`, or `0.40`; a window crossing Snapshot time to `0.85`; and
+  future starts to `0.75`, `0.55`, `0.35`, or `0.20`. No defensible temporal
+  evidence remains `UNKNOWN`.
+- **Decision — downstream impact:** Read explicit displacement-cost or
+  opportunity-cost semantics only: `VERY_HIGH=1.00`, `HIGH=0.80`,
+  `MEDIUM_HIGH=0.65`, `MEDIUM=0.50`, `LOW=0.25`, and `NONE=0.00`. Missing or
+  ambiguous impact remains `UNKNOWN`; title and protection do not supply it.
+- **Decision — strategic alignment:** Trigger-created direct service to an
+  included active Goal is `1.00`; an operational commitment's explicit direct
+  support is `0.85`; Calendar-only direct support is `0.70`; indirect
+  context-supported alignment is `0.50`; and no supported relation is
+  `UNKNOWN`. GC-01, GC-02, and GC-03 receive no intrinsic importance ordering.
+- **Decision — conflict or displacement:** An item initiating an active
+  supported conflict or conditional displacement is `1.00`; an unresolved
+  target is `0.60`; incomplete movement authority is `0.40`; and no supported
+  condition is `0.00`. Coexistence is not conflict, and conditional movement
+  is not execution.
+- **Decision — event novelty:** A commitment created by the current trigger is
+  `1.00`; a pre-existing item materially updated by that trigger is `0.50`;
+  pre-existing unchanged state is `0.00`; and every T0 item is `0.00`.
+- **Decision — evidence confidence:** For every required evidence reference,
+  cap numeric confidence by epistemic state (`confirmed=1.00`,
+  `approximate=0.80`, `inferred=0.65`, `uncertain=0.40`, `blocked=UNKNOWN`),
+  then aggregate by minimum. Missing evidence is `UNKNOWN`; an unresolved
+  evidence reference is a validation failure.
+- **Decision — UNKNOWN:** `UNKNOWN` never becomes zero. Any required unknown
+  component prevents a production score, records a confirmation-required
+  blocked computation with the missing component and evidence gap, and blocks
+  oracle assertions that require that item.
+- **Decision — ranking guardrails:** `PROTECTED` adds no numeric value and
+  creates a precedence band before standard items. Within a band, dependency
+  prerequisites precede dependents, followed by unrounded score descending,
+  effective due time ascending with null last, and stable attention-item ID.
+  `NEEDS_CONFIRMATION` changes actionability and approval metadata only; it adds
+  no score and creates no protected band.
+- **Decision — arithmetic:** Use `Decimal`, retain unrounded normalized values
+  and contributions for ranking, and round only display score to two decimal
+  places with `ROUND_HALF_UP`. Calculation identity includes Snapshot digest,
+  base-policy digest, feature-policy digest, item identity, and normalized
+  components.
+- **Decision — oracle isolation:** Production extraction and scoring may receive
+  RuntimeBundle and immutable Snapshots only. Human ordinal files are read only
+  by the comparator after production rankings are final. Oracle rank,
+  direction, protected/displaced expectations, and uncertainty cannot become a
+  feature, target, calibration input, tie-break, fallback, or training signal.
+- **Alternatives:** Encode extraction thresholds in Python only; default missing
+  values to zero; add protection or confirmation bonuses; tune weights against
+  the oracle; or merge the oracle into RuntimeBundle. These were rejected as
+  unauditable, epistemically unsafe, or incompatible with MV-ADR-009.
+- **Consequences:** Replay results are deterministic, explainable, and policy
+  versioned. Some items may remain unscored until explicit runtime evidence is
+  added; oracle comparison must expose that blockage rather than auto-tune.
+  Base and feature policy digests become required calculation inputs.
+- **Deferred recalibration:** Production activation, threshold calibration,
+  alternative evidence aggregation, weight changes, feature-value changes,
+  and fixture evidence enrichment require separate human review and versioned
+  decisions after bounded Replay Mode evaluation.
+- **Supersession:** None.
+
+### Bounded-evaluation amendment — 2026-07-19
+
+- **Initial result preserved:** The uncommitted feature-policy `1.0.0`
+  candidate produced valid deterministic rankings but correctly returned a
+  `BLOCKED` oracle comparison. Four eligible Calendar-only attention items had
+  no explicit downstream-impact or opportunity-cost value, and the approved
+  UNKNOWN rule prohibited a numeric score.
+- **Calendar-only mobility fallback:** When and only when an eligible
+  Calendar-only item has no stronger explicit impact signal, its explicit
+  mobility maps as follows: `PROTECTED → HIGH/0.80`,
+  `NEEDS_CONFIRMATION → MEDIUM_HIGH/0.65`, `FLEXIBLE → LOW/0.25`,
+  `DISPLACEABLE → LOW/0.25`, and `CANCELABLE → NONE/0.00`. Missing or
+  unsupported mobility remains `UNKNOWN`. This fallback is neither a
+  protection bonus nor authority to score excluded or ineligible items.
+- **Conditional-displacement target:** Apply conflict/displacement rules in
+  ordered precedence. An initiator remains `1.00`. An explicitly DISPLACEABLE
+  target of conditional displacement whose execution is `UNKNOWN` or
+  `NOT_EXECUTED` receives `0.00`, meaning no additional numeric deferment-target
+  bonus while condition, evidence, opportunity cost, repair, authority, and
+  uncertainty remain visible. Other supported unresolved conflict targets
+  remain `0.60`; incomplete movement authority remains `0.40` absent a stronger
+  rule.
+- **Novelty materiality:** Trigger-created state remains `1.00`. A pre-existing
+  item receives `0.50` only when its own lifecycle, mobility, eligibility,
+  authority, protection, condition, execution, active-constraint membership,
+  or verified object status materially changes. Relationship-only,
+  explanatory, expected-conflict, or conditional-displacement changes remain
+  `0.00` when the object's own semantic state is unchanged.
+- **Version:** The corrected bounded-Replay feature policy is
+  `mv.attention-feature-policy@1.1.0`. The base policy and all six weights are
+  unchanged. No fixture or human oracle changed, no expected rank or direction
+  became a calculation input, and no production-activation claim is made.
+- **Continuing authority:** Future fallback mappings, materiality semantics,
+  component values, thresholds, evidence aggregation, or production activation
+  still require a new version and explicit human approval.

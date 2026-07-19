@@ -32,7 +32,7 @@ class SchemaRegistryTests(unittest.TestCase):
             )
         )
         self.assertEqual(self.registry.schema_ids, discovered)
-        self.assertEqual(len(self.registry.schema_ids), 16)
+        self.assertEqual(len(self.registry.schema_ids), 17)
 
     def test_stable_schema_ids_are_unique(self) -> None:
         self.assertEqual(

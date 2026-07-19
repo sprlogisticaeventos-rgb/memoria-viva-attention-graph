@@ -579,3 +579,164 @@ RunRecords, not in this file.
   authorization: define deterministic attention-component extraction from the
   immutable T0/T1 state while keeping ranking, GraphDelta, and persistence out
   of scope until separately authorized.
+
+## MV-BUILD-011 — Phase 1D bounded replay attention scoring
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1d-attention-scoring` |
+| Starting commit | `844c924` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1D — Versioned extraction, scoring, ranking, and ordinal comparison |
+| Status | `SCORING_ORACLE_MISMATCH` |
+| Commit | None |
+| Push | None |
+
+### Human policy decisions and versioned authority
+
+- Recorded MV-ADR-010 and added feature policy
+  `mv.attention-feature-policy@1.0.0`, digest
+  `sha256:5b33221baa9eab0093f96f981eaa64fd90e1d0d4278a0d83f6e6181a9c547990`.
+  Its schema-validated authority is limited to Replay Mode. The compatible
+  base attention policy remains `draft`, has null `effective_at`, and is not
+  claimed as production-active.
+- The feature policy owns the approved deterministic extraction rules for
+  temporal urgency, downstream impact, strategic alignment, conflict or
+  displacement, event novelty, and conservative evidence confidence. It
+  references rather than duplicates the six base-policy weights.
+- `UNKNOWN` is never coerced to zero. Protection and dependency are precedence
+  guardrails without numeric bonuses. Confirmation changes actionability and
+  approval metadata without creating a numeric bonus or protected band.
+- Production arithmetic uses `Decimal`, retains unrounded scores for ordering,
+  rounds display scores only with two-place `ROUND_HALF_UP`, and identifies
+  each calculation from Snapshot, base-policy, feature-policy, item, and
+  normalized-component semantics.
+
+### Computed rankings and isolated oracle result
+
+- T0 computed complete order is ATTN-CMT-03 (`0.660`), ATTN-CMT-05
+  (`0.6525`), and ATTN-CMT-04 (`0.600`). T1 computed complete order is
+  ATTN-CMT-01 (`0.840`), ATTN-CMT-02 (`0.870`), ATTN-CMT-04 (`0.740`),
+  ATTN-CMT-03 (`0.660`), and ATTN-CMT-05 (`0.6525`). Dependency precedence
+  correctly places CMT-01 before its higher-scored dependent CMT-02.
+- Four Calendar-only items have explicit Goal, temporal, conflict,
+  novelty, and evidence signals but no explicit downstream-impact or
+  opportunity-cost level. The approved rule therefore leaves
+  `downstream_impact` `UNKNOWN` and produces no numeric score or rank for
+  ATTN-CALENDAR-CMT-T0-01, -06, -09, or -10.
+- The independently loaded before oracle is `BLOCKED` first at expected rank 1
+  because ATTN-CALENDAR-CMT-T0-10 is unscored. The after oracle is `BLOCKED`
+  first at expected rank 3 for the same reason. No weight, extraction value,
+  guardrail, fixture, or human expectation was changed to force a match.
+- Production extraction and ranking import no OracleBundle, comparator module,
+  expectation filename, expected rank, or expected direction. Comparator
+  access begins only after both production rankings are complete.
+
+### Files, tests, and scope boundary
+
+- Added the feature-policy schema and configuration, production attention
+  module, isolated ordinal comparator, and focused scoring/comparator tests;
+  updated public package exports and the canonical schema-count assertion.
+- Ran 114 `unittest` cases, bytecode compilation, closed-schema registration,
+  and two independent scoring processes. Production components, raw
+  contributions, displayed scores, calculation digests, ranking identities,
+  order, and comparator outcomes were deterministic. No file was written under
+  `runs/`.
+- Implemented no GraphDelta output, RunRecord, persistence, replay CLI, model
+  call, API, UI, service, database, agent, integration, scheduling, or
+  deployment behavior.
+- Next smallest task requires a bounded human product decision: add an explicit
+  generic downstream-impact or opportunity-cost signal for Calendar-only
+  attention candidates, or define a separately versioned incomplete-item
+  ranking policy. Until then, the oracle mismatch must remain visible and this
+  Phase 1D set must not be staged for commit.
+
+## MV-BUILD-012 — Phase 1D bounded scoring policy resolution
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1d-attention-scoring` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1D — Targeted human policy resolution |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Human decision and policy version
+
+- Preserved MV-BUILD-011 as the truthful initial `SCORING_ORACLE_MISMATCH`.
+  The evaluated but uncommitted feature-policy `1.0.0` digest was
+  `sha256:5b33221baa9eab0093f96f981eaa64fd90e1d0d4278a0d83f6e6181a9c547990`.
+- Applied the founder-approved bounded-Replay amendment as
+  `mv.attention-feature-policy@1.1.0`, digest
+  `sha256:fd091478b350d8f66e3fa031a9efa179f2908bceba6061c20276f45fd27a8a72`.
+  The base policy remains byte-identical, draft, null-effective, and weighted
+  exactly as before; this is not a production-activation claim.
+- Eligible Calendar-only items without stronger explicit impact now use the
+  approved mobility fallback: `PROTECTED → HIGH/0.80`,
+  `NEEDS_CONFIRMATION → MEDIUM_HIGH/0.65`, `FLEXIBLE → LOW/0.25`,
+  `DISPLACEABLE → LOW/0.25`, and `CANCELABLE → NONE/0.00`. Unsupported
+  mobility remains `UNKNOWN`; operational commitments retain their explicit
+  cost semantics.
+- Ordered conflict extraction now assigns `0.00` to an explicitly
+  DISPLACEABLE conditional-displacement target while execution remains
+  UNKNOWN or not executed. This removes only a numeric deferment-target bonus;
+  relationship, condition, cost, repair, authority, evidence, and uncertainty
+  remain visible. Other supported unresolved conflict targets remain `0.60`.
+- Event novelty now reflects material changes to an object's own semantic
+  state. Trigger-created objects remain `1.00`; own-state material changes are
+  `0.50`; relationship-only or unchanged pre-existing state is `0.00`.
+
+### Computed component tables
+
+Component order is temporal urgency, downstream impact, strategic alignment,
+conflict/displacement, event novelty, and evidence confidence. Scores shown are
+unrounded internal scores.
+
+| T0 item | Components | Score | Band | Rank |
+|---|---|---:|---|---:|
+| ATTN-CALENDAR-CMT-T0-10 | `.35, .80, .70, .00, .00, .70` | .4575 | PROTECTED | 1 |
+| ATTN-CMT-03 | `1.00, .80, .85, .00, .00, .80` | .660 | STANDARD | 2 |
+| ATTN-CMT-05 | `.85, .65, .85, .40, .00, .80` | .6525 | STANDARD | 3 |
+| ATTN-CALENDAR-CMT-T0-01 | `.85, .65, .70, .40, .00, .80` | .6225 | STANDARD | 4 |
+| ATTN-CMT-04 | `1.00, .50, .85, .00, .00, .80` | .600 | STANDARD | 5 |
+| ATTN-CALENDAR-CMT-T0-06 | `.75, .25, .70, .00, .00, .70` | .4475 | STANDARD | 6 |
+| ATTN-CALENDAR-CMT-T0-09 | `.55, .25, .70, .00, .00, .70` | .3975 | STANDARD | 7 |
+
+| T1 item | Components | Score | Band | Rank |
+|---|---|---:|---|---:|
+| ATTN-CMT-01 | `.60, .80, 1.00, 1.00, 1.00, .80` | .840 | PROTECTED | 1 |
+| ATTN-CMT-02 | `.60, 1.00, 1.00, 1.00, 1.00, .70` | .870 | PROTECTED | 2 |
+| ATTN-CALENDAR-CMT-T0-10 | `.35, .80, .70, .00, .00, .70` | .4575 | PROTECTED | 3 |
+| ATTN-CMT-03 | `1.00, .80, .85, .00, .00, .80` | .660 | STANDARD | 4 |
+| ATTN-CMT-05 | `.85, .65, .85, .40, .00, .80` | .6525 | STANDARD | 5 |
+| ATTN-CALENDAR-CMT-T0-01 | `.85, .65, .70, .40, .00, .80` | .6225 | STANDARD | 6 |
+| ATTN-CMT-04 | `1.00, .50, .85, .00, .00, .80` | .600 | STANDARD | 7 |
+| ATTN-CALENDAR-CMT-T0-06 | `.75, .25, .70, .60, .00, .70` | .5375 | STANDARD | 8 |
+| ATTN-CALENDAR-CMT-T0-09 | `.55, .25, .70, .60, .00, .70` | .4875 | STANDARD | 9 |
+
+### Comparison, validation, and boundaries
+
+- Computed T0 ranking ID is `RANKING-BEFORE-20f7aefbef267eb77463`;
+  the committed before oracle comparison is `PASS`.
+- Computed T1 ranking ID is `RANKING-AFTER-02c6078edf0b8c522cf1`;
+  the committed after oracle comparison is `PASS`. Dependency precedence still
+  places CMT-01 before its higher-scored dependent CMT-02.
+- Production ranking completed before OracleBundle loading. Source and
+  behavior guards confirm no oracle import, filename, expected rank, expected
+  direction, or fixture-specific identity enters extraction or scoring.
+- Ran 122 `unittest` cases, bytecode compilation, all 17 schema validations,
+  closed reference resolution, and independent-process determinism checks.
+  Components, contributions, scores, calculation digests, ranking identities,
+  orders, and comparator results match across processes.
+- No base weight, fixture, Snapshot, transition, ontology, blueprint, privacy
+  contract, or oracle changed. No automatic tuning occurred and no file was
+  written under `runs/`.
+- Remaining risk: the mobility fallback is authorized only for bounded Replay
+  Mode and requires later empirical recalibration before any production claim.
+  Next smallest task after review and commit is deterministic GraphDelta
+  generation from T0 and T1, kept separate from persistence and RunRecord work.

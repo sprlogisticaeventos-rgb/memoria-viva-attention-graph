@@ -1,0 +1,325 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:attention-feature-policy:1.0.0",
+  "title": "AttentionFeaturePolicy",
+  "description": "Versioned deterministic feature extraction and ranking guardrails for bounded Replay Mode. Component weights remain owned by the compatible AttentionPolicy.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "policy_id": {"type": "string", "const": "mv.attention-feature-policy"},
+    "version": {"type": "string", "const": "1.1.0"},
+    "status": {"type": "string", "const": "APPROVED_FOR_BOUNDED_REPLAY"},
+    "authorized_mode": {"type": "string", "const": "REPLAY"},
+    "compatible_attention_policy": {
+      "type": "object",
+      "properties": {
+        "policy_id": {"type": "string"},
+        "version": {"type": "string"},
+        "required_status": {"type": "string", "const": "draft"},
+        "effective_at_required": {"type": "null"},
+        "authorization_warning": {"type": "string", "minLength": 1}
+      },
+      "required": ["policy_id", "version", "required_status", "effective_at_required", "authorization_warning"],
+      "additionalProperties": false
+    },
+    "ontology_version": {"type": "string"},
+    "component_rules": {
+      "type": "object",
+      "properties": {
+        "temporal_urgency": {"$ref": "#/$defs/temporal_urgency_rule"},
+        "downstream_impact": {"$ref": "#/$defs/downstream_impact_rule"},
+        "strategic_alignment": {"$ref": "#/$defs/strategic_alignment_rule"},
+        "conflict_or_displacement": {"$ref": "#/$defs/conflict_rule"},
+        "event_novelty": {"$ref": "#/$defs/novelty_rule"},
+        "evidence_confidence": {"$ref": "#/$defs/evidence_confidence_rule"}
+      },
+      "required": ["temporal_urgency", "downstream_impact", "strategic_alignment", "conflict_or_displacement", "event_novelty", "evidence_confidence"],
+      "additionalProperties": false
+    },
+    "unknown_behavior": {
+      "type": "object",
+      "properties": {
+        "unknown_token": {"type": "string", "const": "UNKNOWN"},
+        "numeric_default_forbidden": {"type": "boolean", "const": true},
+        "score_when_required_component_unknown": {"type": "string", "const": "DO_NOT_COMPUTE"},
+        "item_status": {"type": "string", "const": "NEEDS_CONFIRMATION"},
+        "oracle_assertion_result": {"type": "string", "const": "BLOCKED"},
+        "expose_missing_component": {"type": "boolean", "const": true},
+        "expose_evidence_gap": {"type": "boolean", "const": true}
+      },
+      "required": ["unknown_token", "numeric_default_forbidden", "score_when_required_component_unknown", "item_status", "oracle_assertion_result", "expose_missing_component", "expose_evidence_gap"],
+      "additionalProperties": false
+    },
+    "evidence_aggregation": {
+      "type": "object",
+      "properties": {
+        "required_reference_resolution": {"type": "string", "const": "ALL"},
+        "numeric_method": {"type": "string", "const": "MINIMUM"},
+        "epistemic_cap_applied_before_aggregation": {"type": "boolean", "const": true},
+        "average_forbidden": {"type": "boolean", "const": true}
+      },
+      "required": ["required_reference_resolution", "numeric_method", "epistemic_cap_applied_before_aggregation", "average_forbidden"],
+      "additionalProperties": false
+    },
+    "due_time_extraction": {
+      "type": "object",
+      "properties": {
+        "precedence": {"$ref": "#/$defs/temporal_precedence"},
+        "unknown_result": {"type": "null"},
+        "null_sort": {"type": "string", "const": "LAST"}
+      },
+      "required": ["precedence", "unknown_result", "null_sort"],
+      "additionalProperties": false
+    },
+    "protection_guardrail": {
+      "type": "object",
+      "properties": {
+        "numeric_bonus": {"type": "number", "const": 0},
+        "protected_band_precedes_standard": {"type": "boolean", "const": true},
+        "bands": {
+          "type": "array",
+          "prefixItems": [{"const": "PROTECTED"}, {"const": "STANDARD"}],
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": ["numeric_bonus", "protected_band_precedes_standard", "bands"],
+      "additionalProperties": false
+    },
+    "dependency_precedence": {
+      "type": "object",
+      "properties": {
+        "enabled_within_same_band": {"type": "boolean", "const": true},
+        "numeric_bonus": {"type": "number", "const": 0},
+        "relationship_type": {"type": "string", "const": "depends_on"},
+        "prerequisite_before_dependent": {"type": "boolean", "const": true},
+        "cross_band_application": {"type": "boolean", "const": false}
+      },
+      "required": ["enabled_within_same_band", "numeric_bonus", "relationship_type", "prerequisite_before_dependent", "cross_band_application"],
+      "additionalProperties": false
+    },
+    "confirmation_behavior": {
+      "type": "object",
+      "properties": {
+        "numeric_bonus": {"type": "number", "const": 0},
+        "creates_protected_band": {"type": "boolean", "const": false},
+        "status": {"type": "string", "const": "needs_confirmation"},
+        "requires_approval_reference": {"type": "boolean", "const": true}
+      },
+      "required": ["numeric_bonus", "creates_protected_band", "status", "requires_approval_reference"],
+      "additionalProperties": false
+    },
+    "deterministic_ranking_order": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "BAND_PROTECTED_BEFORE_STANDARD"},
+        {"const": "DEPENDENCY_PREREQUISITE_BEFORE_DEPENDENT_WITHIN_BAND"},
+        {"const": "UNROUNDED_SCORE_DESCENDING"},
+        {"const": "EFFECTIVE_DUE_TIME_ASCENDING_NULL_LAST"},
+        {"const": "ATTENTION_ITEM_ID_ASCENDING"}
+      ],
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "rounding": {
+      "type": "object",
+      "properties": {
+        "mode": {"type": "string", "const": "ROUND_HALF_UP"},
+        "decimal_places": {"type": "integer", "const": 2},
+        "apply_to": {"type": "string", "const": "DISPLAY_SCORE_ONLY"},
+        "internal_ranking_uses_unrounded_score": {"type": "boolean", "const": true}
+      },
+      "required": ["mode", "decimal_places", "apply_to", "internal_ranking_uses_unrounded_score"],
+      "additionalProperties": false
+    },
+    "policy_change_authority": {
+      "type": "object",
+      "properties": {
+        "authority": {"type": "string", "const": "human_product_owner"},
+        "human_approval_required": {"type": "boolean", "const": true},
+        "new_version_required": {"type": "boolean", "const": true}
+      },
+      "required": ["authority", "human_approval_required", "new_version_required"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["schema_version", "policy_id", "version", "status", "authorized_mode", "compatible_attention_policy", "ontology_version", "component_rules", "unknown_behavior", "evidence_aggregation", "due_time_extraction", "protection_guardrail", "dependency_precedence", "confirmation_behavior", "deterministic_ranking_order", "rounding", "policy_change_authority"],
+  "additionalProperties": false,
+  "$defs": {
+    "normalized_value": {"type": "number", "minimum": 0, "maximum": 1},
+    "unknown_token": {"type": "string", "const": "UNKNOWN"},
+    "impact_fallback_value": {
+      "type": "object",
+      "properties": {
+        "impact_level": {"type": "string", "enum": ["HIGH", "MEDIUM_HIGH", "LOW", "NONE"]},
+        "normalized_value": {"$ref": "#/$defs/normalized_value"}
+      },
+      "required": ["impact_level", "normalized_value"],
+      "additionalProperties": false
+    },
+    "temporal_precedence": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "ACTIVE_CONSTRAINED_DEADLINE"},
+        {"const": "EXPLICIT_COMMITMENT_DUE_TIME"},
+        {"const": "LINEAGE_CALENDAR_WINDOWS"},
+        {"const": "CALENDAR_ONLY_WINDOW"},
+        {"const": "UNRESOLVED_CARRYOVER_LIFECYCLE"}
+      ],
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "hours_band": {
+      "type": "object",
+      "properties": {
+        "maximum_hours": {"type": ["number", "null"], "minimum": 0},
+        "value": {"$ref": "#/$defs/normalized_value"}
+      },
+      "required": ["maximum_hours", "value"],
+      "additionalProperties": false
+    },
+    "temporal_urgency_rule": {
+      "type": "object",
+      "properties": {
+        "precedence": {"$ref": "#/$defs/temporal_precedence"},
+        "unresolved_missed_or_past_interval": {"$ref": "#/$defs/normalized_value"},
+        "deadline_bands": {"type": "array", "items": {"$ref": "#/$defs/hours_band"}, "minItems": 5, "maxItems": 5},
+        "crosses_snapshot": {"$ref": "#/$defs/normalized_value"},
+        "future_start_bands": {"type": "array", "items": {"$ref": "#/$defs/hours_band"}, "minItems": 4, "maxItems": 4},
+        "no_defensible_evidence": {"$ref": "#/$defs/unknown_token"}
+      },
+      "required": ["precedence", "unresolved_missed_or_past_interval", "deadline_bands", "crosses_snapshot", "future_start_bands", "no_defensible_evidence"],
+      "additionalProperties": false
+    },
+    "downstream_impact_rule": {
+      "type": "object",
+      "properties": {
+        "source_field": {"type": "string", "const": "displacement_cost.level"},
+        "values": {
+          "type": "object",
+          "properties": {
+            "VERY_HIGH": {"const": 1.0}, "HIGH": {"const": 0.8}, "MEDIUM_HIGH": {"const": 0.65},
+            "MEDIUM": {"const": 0.5}, "LOW": {"const": 0.25}, "NONE": {"const": 0.0}
+          },
+          "required": ["VERY_HIGH", "HIGH", "MEDIUM_HIGH", "MEDIUM", "LOW", "NONE"],
+          "additionalProperties": false
+        },
+        "calendar_only_mobility_fallback": {
+          "type": "object",
+          "properties": {
+            "scope": {"type": "string", "const": "CALENDAR_ONLY"},
+            "only_when_explicit_impact_absent": {"type": "boolean", "const": true},
+            "values": {
+              "type": "object",
+              "properties": {
+                "PROTECTED": {"$ref": "#/$defs/impact_fallback_value"},
+                "NEEDS_CONFIRMATION": {"$ref": "#/$defs/impact_fallback_value"},
+                "FLEXIBLE": {"$ref": "#/$defs/impact_fallback_value"},
+                "DISPLACEABLE": {"$ref": "#/$defs/impact_fallback_value"},
+                "CANCELABLE": {"$ref": "#/$defs/impact_fallback_value"}
+              },
+              "required": ["PROTECTED", "NEEDS_CONFIRMATION", "FLEXIBLE", "DISPLACEABLE", "CANCELABLE"],
+              "additionalProperties": false
+            },
+            "missing_or_unsupported": {"$ref": "#/$defs/unknown_token"},
+            "ranking_ineligible_excluded": {"type": "boolean", "const": true}
+          },
+          "required": ["scope", "only_when_explicit_impact_absent", "values", "missing_or_unsupported", "ranking_ineligible_excluded"],
+          "additionalProperties": false
+        },
+        "missing_or_ambiguous": {"$ref": "#/$defs/unknown_token"},
+        "title_inference_forbidden": {"type": "boolean", "const": true},
+        "oracle_inference_forbidden": {"type": "boolean", "const": true},
+        "protection_bonus_forbidden": {"type": "boolean", "const": true}
+      },
+      "required": ["source_field", "values", "calendar_only_mobility_fallback", "missing_or_ambiguous", "title_inference_forbidden", "oracle_inference_forbidden", "protection_bonus_forbidden"],
+      "additionalProperties": false
+    },
+    "strategic_alignment_rule": {
+      "type": "object",
+      "properties": {
+        "trigger_created_direct": {"const": 1.0},
+        "operational_direct": {"const": 0.85},
+        "calendar_direct": {"const": 0.7},
+        "context_supported_indirect": {"const": 0.5},
+        "missing_relation": {"$ref": "#/$defs/unknown_token"},
+        "goal_identity_neutral": {"type": "boolean", "const": true}
+      },
+      "required": ["trigger_created_direct", "operational_direct", "calendar_direct", "context_supported_indirect", "missing_relation", "goal_identity_neutral"],
+      "additionalProperties": false
+    },
+    "conflict_rule": {
+      "type": "object",
+      "properties": {
+        "precedence": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "INITIATES_SUPPORTED_CONFLICT_OR_DISPLACEMENT"},
+            {"const": "CONDITIONAL_DISPLACEABLE_TARGET_NOT_EXECUTED"},
+            {"const": "OTHER_UNRESOLVED_CONFLICT_TARGET"},
+            {"const": "CONFIRMATION_AUTHORITY_INCOMPLETE"},
+            {"const": "NO_SUPPORTED_CONDITION"}
+          ],
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "initiates_supported_conflict_or_displacement": {"const": 1.0},
+        "conditional_displaceable_target_not_executed": {"const": 0.0},
+        "other_unresolved_conflict_target": {"const": 0.6},
+        "confirmation_authority_incomplete": {"const": 0.4},
+        "no_supported_condition": {"const": 0.0},
+        "coexistence_inference_forbidden": {"type": "boolean", "const": true},
+        "conditional_is_executed": {"type": "boolean", "const": false}
+      },
+      "required": ["precedence", "initiates_supported_conflict_or_displacement", "conditional_displaceable_target_not_executed", "other_unresolved_conflict_target", "confirmation_authority_incomplete", "no_supported_condition", "coexistence_inference_forbidden", "conditional_is_executed"],
+      "additionalProperties": false
+    },
+    "novelty_rule": {
+      "type": "object",
+      "properties": {
+        "trigger_created": {"const": 1.0},
+        "preexisting_own_state_materially_updated": {"const": 0.5},
+        "relationship_only_update": {"const": 0.0},
+        "preexisting_unchanged": {"const": 0.0},
+        "t0_existing": {"const": 0.0},
+        "material_own_state_fields": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "lifecycle"},
+            {"const": "mobility"},
+            {"const": "eligibility"},
+            {"const": "authority"},
+            {"const": "protection"},
+            {"const": "condition_state"},
+            {"const": "execution_state"},
+            {"const": "active_constraint_membership"},
+            {"const": "verified_object_status"}
+          ],
+          "minItems": 9,
+          "maxItems": 9
+        },
+        "oracle_direction_input_forbidden": {"type": "boolean", "const": true}
+      },
+      "required": ["trigger_created", "preexisting_own_state_materially_updated", "relationship_only_update", "preexisting_unchanged", "t0_existing", "material_own_state_fields", "oracle_direction_input_forbidden"],
+      "additionalProperties": false
+    },
+    "evidence_confidence_rule": {
+      "type": "object",
+      "properties": {
+        "epistemic_caps": {
+          "type": "object",
+          "properties": {"confirmed": {"const": 1.0}, "approximate": {"const": 0.8}, "inferred": {"const": 0.65}, "uncertain": {"const": 0.4}, "blocked": {"$ref": "#/$defs/unknown_token"}},
+          "required": ["confirmed", "approximate", "inferred", "uncertain", "blocked"],
+          "additionalProperties": false
+        },
+        "per_reference_method": {"type": "string", "const": "MIN_NUMERIC_CONFIDENCE_AND_EPISTEMIC_CAP"},
+        "aggregate_method": {"type": "string", "const": "MINIMUM"},
+        "no_evidence": {"$ref": "#/$defs/unknown_token"},
+        "unresolved_reference": {"type": "string", "const": "VALIDATION_FAILURE"}
+      },
+      "required": ["epistemic_caps", "per_reference_method", "aggregate_method", "no_evidence", "unresolved_reference"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -37,15 +37,34 @@ from .transition import (
     TransitionValidationError,
     apply_canonical_trigger,
 )
+from .attention import (
+    ATTENTION_COMPUTATION_V1,
+    AttentionComputationError,
+    AttentionRankingResult,
+    ComponentExtraction,
+    compute_attention_rankings,
+    load_attention_feature_policy,
+)
+from .oracle import (
+    OracleComparison,
+    OracleIssue,
+    compare_ordinal_oracle,
+)
 
 __all__ = [
     "BundleWarning",
+    "ATTENTION_COMPUTATION_V1",
+    "AttentionComputationError",
+    "AttentionRankingResult",
     "CanonicalJsonError",
     "ContractIssue",
     "ContractValidationError",
+    "ComponentExtraction",
     "FixtureBundleError",
     "FixtureBundleLoader",
     "OracleBundle",
+    "OracleComparison",
+    "OracleIssue",
     "MV_CANONICAL_JSON_V1",
     "RuntimeBundle",
     "Snapshot",
@@ -59,8 +78,11 @@ __all__ = [
     "apply_canonical_trigger",
     "build_snapshot_t0",
     "canonical_json_bytes",
+    "compare_ordinal_oracle",
+    "compute_attention_rankings",
     "finalize_snapshot",
     "runtime_input_bundle_digest",
+    "load_attention_feature_policy",
     "sha256_digest",
     "sha256_hex",
     "snapshot_state_projection",
