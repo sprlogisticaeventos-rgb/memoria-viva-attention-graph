@@ -34,6 +34,12 @@ Private identifiers must not appear in public Graph references. A public
 fixture receives new stable identifiers that cannot be resolved back to a
 private person without separately held information.
 
+Public evidence and lineage use repository-safe synthetic references only.
+They must not retain filesystem paths, URLs, email or Calendar IDs, account or
+submission identifiers, raw locators, or any reversible mapping to a private
+source. Artifact-level provenance records classification, authority, capture
+method, review state, and sanitization—not the private address of the source.
+
 ## Sanitized public fixtures
 
 A fixture is eligible for tracking only when:
@@ -47,6 +53,19 @@ A fixture is eligible for tracking only when:
 
 `NOT_APPROVED` and `NOT_REVIEWED` are valid states. Missing approval is not
 equivalent to approval.
+
+Publication approval is surface-specific. Approval for a repository fixture
+does not automatically authorize a demo screen, narrated video, Devpost form,
+public documentation, or API response. Each field transformation records its
+original class, action, sanitized class, source-derived or synthetic status,
+reversibility, approved publication surfaces, reviewer state, and approval
+artifact.
+
+The canonical machine-readable manifest contract is
+[`../schemas/privacy-manifest.schema.json`](../schemas/privacy-manifest.schema.json).
+It preserves residual aggregation risk, including `LOW_MEDIUM`, because a set
+of individually safe fields may reveal more when combined. Residual risk and
+`UNKNOWN` values remain visible until human review resolves them.
 
 ## Generated runs and expected outputs
 
@@ -73,6 +92,7 @@ and empty placeholders only.
 - Local runs: disposable and ignored.
 - Expected outputs: versioned only after privacy review.
 - Evidence of approval: reference an approval record; do not invent a reviewer.
+- Publication approval: grant per surface and never infer from another surface.
 
 Before staging, review the staged path list, verify ignore rules, run a
 filename-only redacted secret/PII scan, and confirm that public fixtures match

@@ -2,35 +2,65 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:goal:1.0.0",
   "title": "Goal",
-  "description": "A persistent desired outcome with verification and stop conditions.",
+  "description": "A persistent desired outcome whose operational lifecycle, controlled-demo visibility, evidence, and completion authority remain separate.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "goal_id": {"type": "string"},
+    "goal_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "goal_version": {"type": "integer", "minimum": 1},
+    "public_title": {"type": "string"},
     "desired_outcome": {"type": "string"},
-    "lifecycle": {
+    "operational_lifecycle": {
       "type": "string",
-      "enum": ["draft", "active", "paused", "completed", "blocked", "budget_limited", "cleared"]
+      "enum": ["DRAFT", "ACTIVE", "PAUSED", "COMPLETED", "BLOCKED", "BUDGET_LIMITED", "CLEARED"]
     },
-    "verification_surface": {
+    "controlled_demo_visibility": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/controlled_demo_visibility"},
+    "verification_surfaces": {
       "type": "array",
-      "items": {"type": "string"}
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "surface_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+          "description": {"type": "string"},
+          "status": {"type": "string", "enum": ["UNVERIFIED", "EVIDENCED", "VERIFIED", "BLOCKED"]},
+          "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"}
+        },
+        "required": ["surface_id", "description", "status", "evidence_refs"],
+        "additionalProperties": false
+      }
+    },
+    "completion_authority": {
+      "type": "object",
+      "properties": {
+        "authority_scope": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/authority_scope"},
+        "requires_all_verification_surfaces_evidenced": {"type": "boolean", "const": true},
+        "artifact_existence_sufficient": {"type": "boolean", "const": false},
+        "completion_validation_state": {"type": "string", "enum": ["NOT_STARTED", "PARTIAL", "PASSED", "BLOCKED"]}
+      },
+      "required": [
+        "authority_scope",
+        "requires_all_verification_surfaces_evidenced",
+        "artifact_existence_sufficient",
+        "completion_validation_state"
+      ],
+      "additionalProperties": false
     },
     "constraint_refs": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
     },
     "boundaries": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
     "iteration_policy": {"type": "string"},
     "blocked_stop_condition": {"type": "string"},
     "max_iterations": {"type": "integer", "minimum": 1},
-    "evidence_status": {
-      "type": "string",
-      "enum": ["unverified", "partial", "evidenced", "verified", "blocked"]
-    },
+    "evidence_status": {"type": "string", "enum": ["UNVERIFIED", "PARTIAL", "EVIDENCED", "VERIFIED", "BLOCKED"]},
     "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
     "created_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
     "updated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
   },
@@ -38,9 +68,12 @@
     "schema_version",
     "goal_id",
     "goal_version",
+    "public_title",
     "desired_outcome",
-    "lifecycle",
-    "verification_surface",
+    "operational_lifecycle",
+    "controlled_demo_visibility",
+    "verification_surfaces",
+    "completion_authority",
     "constraint_refs",
     "boundaries",
     "iteration_policy",
@@ -48,8 +81,34 @@
     "max_iterations",
     "evidence_status",
     "evidence_refs",
+    "uncertainty",
+    "privacy_classification",
+    "privacy_review_state",
     "created_at",
     "updated_at"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"operational_lifecycle": {"const": "COMPLETED"}}, "required": ["operational_lifecycle"]},
+      "then": {
+        "properties": {
+          "evidence_status": {"const": "VERIFIED"},
+          "completion_authority": {
+            "properties": {"completion_validation_state": {"const": "PASSED"}},
+            "required": ["completion_validation_state"]
+          },
+          "verification_surfaces": {
+            "items": {
+              "properties": {
+                "status": {"const": "VERIFIED"},
+                "evidence_refs": {"minItems": 1}
+              },
+              "required": ["status", "evidence_refs"]
+            }
+          }
+        }
+      }
+    }
   ],
   "additionalProperties": false
 }

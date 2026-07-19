@@ -2,39 +2,27 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:graph-delta:1.0.0",
   "title": "GraphDelta",
-  "description": "An immutable, evidence-backed transition between two Snapshots.",
+  "description": "An immutable, evidence-backed transition between two Snapshots using the approved bounded change categories.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
     "ontology_version": {"type": "string"},
-    "graph_delta_id": {"type": "string"},
+    "graph_delta_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "graph_delta_version": {"type": "integer", "minimum": 1},
-    "previous_snapshot_id": {"type": "string"},
-    "new_snapshot_id": {"type": "string"},
-    "added_objects": {
+    "previous_snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "previous_snapshot_digest": {"type": "string", "minLength": 1},
+    "new_snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "new_snapshot_digest": {"type": "string", "minLength": 1},
+    "changes": {
       "type": "array",
-      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
-    },
-    "updated_objects": {
-      "type": "array",
-      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
-    },
-    "superseded_objects": {
-      "type": "array",
-      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/object_change"}
-    },
-    "added_relationships": {
-      "type": "array",
-      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
-    },
-    "removed_relationships": {
-      "type": "array",
-      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/relationship"}
+      "minItems": 1,
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/graph_change"}
     },
     "explanation": {"type": "string"},
-    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
-    "generated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+    "generated_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
+    "transition_digest": {"type": "string", "minLength": 1}
   },
   "required": [
     "schema_version",
@@ -42,15 +30,14 @@
     "graph_delta_id",
     "graph_delta_version",
     "previous_snapshot_id",
+    "previous_snapshot_digest",
     "new_snapshot_id",
-    "added_objects",
-    "updated_objects",
-    "superseded_objects",
-    "added_relationships",
-    "removed_relationships",
+    "new_snapshot_digest",
+    "changes",
     "explanation",
     "evidence_refs",
-    "generated_at"
+    "generated_at",
+    "transition_digest"
   ],
   "additionalProperties": false
 }

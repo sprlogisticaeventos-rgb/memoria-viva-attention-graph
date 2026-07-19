@@ -2,51 +2,74 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:attention-item:1.0.0",
   "title": "AttentionItem",
-  "description": "One explainable unit in an attention ranking.",
+  "description": "One deterministic computed production-ranking item. Human ordinal expectations use the separate ExpectedAttentionRanking contract.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "attention_item_id": {"type": "string"},
+    "contract_kind": {"type": "string", "const": "COMPUTED_PRODUCTION_ATTENTION_ITEM"},
+    "attention_item_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "attention_item_version": {"type": "integer", "minimum": 1},
-    "snapshot_id": {"type": "string"},
+    "snapshot_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "subject_ref": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/entity_ref"},
+    "policy_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "policy_version": {"type": "string"},
+    "policy_digest": {"type": "string", "minLength": 1},
     "rank": {"type": "integer", "minimum": 1},
     "score": {"type": "number", "minimum": 0, "maximum": 1},
     "previous_rank": {"type": ["integer", "null"], "minimum": 1},
     "previous_score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
     "score_delta": {"type": ["number", "null"], "minimum": -1, "maximum": 1},
     "due_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
-    "status": {
-      "type": "string",
-      "enum": ["recommended_now", "monitor", "needs_confirmation", "deferred", "blocked"]
-    },
+    "status": {"type": "string", "enum": ["recommended_now", "monitor", "needs_confirmation", "deferred", "blocked"]},
     "component_breakdown": {
       "type": "array",
       "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/score_component"},
       "minItems": 6,
       "maxItems": 6
     },
-    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
+    "mobility_at_rank": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_mobility_state"},
+    "protection_at_rank": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_protection_state"},
+    "eligibility_at_rank": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_eligibility_state"},
+    "authority_at_rank": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_authority_scope"},
+    "execution_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/execution_state"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
     "displaced_commitment_refs": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
+    },
+    "protected_commitment_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
+    },
+    "confirmation_required_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
     },
     "blocked_refs": {
       "type": "array",
       "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/lightweight_reference"}
     },
     "opportunity_cost": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
+    "repair_requirement": {"type": ["string", "null"]},
     "confidence": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/confidence_score"},
-    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
-    "explanation": {"type": "string"}
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+    "explanation": {"type": "string"},
+    "calculation_digest": {"type": "string", "minLength": 1}
   },
   "required": [
     "schema_version",
+    "contract_kind",
     "attention_item_id",
     "attention_item_version",
     "snapshot_id",
     "subject_ref",
+    "policy_id",
+    "policy_version",
+    "policy_digest",
     "rank",
     "score",
     "previous_rank",
@@ -55,13 +78,22 @@
     "due_at",
     "status",
     "component_breakdown",
+    "mobility_at_rank",
+    "protection_at_rank",
+    "eligibility_at_rank",
+    "authority_at_rank",
+    "execution_state",
     "evidence_refs",
     "displaced_commitment_refs",
+    "protected_commitment_refs",
+    "confirmation_required_refs",
     "blocked_refs",
     "opportunity_cost",
+    "repair_requirement",
     "confidence",
     "uncertainty",
-    "explanation"
+    "explanation",
+    "calculation_digest"
   ],
   "additionalProperties": false
 }

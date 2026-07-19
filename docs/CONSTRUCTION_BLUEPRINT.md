@@ -14,7 +14,7 @@ El producto no termina al recomendar una prioridad. Cada recomendación entra en
 
 `evento → evidencia → snapshot → Attention Graph → Goal → acción → validación → nuevo snapshot`
 
-La demostración usa un caso real pero sanitizado: llega una invitación de OpenAI; “entregar una propuesta válida y competitiva” se activa como Goal; las reglas del hackathon se convierten en constraints; el Calendar aporta la línea de tiempo verificable; el sistema identifica compromisos desplazados y genera un ranking de atención con evidencia. Memoria Viva se usa para decidir, construir y auditar Memoria Viva.
+La demostración usa un caso real pero sanitizado: llega una invitación de OpenAI y el hackathon se modela como un experimento acotado al servicio de `GC-01 — PRODUCT_VALIDATION`, no como un cuarto Goal. Las reglas oficiales se convierten en constraints; Calendar aporta evidencia temporal sin pretender representar toda la verdad estratégica; el sistema identifica compromisos protegidos, condicionalmente desplazables o pendientes de confirmación y genera un ranking de atención con evidencia. Memoria Viva se usa para decidir, construir y auditar Memoria Viva.
 
 La recomendación principal es construir primero un vertical slice completo y reproducible. Aprovechar muchas herramientas solo agrega valor si cada una resuelve una función verificable; el número de agentes o integraciones no es una métrica de calidad.
 
@@ -56,6 +56,8 @@ El diferenciador no es tener Calendar, correo, agentes o resúmenes. Es combinar
 ---
 
 ## 3. Funcionalidades consolidadas de las fuentes
+
+> **Estado de alcance:** las secciones 3.3–3.7 describen roadmap diferido. Repair loops, subagents, prompt caching, continuidad de reasoning y Programmatic Tool Calling no forman parte de los contratos de Phase 0 ni de la primera implementación de Phase 1.
 
 ### 3.1 Agente recurrente de extremo a extremo
 
@@ -281,8 +283,9 @@ Comprueba si la acción produjo el estado esperado y conserva un recibo por iter
 - `constrained_by`
 - `verified_by`
 - `produced_by`
-- `attempts_to_resolve`
 - `changes_between`
+
+`attempts_to_resolve` queda fuera del vocabulario activo de Phase 0 con estado `DEFERRED_FOR_REPAIR_LOOP_EXTENSION`. Solo puede regresar mediante una decisión ontológica versionada cuando se autorice el repair loop.
 
 ### Regla de procedencia
 
@@ -318,27 +321,16 @@ Ponderaciones propuestas para el MVP:
 
 `attention_score = Σ(componente_normalizado × peso)`
 
-Estas ponderaciones son una hipótesis explícita, no verdad del sistema. Deben poder versionarse y compararse en evals.
+Estas ponderaciones forman la política v1 aprobada y permanecen fijas en este contrato. Cualquier cambio de peso o threshold requiere una nueva versión y aprobación humana; la política puede compararse en evals sin alterar silenciosamente la versión vigente.
 
 ### Output mínimo por ítem
 
-```json
-{
-  "attention_item_id": "attn_hackathon",
-  "rank": 1,
-  "score": 0.87,
-  "status": "recommended_now",
-  "because": [
-    "Tiene deadline verificable",
-    "Está altamente alineado con la estrategia de IA",
-    "Desplaza dos compromisos existentes"
-  ],
-  "evidence_refs": ["email_openai", "calendar_t0", "decision_ai_strategy"],
-  "displaced_commitments": ["commitment_a", "commitment_b"],
-  "confidence": "high",
-  "uncertainty": []
-}
-```
+La forma canónica está en `schemas/attention-item.schema.json`. Un ítem de
+producción exige score numérico, los seis componentes y sus contribuciones,
+identidad y digest de política, evidencia, costos desplazados, protecciones,
+confirmaciones, confianza, incertidumbre y digest de cálculo. El oracle humano
+usa `schemas/expected-attention-ranking.schema.json` y no contiene scores ni
+contribuciones de producción.
 
 ### Guardrails
 
@@ -350,44 +342,37 @@ Estas ponderaciones son una hipótesis explícita, no verdad del sistema. Deben 
 
 ---
 
-## 7. Goal Contract para el hackathon
+## 7. Controlled public Goal model and demo boundary
 
-### Goal recomendado
+El modelo público controlado contiene exactamente tres Goals aprobados:
 
-> Producir una submission válida y competitiva para el hackathon, verificada contra sus reglas oficiales, con un demo reproducible de Memoria Viva y un README que explique el flujo. Demostrar que un evento externo modifica de forma trazable el ranking de atención y los compromisos asociados. Preservar privacidad, distinguir datos reales de fixtures sanitizados y no declarar cumplimiento sin evidencia. Si falta una regla, integración o autorización crítica, detenerse y registrar el bloqueo y el input necesario.
+- `GC-01 — PRODUCT_VALIDATION`;
+- `GC-02 — FINANCIAL_AND_OPERATIONAL_CONTINUITY`;
+- `GC-03 — PERSONAL_AND_LEGAL_CONTINUITY`.
 
-### Estructura
+El hackathon es un experimento acotado que sirve a `GC-01`; no es un cuarto Goal. `G5` se conserva con visibilidad `OMITTED_FROM_CONTROLLED_DEMO`: no está eliminado, rechazado, invalidado, completado ni cleared. La visibilidad del demo y el lifecycle operativo son dimensiones independientes.
 
-```json
-{
-  "goal_id": "hackathon_submission",
-  "desired_outcome": "Submission válida, reproducible y competitiva",
-  "verification_surface": [
-    "official_rules_checklist",
-    "demo_replay_passes",
-    "README_complete",
-    "submission_artifacts_present"
-  ],
-  "constraints": [
-    "privacy_preserved",
-    "no_unsupported_claims",
-    "sanitized_fixture_separated"
-  ],
-  "boundaries": ["scoped_repo", "approved_sources", "read_only_calendar_mvp"],
-  "iteration_policy": "Choose the highest-impact unresolved delta supported by evidence",
-  "blocked_stop_condition": "Stop when no defensible path remains without new input or authority",
-  "max_iterations": 3,
-  "status": "active"
-}
-```
+Un Goal solo pasa a `completed` cuando todas sus superficies requeridas están respaldadas por evidencia y un validador determinista las acepta. La mera existencia de un archivo o la afirmación de un modelo no acredita completion.
 
-### Completion
+### Boundary temporal e identidad
 
-El Goal solo pasa a `completed` cuando todas las superficies requeridas están verificadas. Presencia de archivos, calidad narrativa y funcionamiento de la demo son checks distintos.
+- `T0` es el snapshot inmediatamente anterior al trigger canónico normalizado.
+- `T1` es el snapshot inmediatamente posterior a aplicar únicamente ese trigger.
+- Los follow-ups se relacionan con el trigger, pero quedan fuera de `T1`.
+- `received_at`, `occurred_at` y `deadline_at` conservan significados distintos; un `occurred_at` desconocido permanece desconocido.
+- La identidad de un candidato de Calendar y la identidad de un compromiso operacional son distintas y se conectan solo mediante lineage explícito, evidencia, confianza e incertidumbre; la similitud de títulos no crea identidad.
+
+### Orden y ranking aprobados
+
+La transición controlada conserva `BUILD_FIRST`: la construcción mínima precede a la validación dependiente. La expectativa ordinal humana es un oracle separado, sin scores numéricos de producción. El ranking computado conserva score numérico, seis componentes, identidad y digest de política y cálculo determinista.
+
+La construcción de los payloads aprobados pertenece a Phase 0C2. La aplicación, el runtime y la ejecución determinista pertenecen a Phase 1.
 
 ---
 
 ## 8. Orquestación con subagents
+
+> **Roadmap diferido:** las secciones 8–11 no describen contratos ni implementación autorizados para Phase 0D2 o la primera Phase 1. Subagents, PTC, caching, reasoning continuity y el repair-loop runtime requieren autorización y decisiones versionadas posteriores al vertical slice determinista.
 
 ### Topología recomendada
 
@@ -692,33 +677,13 @@ Los outputs locales sensibles de `runs/` no deben versionarse. La demo usa fixtu
 
 ## 14. RunRecord y audit trail
 
-```json
-{
-  "run_id": "run_2026_07_18_001",
-  "previous_snapshot_id": "snapshot_t0",
-  "new_snapshot_id": "snapshot_t1",
-  "goal_id": "hackathon_submission",
-  "trigger_event_id": "openai_event",
-  "review": {
-    "findings": []
-  },
-  "repair": {
-    "actions_proposed": [],
-    "actions_executed": [],
-    "approvals_required": []
-  },
-  "validation": {
-    "passed": false,
-    "cases": [],
-    "remaining_delta": []
-  },
-  "attention_ranking_before": [],
-  "attention_ranking_after": [],
-  "reasoning_context": "all_turns",
-  "source_refs": [],
-  "status": "active"
-}
-```
+La forma canónica está en `schemas/run-record.schema.json`. El recibo conserva
+identidad y versión de inputs y outputs, snapshots anterior y nuevo, trigger,
+GraphDelta, rankings before/after, Goals, fuentes, aprobaciones, preguntas no
+resueltas, versiones de schema/ontología/política, digests de replay, warnings,
+privacidad y metadata de modelo nullable en Replay Mode. Claims de compliance,
+submission, Goal completion o displacement ejecutado permanecen separados y
+requieren evidencia y validación.
 
 Un run debe contestar:
 
@@ -758,11 +723,11 @@ Mostrar lado a lado:
 
 ### Escena 5 — Goal Runtime
 
-Activar el Goal del hackathon y mostrar superficie de verificación, constraints, progreso y delta pendiente.
+Mostrar el hackathon como experimento acotado al servicio de `GC-01`, junto con superficie de verificación, constraints, progreso y delta pendiente; no activar un Goal adicional.
 
-### Escena 6 — Repair loop
+### Escena futura — Repair loop (`DEFERRED_ROADMAP`)
 
-Proponer el menor ajuste al plan. Validarlo contra un snapshot posterior o un fixture esperado. Registrar si converge o necesita input humano.
+Después del vertical slice autorizado, proponer el menor ajuste al plan, validarlo contra un snapshot posterior o fixture esperado y registrar si converge o necesita input humano. Esta escena no forma parte de Phase 0C2 ni de la primera Phase 1.
 
 ### Escena 7 — Autorreferencia
 
@@ -771,6 +736,8 @@ Cerrar con el audit trail de cómo Memoria Viva se usó para construir y auditar
 ---
 
 ## 16. Validación y evals
+
+> Los evals de repair loop y subagents enumerados aquí son roadmap diferido; no son tests ni contratos activos de Phase 0D2 o de la primera Phase 1.
 
 ### Evals funcionales
 
@@ -829,13 +796,18 @@ Métricas de optimización posteriores:
 
 ## 17. Plan de construcción
 
-### Fase 0 — Contratos
+### Fase 0D2 — Reconciliación de contratos
 
-- Cerrar ontología v1.
-- Crear schemas.
-- Sanitizar fixture real.
-- Convertir reglas del hackathon en checklist verificable.
-- Definir score inicial y expected ranking.
+- Alinear blueprint, ontología y schemas con las decisiones humanas aprobadas.
+- Mantener separados contratos genéricos y aserciones específicas del fixture.
+- Definir por separado ranking computado y oracle ordinal humano.
+
+### Fase 0C2 — Construcción del fixture aprobado
+
+- Crear el fixture sanitizado T0 → T1 desde el handoff aprobado.
+- Convertir las expectativas humanas en un oracle ordinal sin scores numéricos.
+- Conservar candidatos activos y excluidos-pero-retenidos con lineage explícito.
+- Convertir reglas oficiales en constraints solo donde exista evidencia autorizada.
 
 ### Fase 1 — Vertical slice
 
@@ -885,6 +857,8 @@ Métricas de optimización posteriores:
 ---
 
 ## 18. Definition of Done del MVP
+
+> Esta Definition of Done describe el MVP ampliado. Los puntos de repair loop, subagents, caching, reasoning y PTC permanecen diferidos hasta después del vertical slice determinista.
 
 El MVP está listo cuando:
 
@@ -941,9 +915,11 @@ Mitigación: una fuente canónica por concepto, Skills pequeñas y auditoría pe
 
 ## 20. Parámetros recomendados para iniciar
 
+> Los parámetros de subagents, repair, caching, reasoning y PTC son referencias de roadmap y no autorizan su implementación en Phase 0D2, Phase 0C2 ni en la primera Phase 1.
+
 | Parámetro | Valor inicial |
 |---|---|
-| Fuente de verdad temporal | Calendar + event log |
+| Evidencia temporal | Calendar + event log; no constituyen por sí solos la verdad estratégica completa |
 | Datos de demo | Fixture real sanitizado |
 | Main model | GPT-5.6 |
 | Explorer model | GPT-5.6 Terra cuando esté disponible |
@@ -955,7 +931,7 @@ Mitigación: una fuente canónica por concepto, Skills pequeñas y auditoría pe
 | Reasoning context | `all_turns` solo con Goal estable |
 | Prompt cache | Después de baseline; keys versionadas |
 | PTC | Normalización, join, diff, scoring, agregación |
-| Canonical state | Snapshots + graph + run records |
+| Estado persistido canónico | Snapshots + graph + run records |
 | Ranking | Determinista y explicable |
 | Completion authority | Evidence-based validation |
 
@@ -984,7 +960,7 @@ Documentación oficial consultada:
 
 ## 22. Próxima acción
 
-Construir únicamente el vertical slice de la Fase 1 antes de configurar toda la infraestructura. La primera prueba debe aceptar dos entradas —snapshot de Calendar y evento OpenAI— y producir cuatro outputs:
+Tras revisar, committear y mergear esta reconciliación, construir únicamente el fixture aprobado de Phase 0C2. Solo después de su autorización se inicia el vertical slice de Phase 1. Su primera prueba debe aceptar dos entradas —snapshot de Calendar y evento OpenAI— y producir cuatro outputs:
 
 1. snapshot actualizado;
 2. diff explicable;

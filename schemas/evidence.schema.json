@@ -2,24 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:evidence:1.0.0",
   "title": "Evidence",
-  "description": "A source-bound excerpt or structured observation supporting a claim.",
+  "description": "A public-safe factual or structured observation with non-reversible artifact-level provenance.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "evidence_id": {"type": "string"},
+    "evidence_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "evidence_version": {"type": "integer", "minimum": 1},
-    "source_id": {"type": "string"},
-    "source_event_id": {"type": ["string", "null"]},
-    "observation_type": {
-      "type": "string",
-      "enum": ["exact_excerpt", "structured_observation", "metadata", "hash", "other"]
-    },
-    "source_excerpt": {"type": ["string", "null"]},
+    "source_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "source_event_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
+    "public_evidence_category": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_evidence_category"},
+    "observation_type": {"type": "string", "enum": ["factual_observation", "structured_observation", "metadata", "hash"]},
+    "factual_observation": {"type": ["string", "null"]},
     "structured_observation": {"type": ["string", "null"]},
-    "locator": {"type": "string"},
     "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
     "confidence": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/confidence_score"},
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+    "authority_scope": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/authority_scope"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"},
     "observed_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
     "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
     "content_hash": {"type": ["string", "null"]}
@@ -30,15 +32,34 @@
     "evidence_version",
     "source_id",
     "source_event_id",
+    "public_evidence_category",
     "observation_type",
-    "source_excerpt",
+    "factual_observation",
     "structured_observation",
-    "locator",
     "epistemic_state",
     "confidence",
+    "uncertainty",
+    "authority_scope",
+    "privacy_classification",
+    "privacy_review_state",
+    "provenance",
     "observed_at",
     "recorded_at",
     "content_hash"
+  ],
+  "anyOf": [
+    {
+      "properties": {
+        "factual_observation": {"type": "string", "minLength": 1}
+      },
+      "required": ["factual_observation"]
+    },
+    {
+      "properties": {
+        "structured_observation": {"type": "string", "minLength": 1}
+      },
+      "required": ["structured_observation"]
+    }
   ],
   "additionalProperties": false
 }

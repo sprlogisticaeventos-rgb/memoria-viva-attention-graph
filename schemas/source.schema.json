@@ -2,27 +2,28 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:source:1.0.0",
   "title": "Source",
-  "description": "An identified evidence-producing system, document, repository, or explicit input.",
+  "description": "An identified evidence-producing system, document, repository, or explicit input represented through public-safe references.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "source_id": {"type": "string"},
+    "source_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "source_version": {"type": "integer", "minimum": 1},
-    "source_type": {
-      "type": "string",
-      "enum": ["calendar", "email", "document", "repository", "rule", "explicit_user_input", "other"]
-    },
+    "source_type": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/source_class"},
     "owner_or_authority": {"type": ["string", "null"]},
+    "authority_scope": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/authority_scope"},
     "capture_method": {
       "type": "string",
-      "enum": ["manual_export", "connector", "api", "repository_read", "user_provided", "other"]
+      "enum": ["manual_export", "connector", "api", "repository_read", "user_provided", "synthetic_fixture", "other"]
     },
     "permissions": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/permissions"},
     "observed_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
     "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"},
-    "stable_reference": {"type": ["string", "null"]},
-    "content_hash": {"type": ["string", "null"]}
+    "public_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
+    "content_hash": {"type": ["string", "null"]},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"}
   },
   "required": [
     "schema_version",
@@ -30,12 +31,16 @@
     "source_version",
     "source_type",
     "owner_or_authority",
+    "authority_scope",
     "capture_method",
     "permissions",
     "observed_at",
     "recorded_at",
-    "stable_reference",
-    "content_hash"
+    "public_reference",
+    "content_hash",
+    "privacy_classification",
+    "privacy_review_state",
+    "provenance"
   ],
   "additionalProperties": false
 }

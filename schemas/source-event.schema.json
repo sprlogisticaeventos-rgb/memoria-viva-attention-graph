@@ -2,47 +2,82 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:memoria-viva:attention-graph:schema:source-event:1.0.0",
   "title": "SourceEvent",
-  "description": "One normalized external event observed through a Source.",
+  "description": "One normalized external event with an explicit causal role, temporal semantics, authority limit, and public-safe provenance.",
   "x-schema-version": "1.0.0",
   "type": "object",
   "properties": {
     "schema_version": {"type": "string", "const": "1.0.0"},
-    "source_event_id": {"type": "string"},
+    "source_event_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
     "source_event_version": {"type": "integer", "minimum": 1},
+    "event_role": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/event_role"},
     "event_type": {"type": "string"},
     "title": {"type": "string"},
     "summary": {"type": "string"},
-    "source_id": {"type": "string"},
-    "source_record_id": {"type": ["string", "null"]},
+    "source_id": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+    "source_record_reference": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
+    "follow_up_to": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_repository_safe_reference"},
+    "related_goal_refs": {
+      "type": "array",
+      "items": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"},
+      "uniqueItems": true
+    },
     "received_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
     "occurred_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
-    "deadline": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
-    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/evidence_refs"},
-    "normalization_status": {
-      "type": "string",
-      "enum": ["raw", "normalized", "partial", "blocked"]
-    },
+    "deadline_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nullable_timestamp"},
+    "authority_scope": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/authority_scope"},
+    "evidence_refs": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/nonempty_evidence_refs"},
+    "normalization_status": {"type": "string", "enum": ["raw", "normalized", "partial", "blocked"]},
     "normalization_warnings": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/string_list"},
     "epistemic_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/epistemic_state"},
+    "uncertainty": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/uncertainty"},
+    "privacy_classification": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_classification"},
+    "privacy_review_state": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/privacy_review_state"},
+    "provenance": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/public_safe_provenance"},
     "recorded_at": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/timestamp"}
   },
   "required": [
     "schema_version",
     "source_event_id",
     "source_event_version",
+    "event_role",
     "event_type",
     "title",
     "summary",
     "source_id",
-    "source_record_id",
+    "source_record_reference",
+    "follow_up_to",
+    "related_goal_refs",
     "received_at",
     "occurred_at",
-    "deadline",
+    "deadline_at",
+    "authority_scope",
     "evidence_refs",
     "normalization_status",
     "normalization_warnings",
     "epistemic_state",
+    "uncertainty",
+    "privacy_classification",
+    "privacy_review_state",
+    "provenance",
     "recorded_at"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {"event_role": {"const": "FOLLOW_UP"}},
+        "required": ["event_role"]
+      },
+      "then": {
+        "properties": {
+          "follow_up_to": {
+            "$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/repository_safe_reference"
+          }
+        }
+      },
+      "else": {
+        "properties": {"follow_up_to": {"type": "null"}}
+      }
+    }
   ],
   "additionalProperties": false
 }
