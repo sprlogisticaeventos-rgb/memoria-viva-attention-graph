@@ -24,12 +24,14 @@
           "field_scope": {"type": "string"},
           "original_class": {
             "type": "string",
-            "enum": ["PUBLIC", "PRIVATE_CONTEXT", "PERSONAL_DATA", "SENSITIVE_DATA", "RAW_LOCATOR", "PRIVATE_TIMESTAMP", "SOURCE_TEXT", "SYNTHETIC_INPUT"]
+            "description": "Classification of the field before sanitization. PRIVATE_TEMPORAL_DATA covers private temporal information whose exact chronology must not be exposed.",
+            "enum": ["PUBLIC", "PRIVATE_CONTEXT", "PERSONAL_DATA", "SENSITIVE_DATA", "RAW_LOCATOR", "PRIVATE_TIMESTAMP", "PRIVATE_TEMPORAL_DATA", "SOURCE_TEXT", "SYNTHETIC_INPUT"]
           },
           "transformation_action": {"$ref": "urn:memoria-viva:attention-graph:schema:common:1.0.0#/$defs/transformation_action"},
           "sanitized_class": {
             "type": "string",
-            "enum": ["PUBLIC_SAFE_KEPT", "GENERALIZED", "PSEUDONYMIZED", "REMOVED", "SHIFTED_TIME", "SYNTHETIC"]
+            "description": "Classification after sanitization. INDEPENDENT_SYNTHETIC_COARSE_TIME is public-safe temporal data independently synthesized to preserve only required ordering, overlap, or urgency semantics without preserving one recoverable offset or exact private durations.",
+            "enum": ["PUBLIC_SAFE_KEPT", "GENERALIZED", "PSEUDONYMIZED", "REMOVED", "SHIFTED_TIME", "SYNTHETIC", "INDEPENDENT_SYNTHETIC_COARSE_TIME"]
           },
           "reason": {"type": "string"},
           "source_derived": {"type": "boolean"},
