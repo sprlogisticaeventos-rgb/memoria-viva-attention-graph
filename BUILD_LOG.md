@@ -412,3 +412,79 @@ RunRecords, not in this file.
 - Next smallest executable step after review, commit, merge, and explicit
   authorization: define the bounded deterministic Snapshot T0 construction
   rules and tests while keeping scoring and transition behavior out of scope.
+
+## MV-BUILD-009 — Phase 1B canonical serialization and Snapshot T0
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-1b-snapshot-t0` |
+| Starting commit | `49a641d` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 1B — Canonical serialization and immutable Snapshot T0 only |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Objective and canonicalization contract
+
+- Added the repository-versioned `MV_CANONICAL_JSON_V1` contract, explicitly
+  scoped to Python 3.12 and not claimed as RFC 8785.
+- Canonical bytes use UTF-8, lexicographically sorted object keys, preserved
+  array order, unescaped Unicode, no insignificant whitespace, and finite JSON
+  numbers only. Unsupported values, NaN, and Infinity are rejected.
+- SHA-256 values use `sha256:<64 lowercase hexadecimal characters>`.
+
+### Digest and identity rules
+
+- The runtime input digest covers exactly the public Goals, Calendar T0,
+  evidence, operational commitments, constraints, canonical event, privacy
+  manifest, and attention policy under stable logical keys. It excludes
+  oracles, filesystem metadata, wall-clock state, and non-semantic warnings.
+- The Snapshot state digest covers the complete serialized Snapshot state
+  except `state_digest` itself, preventing self-reference.
+- Snapshot T0 identity uses `MV_SNAPSHOT_IDENTITY_V1`, the fixture scenario
+  identity, temporal role `T0`, and runtime input digest. Its stable form is
+  `SNAPSHOT-T0-<20 lowercase digest characters>` and does not depend on the
+  final state digest.
+
+### T0 temporal and membership projection
+
+- `captured_at` uses the fixture README's canonical Calendar
+  `synthetic_anchor_at`, `2030-02-10T12:00:00Z`; no system or Git time is read.
+- Active membership contains three Goals, eight active Calendar candidates,
+  and CMT-03 through CMT-05. CMT-T0-07 and CMT-T0-08 remain explicitly
+  excluded but retained with their approved evidence, reason, and uncertainty.
+- CMT-01 and CMT-02, the canonical trigger, follow-ups, and trigger-derived
+  constraints are absent from applied T0 state. Goal catalog references do not
+  activate D-0 or candidate artifact requirements.
+- Existing lineage stays attached to embedded Commitment records and is not
+  converted into graph edges. No qualifying independent T0 relationship is
+  present, so the relationship collection is empty.
+- Capacity remains `UNKNOWN`; ranking and GraphDelta references remain null.
+  Generated-output privacy and review states remain unapproved, while the
+  runtime privacy manifest retains `LOW_MEDIUM` risk and pending surfaces.
+
+### Files and validation
+
+- Added `src/memoria_viva/canonical.py`, `src/memoria_viva/snapshot.py`,
+  `tests/test_canonical.py`, and `tests/test_snapshot_t0.py`.
+- Exported the bounded public functions from `src/memoria_viva/__init__.py`.
+- The one-argument Snapshot builder resolves only the repository's closed local
+  schema registry for output validation. It accepts no path, reads no fixture
+  file, performs no network retrieval, and copies no schema definition.
+- Ran 58 `unittest` cases and Python bytecode compilation successfully.
+- Two independent processes produced identical 16,192-byte canonical
+  Snapshots, Snapshot identity, state digest, active ordering, and excluded
+  ordering. No artifact was written under `runs/`.
+
+### Scope boundary and next step
+
+- Implemented no trigger transition, Snapshot T1, score, ranking, GraphDelta,
+  RunRecord, oracle comparison, persistence, replay CLI, API, UI, integration,
+  agent, or Phase 1C behavior.
+- Next smallest executable step after review, commit, merge, and explicit
+  authorization: implement the pure trigger application that constructs
+  immutable Snapshot T1 from RuntimeBundle and Snapshot T0, without scoring or
+  output persistence.
