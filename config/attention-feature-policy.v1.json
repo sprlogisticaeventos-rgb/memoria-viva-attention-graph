@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "mv.attention-feature-policy",
+  "version": "1.1.0",
+  "status": "APPROVED_FOR_BOUNDED_REPLAY",
+  "authorized_mode": "REPLAY",
+  "compatible_attention_policy": {
+    "policy_id": "mv_attention_policy",
+    "version": "1.0.0",
+    "required_status": "draft",
+    "effective_at_required": null,
+    "authorization_warning": "Base attention policy is draft and authorized only for bounded Replay Mode; this is not production activation."
+  },
+  "ontology_version": "1.0.0",
+  "component_rules": {
+    "temporal_urgency": {
+      "precedence": [
+        "ACTIVE_CONSTRAINED_DEADLINE",
+        "EXPLICIT_COMMITMENT_DUE_TIME",
+        "LINEAGE_CALENDAR_WINDOWS",
+        "CALENDAR_ONLY_WINDOW",
+        "UNRESOLVED_CARRYOVER_LIFECYCLE"
+      ],
+      "unresolved_missed_or_past_interval": 1.0,
+      "deadline_bands": [
+        {"maximum_hours": 0, "value": 1.0},
+        {"maximum_hours": 24, "value": 0.95},
+        {"maximum_hours": 72, "value": 0.8},
+        {"maximum_hours": 168, "value": 0.6},
+        {"maximum_hours": null, "value": 0.4}
+      ],
+      "crosses_snapshot": 0.85,
+      "future_start_bands": [
+        {"maximum_hours": 24, "value": 0.75},
+        {"maximum_hours": 72, "value": 0.55},
+        {"maximum_hours": 168, "value": 0.35},
+        {"maximum_hours": null, "value": 0.2}
+      ],
+      "no_defensible_evidence": "UNKNOWN"
+    },
+    "downstream_impact": {
+      "source_field": "displacement_cost.level",
+      "values": {"VERY_HIGH": 1.0, "HIGH": 0.8, "MEDIUM_HIGH": 0.65, "MEDIUM": 0.5, "LOW": 0.25, "NONE": 0.0},
+      "calendar_only_mobility_fallback": {
+        "scope": "CALENDAR_ONLY",
+        "only_when_explicit_impact_absent": true,
+        "values": {
+          "PROTECTED": {"impact_level": "HIGH", "normalized_value": 0.8},
+          "NEEDS_CONFIRMATION": {"impact_level": "MEDIUM_HIGH", "normalized_value": 0.65},
+          "FLEXIBLE": {"impact_level": "LOW", "normalized_value": 0.25},
+          "DISPLACEABLE": {"impact_level": "LOW", "normalized_value": 0.25},
+          "CANCELABLE": {"impact_level": "NONE", "normalized_value": 0.0}
+        },
+        "missing_or_unsupported": "UNKNOWN",
+        "ranking_ineligible_excluded": true
+      },
+      "missing_or_ambiguous": "UNKNOWN",
+      "title_inference_forbidden": true,
+      "oracle_inference_forbidden": true,
+      "protection_bonus_forbidden": true
+    },
+    "strategic_alignment": {
+      "trigger_created_direct": 1.0,
+      "operational_direct": 0.85,
+      "calendar_direct": 0.7,
+      "context_supported_indirect": 0.5,
+      "missing_relation": "UNKNOWN",
+      "goal_identity_neutral": true
+    },
+    "conflict_or_displacement": {
+      "precedence": [
+        "INITIATES_SUPPORTED_CONFLICT_OR_DISPLACEMENT",
+        "CONDITIONAL_DISPLACEABLE_TARGET_NOT_EXECUTED",
+        "OTHER_UNRESOLVED_CONFLICT_TARGET",
+        "CONFIRMATION_AUTHORITY_INCOMPLETE",
+        "NO_SUPPORTED_CONDITION"
+      ],
+      "initiates_supported_conflict_or_displacement": 1.0,
+      "conditional_displaceable_target_not_executed": 0.0,
+      "other_unresolved_conflict_target": 0.6,
+      "confirmation_authority_incomplete": 0.4,
+      "no_supported_condition": 0.0,
+      "coexistence_inference_forbidden": true,
+      "conditional_is_executed": false
+    },
+    "event_novelty": {
+      "trigger_created": 1.0,
+      "preexisting_own_state_materially_updated": 0.5,
+      "relationship_only_update": 0.0,
+      "preexisting_unchanged": 0.0,
+      "t0_existing": 0.0,
+      "material_own_state_fields": [
+        "lifecycle",
+        "mobility",
+        "eligibility",
+        "authority",
+        "protection",
+        "condition_state",
+        "execution_state",
+        "active_constraint_membership",
+        "verified_object_status"
+      ],
+      "oracle_direction_input_forbidden": true
+    },
+    "evidence_confidence": {
+      "epistemic_caps": {"confirmed": 1.0, "approximate": 0.8, "inferred": 0.65, "uncertain": 0.4, "blocked": "UNKNOWN"},
+      "per_reference_method": "MIN_NUMERIC_CONFIDENCE_AND_EPISTEMIC_CAP",
+      "aggregate_method": "MINIMUM",
+      "no_evidence": "UNKNOWN",
+      "unresolved_reference": "VALIDATION_FAILURE"
+    }
+  },
+  "unknown_behavior": {
+    "unknown_token": "UNKNOWN",
+    "numeric_default_forbidden": true,
+    "score_when_required_component_unknown": "DO_NOT_COMPUTE",
+    "item_status": "NEEDS_CONFIRMATION",
+    "oracle_assertion_result": "BLOCKED",
+    "expose_missing_component": true,
+    "expose_evidence_gap": true
+  },
+  "evidence_aggregation": {"required_reference_resolution": "ALL", "numeric_method": "MINIMUM", "epistemic_cap_applied_before_aggregation": true, "average_forbidden": true},
+  "due_time_extraction": {
+    "precedence": ["ACTIVE_CONSTRAINED_DEADLINE", "EXPLICIT_COMMITMENT_DUE_TIME", "LINEAGE_CALENDAR_WINDOWS", "CALENDAR_ONLY_WINDOW", "UNRESOLVED_CARRYOVER_LIFECYCLE"],
+    "unknown_result": null,
+    "null_sort": "LAST"
+  },
+  "protection_guardrail": {"numeric_bonus": 0, "protected_band_precedes_standard": true, "bands": ["PROTECTED", "STANDARD"]},
+  "dependency_precedence": {"enabled_within_same_band": true, "numeric_bonus": 0, "relationship_type": "depends_on", "prerequisite_before_dependent": true, "cross_band_application": false},
+  "confirmation_behavior": {"numeric_bonus": 0, "creates_protected_band": false, "status": "needs_confirmation", "requires_approval_reference": true},
+  "deterministic_ranking_order": ["BAND_PROTECTED_BEFORE_STANDARD", "DEPENDENCY_PREREQUISITE_BEFORE_DEPENDENT_WITHIN_BAND", "UNROUNDED_SCORE_DESCENDING", "EFFECTIVE_DUE_TIME_ASCENDING_NULL_LAST", "ATTENTION_ITEM_ID_ASCENDING"],
+  "rounding": {"mode": "ROUND_HALF_UP", "decimal_places": 2, "apply_to": "DISPLAY_SCORE_ONLY", "internal_ranking_uses_unrounded_score": true},
+  "policy_change_authority": {"authority": "human_product_owner", "human_approval_required": true, "new_version_required": true}
+}
