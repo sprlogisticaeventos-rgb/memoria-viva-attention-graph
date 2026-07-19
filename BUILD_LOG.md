@@ -219,3 +219,35 @@ RunRecords, not in this file.
   authorization, perform the Git-aware `goal-hackathon.json` →
   `public-goals.json` migration and construct only the approved Phase 0C2
   sanitized fixture and human oracle.
+
+## MV-BUILD-005 — Lineage mapping provenance correction
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-0d-lineage-contract-fix` |
+| Starting commit | `7942371` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Targeted contract correction — lineage mapping provenance only |
+| Status | `STAGED_FOR_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Correction
+
+- Added required `explanation`, `creator_type`, and `ontology_version` fields to
+  the canonical shared `lineage_mapping` definition.
+- Reused the existing `relationship_explanation` and
+  `relationship_creator_type` definitions and preserved the approved derivation
+  vocabulary, closed-object rule, stable schema identity, and all existing
+  lineage semantics.
+
+### Validation and boundary
+
+- Parsed repository JSON, validated schemas and references, and exercised
+  positive and required-field rejection examples for the corrected mapping.
+- Confirmed dependent schemas remain valid and no fixture, policy, handoff,
+  product implementation, or Phase 0C2 payload was changed.
+- Phase 0C2 remains paused until this targeted correction is reviewed,
+  committed, merged, and separately authorized for resumption.

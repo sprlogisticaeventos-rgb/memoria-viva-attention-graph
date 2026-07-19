@@ -314,7 +314,10 @@
         "title_similarity_only": {"type": "boolean", "const": false},
         "confidence": {"$ref": "#/$defs/confidence_score"},
         "uncertainty": {"$ref": "#/$defs/uncertainty"},
-        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"}
+        "evidence_refs": {"$ref": "#/$defs/nonempty_evidence_refs"},
+        "explanation": {"$ref": "#/$defs/relationship_explanation"},
+        "creator_type": {"$ref": "#/$defs/relationship_creator_type"},
+        "ontology_version": {"type": "string", "minLength": 1}
       },
       "required": [
         "mapping_id",
@@ -325,7 +328,10 @@
         "title_similarity_only",
         "confidence",
         "uncertainty",
-        "evidence_refs"
+        "evidence_refs",
+        "explanation",
+        "creator_type",
+        "ontology_version"
       ],
       "additionalProperties": false
     },
