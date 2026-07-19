@@ -818,3 +818,91 @@ unrounded internal scores.
 - Next smallest task after review and commit is a separate read-only boundary
   decision for an explicit replay CLI and local ignored persistence, without
   adding model calls or a service architecture.
+
+## MV-BUILD-014 — Phase 2 judge-ready replay experience
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-19 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/phase-2-demo` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Phase 2 — CLI, presentation, Streamlit, and explanation layer |
+| Status | `STAGED_FOR_LOCAL_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Objective and judge path
+
+- Added one bounded judge path around the unchanged deterministic replay core:
+  a no-write-by-default CLI, an immutable public-safe presentation adapter,
+  and a single-page Streamlit experience centered on **Run deterministic
+  replay**. The story is presented as before, external event, after, and why
+  attention changed, while technical receipts remain available separately.
+- The CLI prints a concise replay summary or a deterministic JSON projection.
+  An explicit export is restricted to a caller-selected directory beneath
+  `runs/`, uses canonical JSON and atomic replacement, and refuses overwrite
+  unless `--force` is supplied. Exported artifacts remain unapproved for
+  publication.
+- The presentation adapter derives all display state from `ReplayResult` and
+  committed public-safe metadata. It exposes rank movement, all seven
+  GraphDelta categories, evidence and uncertainty, oracle status, receipts,
+  warnings, and publication state without exposing mutable core objects,
+  filesystem paths, credentials, or private source data.
+
+### Explanation boundary and dependencies
+
+- Added the closed Draft 2020-12 DecisionBrief contract and an optional
+  GPT-5.6 explanation adapter using the official OpenAI Python SDK Responses
+  API with strict structured output. The model receives only the sanitized
+  DemoViewModel explanation projection and cannot alter deterministic state,
+  scores, rankings, GraphDelta, or claims.
+- GPT generation is user-triggered and never runs during import or initial
+  render. Environment credentials take precedence; `.env.local` is a local
+  non-overriding fallback and Streamlit secrets remain server-side. Missing
+  credentials, API failure, timeout, or invalid output leaves the replay fully
+  usable and returns a non-secret diagnostic with the always-available
+  **Deterministic Engine Brief**.
+- Declared the tested Python 3.12 demo dependency set through the editable
+  local package target `-e .[demo]`, preserving repository-relative canonical
+  contracts and fixture loading in both local and Streamlit environments:
+  `jsonschema==4.26.0`, `openai==2.46.0`, `python-dotenv==1.2.2`, and
+  `streamlit==1.54.0`. No framework, data library, graph library, or second AI
+  SDK was added.
+
+### Validation, publication, and next action
+
+- Added CLI, presentation, explainer, and Streamlit tests, including export
+  containment, immutability, deterministic JSON, no-secret behavior, mocked
+  Responses API structured output, failure fallback, no model call on initial
+  render, and Streamlit AppTest coverage. The complete suite contains 197
+  tests; bytecode compilation, schema registration, clean dependency install,
+  CLI smoke, and local Streamlit health checks were included in the gate.
+- The known Snapshot, ranking, GraphDelta, RunRecord, and Replay identities and
+  digests remain unchanged. The deterministic engine still passes all three
+  human-oracle comparisons. No core module, fixture, base or feature policy,
+  existing contract, ontology, blueprint, or privacy contract changed.
+- No paid or live GPT-5.6 request was made. Status remains
+  `LIVE_GPT_5_6_SMOKE_PENDING`. No deployment occurred, no persistent output
+  remains under `runs/`, and `PUBLIC_FIXTURE`, `REPOSITORY_DOCS`, `DEMO_UI`,
+  `DEMO_VIDEO`, and `DEVPOST_SUBMISSION` remain `PENDING`.
+- Next exact action after commit is local founder review: run the CLI, inspect
+  the four Streamlit tabs, explicitly request one GPT-5.6 brief, and review the
+  rendered public surface before any deployment or publication authorization.
+
+### Live GPT-5.6 smoke and wording clarification
+
+- `LIVE_GPT_5_6_SMOKE: PASS`. This supersedes the earlier pending smoke status.
+  The explicit founder-run request preserved exact rankings and displayed
+  scores; `PLANNED`, `UNKNOWN`, and `NOT_EXECUTED` execution states;
+  conditional displacement as not executed; confirmation and approval
+  requirements; uncertainty; evidence boundaries; and deterministic-engine
+  authority.
+- Clarified the explanation instruction boundary: the conditional displacement
+  relationship is authorized and established, while its execution remains
+  `UNKNOWN`. Explanations must not say that no conditional relationship exists;
+  they must state that conditional movement was not executed or that execution
+  remains unknown.
+- No schema, model, deterministic core semantic, ranking, evidence, validation,
+  fixture, policy, GraphDelta, or UI behavior changed. No additional live API
+  request was made during this correction.
