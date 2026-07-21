@@ -18,7 +18,7 @@ private path, or external source material.
 
 | Current validation | Status |
 |---|---|
-| Unit tests | `255 PASSING` |
+| Unit tests | `260 PASSING` |
 | CLI smoke | `PASS` |
 | Streamlit local smoke | `PASS` |
 | Deployed smoke | `PASS` |
