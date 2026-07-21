@@ -18,15 +18,45 @@ private path, or external source material.
 
 | Current validation | Status |
 |---|---|
-| Unit tests | `255 PASSING` |
+| Unit tests | `260 PASSING` |
 | CLI smoke | `PASS` |
 | Streamlit local smoke | `PASS` |
 | Deployed smoke | `PASS` |
 | Public app access | `PASS` |
-| Live GPT-5.6 smoke | `PASS` |
+| Live GPT-5.6 recommendations | `PASS` |
 | Ranking-before oracle | `PASS` |
 | Ranking-after oracle | `PASS` |
 | GraphDelta oracle | `PASS` |
+
+## Submission status
+
+```text
+DEMO_UI: APPROVED
+PUBLIC_APP_ACCESS: PASS
+DEPLOYED_SMOKE: PASS
+LIVE_GPT_5_6_RECOMMENDATIONS: PASS
+RESPONSIVE_REVIEW: PASS
+TESTS: 260 PASS
+ORACLE_CHECKS: 3/3 PASS
+CODE_FREEZE: ACTIVE
+
+REPLAY_RESULT_DIGEST:
+sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15
+
+PUBLIC_REPLAY_JSON_HASH:
+4c74a94a7fd9258b16129edb8952b306975d0d99e4c1750653f744d2f2837bca
+
+DEMO_VIDEO: PENDING
+CODEX_FEEDBACK_SESSION_ID: PENDING
+DEVPOST_SUBMISSION: PENDING
+FINAL_COMPLIANCE_REVIEW: PENDING
+```
+
+The Streamlit application is publicly deployed and has passed no-login,
+responsive, deterministic-replay, and live GPT-5.6 recommendation smoke
+testing. This operational validation does not broaden canonical artifact or
+publication authority: every surface or artifact marked `PENDING` by the replay
+or privacy contract remains `PENDING` until its separate review is completed.
 
 ## 1. Product statement
 
@@ -43,7 +73,7 @@ results; it does not determine or modify them.
 
 A guided decision workspace is the primary interface. **What should happen
 next?** is selected on first load, so a bounded deterministic action is always
-visible. On desktop, a 38/62 composition keeps Goal, grounding, and a compact
+visible. On desktop, a 42/58 composition keeps Goal, grounding, and a compact
 attention map in the left context rail while the verified question and answer
 remain dominant on the right. Narrow screens place the question and answer
 first. There is no open-ended chat history, and the selected question never
@@ -243,7 +273,7 @@ RunRecord, replay determinism, CLI export controls, public-safe presentation,
 deterministic intent routing, immutable grounded answers, mocked strict GPT
 output, safe fallback behavior, Graphviz story rendering, and guided Streamlit
 rendering. No automated test makes a paid API request. The final UX validation
-suite contains **255 passing tests**.
+suite contains **260 passing tests**.
 
 ## 13. Codex collaboration
 
@@ -296,7 +326,7 @@ Current deployment validation:
 - `DEMO_UI: APPROVED`
 - `PUBLIC_APP_ACCESS: PASS`
 - `DEPLOYED_SMOKE: PASS`
-- `LIVE_GPT_5_6_SMOKE: PASS`
+- `LIVE_GPT_5_6_RECOMMENDATIONS: PASS`
 
 For a future deployment update:
 

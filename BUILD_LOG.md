@@ -1219,3 +1219,41 @@ unrounded internal scores.
   compact graph, both GPT-eligible questions, one forced GPT failure, narrow
   stacking order, and the full-width inspector before authorizing commit and a
   deployed-surface review.
+
+## MV-BUILD-020 — Final deployed-demo validation and submission readiness
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-21 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/submission-metadata` |
+| Milestone | Submission metadata and code freeze |
+| Status | `DOCUMENTATION_READY_FOR_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Deployed validation
+
+- The Streamlit application is publicly deployed and passed no-login public
+  access, deployed smoke, responsive desktop/narrow review, deterministic
+  replay, and both live GPT-5.6 recommendation paths.
+- `DEMO_UI: APPROVED`, `PUBLIC_APP_ACCESS: PASS`,
+  `DEPLOYED_SMOKE: PASS`, `LIVE_GPT_5_6_RECOMMENDATIONS: PASS`, and
+  `RESPONSIVE_REVIEW: PASS`.
+- `TESTS: 260 PASS`, `ORACLE_CHECKS: 3/3 PASS`, and `CODE_FREEZE: ACTIVE`.
+- ReplayResult digest:
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- Public replay JSON hash:
+  `4c74a94a7fd9258b16129edb8952b306975d0d99e4c1750653f744d2f2837bca`.
+
+### Submission and publication boundaries
+
+- `DEMO_VIDEO: PENDING`, `CODEX_FEEDBACK_SESSION_ID: PENDING`,
+  `DEVPOST_SUBMISSION: PENDING`, and `FINAL_COMPLIANCE_REVIEW: PENDING`.
+- Public deployment and smoke validation do not authorize any canonical
+  artifact or publication surface that remains `PENDING` in the replay or
+  privacy contract. No Session ID, video URL, Devpost URL, or compliance
+  approval is claimed.
+- This milestone changes documentation only. It does not modify application
+  behavior, canonical replay output, dependencies, fixtures, policies, schemas,
+  tests, or any deterministic core module.
