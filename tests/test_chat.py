@@ -141,7 +141,8 @@ def _view() -> dict[str, object]:
             "CONFLICTED": [],
             "DISPLACED": [
                 {
-                    "affected_id": "CMT-04",
+                    "affected_id": "REL-CMT-01-DISPLACES-CMT-04",
+                    "label": "Public product demonstration ready displaces Pending bounded validation",
                     "execution_state": "UNKNOWN",
                     "conditionality": "CONDITIONAL",
                     "condition": "Review capacity and obtain human approval.",
