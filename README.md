@@ -38,7 +38,7 @@ LIVE_GPT_5_6_RECOMMENDATIONS: PASS
 RESPONSIVE_REVIEW: PASS
 TESTS: 260 PASS
 ORACLE_CHECKS: 3/3 PASS
-CODE_FREEZE: ACTIVE
+CODE_FREEZE: FINAL
 
 REPLAY_RESULT_DIGEST:
 sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15
@@ -50,8 +50,11 @@ REPOSITORY_DOCS: REVIEWED
 DEMO_VIDEO: READY
 DEMO_VIDEO_URL: https://youtu.be/a7Ri_qCfxc0
 CODEX_FEEDBACK_SESSION_ID: CAPTURED
-DEVPOST_SUBMISSION: PENDING
-FINAL_COMPLIANCE_REVIEW: PENDING
+DEVPOST_SUBMISSION: SUBMITTED
+DEVPOST_PROJECT_STATE: PUBLISHED
+DEVPOST_PROJECT_URL: https://devpost.com/software/memoria-viva
+SUBMISSION_CONFIRMATION: RECEIVED
+FINAL_SUBMISSION_REVIEW: COMPLETED
 ```
 
 The Streamlit application is publicly deployed and has passed no-login,
@@ -259,7 +262,8 @@ evidence is not official-rule authority.
 - `DEMO_UI` is `APPROVED`; `PUBLIC_APP_ACCESS` and `DEPLOYED_SMOKE` are `PASS`.
 - `REPOSITORY_DOCS` is `REVIEWED`.
 - `DEMO_VIDEO` is `READY` at <https://youtu.be/a7Ri_qCfxc0>.
-- `DEVPOST_SUBMISSION` and `FINAL_COMPLIANCE_REVIEW` remain `PENDING`.
+- `DEVPOST_SUBMISSION` is `SUBMITTED`, the public project is `PUBLISHED`, and
+  `FINAL_SUBMISSION_REVIEW` is `COMPLETED`.
 
 Approval is surface-specific and does not extend beyond the statuses above.
 See [`docs/privacy.md`](docs/privacy.md) and the fixture privacy manifest.
@@ -316,9 +320,10 @@ streamlit_app.py              one-page judge demo
   guided deterministic answer.
 - No real Gmail, Calendar, database, authentication, agents, scheduler, or
   external writes.
-- Compliance, submission completion, Goal completion, executed displacement,
-  and publication approval beyond the existing bounded sanitized surfaces
-  remain unclaimed.
+- Goal completion, executed displacement, and publication approval beyond the
+  existing bounded sanitized surfaces remain unclaimed. The submitted and
+  published Devpost state is an external release receipt, not a semantic
+  product-completion claim.
 
 ## 16. Deployment instructions
 
@@ -355,13 +360,17 @@ Streamlit deployment, no-login access, deterministic replay, GPT-5.6 brief, and
 sanitized JSON download have passed human smoke review. `PUBLIC_FIXTURE` and
 `DEMO_UI` are approved within their bounded sanitized scopes.
 
-`REPOSITORY_DOCS` is `REVIEWED`. `DEMO_VIDEO` is `READY` at
-<https://youtu.be/a7Ri_qCfxc0>. `DEVPOST_SUBMISSION` remains `PENDING` until the
-human submits it, and `FINAL_COMPLIANCE_REVIEW` remains `PENDING`.
+The OpenAI Build Week submission was successfully submitted, the public
+Devpost project is published at
+<https://devpost.com/software/memoria-viva>, and the confirmation email was
+received. Repository documentation, the public demo, the public video at
+<https://youtu.be/a7Ri_qCfxc0>, and the privately supplied `/feedback` Session
+ID requirements were completed.
 
-Official hackathon sources have been captured as evidence. Compliance remains
-unverified pending final implementation artifacts, current-source recheck, and
-human review. See [`docs/hackathon/`](docs/hackathon/RULES_BASELINE.md).
+Surface-specific privacy restrictions remain in force. Submission does not
+authorize raw private evidence or any publication surface outside the approved
+sanitized scope. Official hackathon sources remain captured as evidence; see
+[`docs/hackathon/`](docs/hackathon/RULES_BASELINE.md).
 
 ## 18. Canonical sources
 
