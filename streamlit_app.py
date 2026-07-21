@@ -1,4 +1,4 @@
-"""One-page judge demo for the deterministic Memoria Viva replay."""
+"""Chat-first judge demo for the deterministic Memoria Viva replay."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from typing import Any, Mapping
 import streamlit as st
 
 from memoria_viva.canonical import canonical_json_bytes
+from memoria_viva.chat import SUGGESTED_PROMPTS, answer_question
 from memoria_viva.explainer import (
     DEFAULT_OPENAI_MODEL,
     create_openai_client,
@@ -25,24 +26,136 @@ st.set_page_config(
 
 def main() -> None:
     _styles()
+    _ensure_demo_session()
+    session: DemoSession = st.session_state.demo_session
+    view = session.view_model.to_plain_json()
+
     st.title("Memoria Viva")
-    st.subheader("An Attention Graph for Founder Decisions")
-    st.markdown("### Memory stores the past. Attention chooses the next move.")
+    st.markdown("## What deserves your attention now?")
     st.caption(
-        "A new event should not become one more task. It should reveal what "
-        "changed, what must be protected, and what requires attention now."
+        "Ask the current deterministic memory state. The conversation can explain "
+        "rankings, conditions, evidence, and replay receipts, but it cannot change them."
+    )
+    _render_system_status(view)
+    _render_chat()
+
+    st.divider()
+    with st.expander("Inspect deterministic system", expanded=False):
+        _render_inspector(st.session_state.demo_session)
+
+    session = st.session_state.demo_session
+    st.download_button(
+        "Download sanitized replay summary",
+        data=canonical_json_bytes(session.view_model.download_projection()),
+        file_name="memoria-viva-sanitized-replay-summary.json",
+        mime="application/json",
+        use_container_width=True,
+    )
+    st.caption(
+        "This branch changes the conversational presentation layer only. The "
+        "deterministic engine and surface-specific publication gates remain authoritative."
     )
 
+
+def _ensure_demo_session() -> None:
     if "demo_session" not in st.session_state:
         st.session_state.demo_session = run_canonical_demo(repository_root())
+    st.session_state.setdefault("chat_messages", [])
+
+
+def _render_system_status(view: Mapping[str, Any]) -> None:
+    graph_change_count = sum(
+        len(items) for items in view["graph_delta_by_category"].values()
+    )
+    verified = all(status == "PASS" for status in view["oracle_statuses"].values())
+    verification_label = "Replay verified" if verified else "Replay requires review"
+    st.caption(
+        f"{view['headline_metrics']['attention_items_after']} attention items · "
+        f"{graph_change_count} graph changes · {verification_label}"
+    )
+
+
+def _render_chat() -> None:
+    history: list[dict[str, Any]] = st.session_state.chat_messages
+    if not history:
+        st.info(
+            "The system is ready. Start with a suggested question or ask in your own words."
+        )
+
+    for index, message in enumerate(history):
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+            if message["role"] == "assistant":
+                verified = (
+                    "Replay verified"
+                    if message["replay_verified"]
+                    else "Replay requires review"
+                )
+                st.caption(
+                    f"Based on: {message['source_count']} evidence refs · "
+                    f"{message['graph_change_count']} graph changes · {verified}"
+                )
+                with st.expander(f"Inspect answer evidence · turn {index + 1}"):
+                    if message["evidence_refs"]:
+                        st.code("\n".join(message["evidence_refs"]), language=None)
+                    else:
+                        st.write("No evidence reference was required for this response.")
+                    st.caption(f"Replay digest: {message['replay_digest']}")
+
+    st.markdown("**Suggested**")
+    suggestion_columns = st.columns(3)
+    selected_prompt: str | None = None
+    for index, prompt in enumerate(SUGGESTED_PROMPTS):
+        if suggestion_columns[index % 3].button(
+            prompt,
+            key=f"suggested-prompt-{index}",
+            use_container_width=True,
+        ):
+            selected_prompt = prompt
+
+    typed_prompt = st.chat_input("Ask anything about the current memory state...")
+    prompt = typed_prompt or selected_prompt
+    if prompt:
+        _submit_chat_prompt(prompt)
+
+
+def _submit_chat_prompt(prompt: str) -> None:
+    if "replay" in prompt.casefold() or "reproducir" in prompt.casefold():
+        st.session_state.demo_session = run_canonical_demo(repository_root())
+
+    session: DemoSession = st.session_state.demo_session
+    response = answer_question(prompt, session.view_model.to_plain_json()).to_plain_json()
+    st.session_state.chat_messages.append(
+        {
+            "role": "user",
+            "content": prompt,
+        }
+    )
+    st.session_state.chat_messages.append(
+        {
+            "role": "assistant",
+            "content": response["answer"],
+            "intent": response["intent"],
+            "evidence_refs": response["evidence_refs"],
+            "replay_digest": response["replay_digest"],
+            "source_count": response["source_count"],
+            "graph_change_count": response["graph_change_count"],
+            "replay_verified": response["replay_verified"],
+        }
+    )
+    st.rerun()
+
+
+def _render_inspector(session: DemoSession) -> None:
+    view = session.view_model.to_plain_json()
     if st.button(
         "Run deterministic replay",
         type="primary",
         use_container_width=True,
+        key="inspector-replay",
     ):
         st.session_state.demo_session = run_canonical_demo(repository_root())
-    session: DemoSession = st.session_state.demo_session
-    view = session.view_model.to_plain_json()
+        st.rerun()
 
     metrics = view["headline_metrics"]
     columns = st.columns(4)
@@ -69,18 +182,6 @@ def main() -> None:
         _render_evidence(view)
     with proof:
         _render_proof(view)
-
-    st.download_button(
-        "Download sanitized replay summary",
-        data=canonical_json_bytes(session.view_model.download_projection()),
-        file_name="memoria-viva-sanitized-replay-summary.json",
-        mime="application/json",
-        use_container_width=True,
-    )
-    st.caption(
-        "This generated view is sanitized but not publication-approved. All "
-        "public surfaces remain PENDING."
-    )
 
 
 def _render_shift(view: Mapping[str, Any]) -> None:
@@ -158,7 +259,7 @@ def _render_why(view: Mapping[str, Any], session: DemoSession) -> None:
     )
     digest = view["replay_digest"]
     cache = st.session_state.setdefault("gpt_decision_briefs", {})
-    if st.button("Generate GPT-5.6 Decision Brief"):
+    if st.button("Generate GPT-5.6 Decision Brief", key="gpt-decision-brief"):
         if digest not in cache:
             api_key, model = _resolve_openai_config()
             client = create_openai_client(api_key) if api_key else None
@@ -315,9 +416,10 @@ def _styles() -> None:
     st.markdown(
         """
         <style>
-        .block-container {max-width: 1220px; padding-top: 2rem;}
+        .block-container {max-width: 1080px; padding-top: 2rem;}
         [data-testid="stMetric"] {border: 1px solid #d9dee7; border-radius: 10px; padding: 12px;}
         [data-testid="stExpander"] {border-color: #d9dee7;}
+        [data-testid="stChatMessage"] {border: 1px solid #e6e9ef; border-radius: 14px; padding: 0.35rem 0.7rem;}
         </style>
         """,
         unsafe_allow_html=True,
