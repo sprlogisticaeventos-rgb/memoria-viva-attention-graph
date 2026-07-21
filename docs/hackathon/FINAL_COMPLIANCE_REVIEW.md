@@ -4,10 +4,10 @@
 
 | Field | Value |
 |---|---|
-| Review timestamp | `2026-07-21T22:18:23Z` |
+| Review timestamp | `2026-07-21T22:54:41Z` |
 | Project | Memoria Viva — Attention Graph for Founder Decisions |
-| Branch | `build-week/final-repo-reconciliation` |
-| Reviewed base commit | `8dfaa0db1da6222ceb3bb76adc63b9336b70066d` |
+| Branch | `build-week/final-repo-reconciliation-2` |
+| Reviewed base commit | `c2039595e9d33b875141c810c0c5b99ee4b13632` |
 | Track | Work & Productivity |
 | Record type | Internal final implementation/submission compliance review |
 
@@ -20,10 +20,10 @@ documentation are supplemental sources; the Rules control any conflict.
 ## Current-source recheck
 
 Official Rules, FAQ, Updates, Dates, and the supported-country source were
-accessed read-only during final reconciliation. No rule was found that
-contradicts the submitted browser project. The previously recorded
-Rules-versus-Schedule judging-window discrepancy remains unresolved, so the
-more conservative access window remains an internal control.
+accessed read-only again at `2026-07-21T22:54:41Z`. No material source change
+or rule was found that contradicts the submitted browser project. The
+previously recorded Rules-versus-Schedule judging-window discrepancy remains
+unresolved, so the more conservative access window remains an internal control.
 
 The recheck identified three obligations that were not indexed in the original
 repository baseline. The available historical capture cannot establish whether
@@ -37,6 +37,21 @@ are now recorded without rewriting the 2026-07-18 capture:
   attestation remains required.
 
 See append-only [RULE_CHANGELOG.md](RULE_CHANGELOG.md).
+
+## Repository-integrity reconciliation
+
+The first reconciliation was validated locally at commit
+`a59862228dd9b4c65c6b543328ada73e69e536a7` and merged remotely through pull
+request 6 at `c2039595e9d33b875141c810c0c5b99ee4b13632`. A byte-level comparison found
+that nine of the ten intended files matched exactly, while `BUILD_LOG.md` had
+been truncated during authenticated remote reconstruction. This second review
+restored `BUILD_LOG.md` byte-for-byte from the validated local commit before
+appending the next sequential entry. No earlier `MV-BUILD` record was edited.
+
+The incident affected repository documentation only. Application behavior,
+deterministic semantics, schemas, fixtures, policies, scores, rankings,
+GraphDelta, RunRecord, ReplayResult, oracle expectations, GPT behavior, and
+deployment behavior were unchanged.
 
 ## Final public surfaces
 
@@ -52,6 +67,12 @@ See append-only [RULE_CHANGELOG.md](RULE_CHANGELOG.md).
 
 The primary Codex `/feedback` Session ID was captured and provided privately
 in Devpost. Its literal value is not stored here.
+
+A logged-out browser recheck loaded the repository, demo, video, and Devpost
+URLs. The GitHub page metadata currently contains an unprofessional repository
+description that does not come from a tracked file. Correcting repository
+settings requires separate owner action; the literal text is intentionally not
+repeated in this record.
 
 ## Technical receipts
 
