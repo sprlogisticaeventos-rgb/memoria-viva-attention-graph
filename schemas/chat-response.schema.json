@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:memoria-viva:attention-graph:schema:chat-response:1.0.0",
+  "title": "GroundedChatResponse",
+  "description": "A grounded explanation and next-move recommendation over an immutable deterministic ChatAnswer. Application-controlled receipt fields preserve grounding.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "chat_response_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "answer_id": {
+      "type": "string",
+      "pattern": "^CHAT-ANSWER-[0-9a-f]{20}$"
+    },
+    "replay_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "intent": {
+      "enum": [
+        "CURRENT_ATTENTION",
+        "WHAT_CHANGED",
+        "WHY_ITEM",
+        "PROTECTED_ITEMS",
+        "REQUIRES_CONFIRMATION",
+        "EVIDENCE",
+        "UNKNOWNS",
+        "REPLAY_PROOF",
+        "MEMORY_STATE",
+        "UNSUPPORTED"
+      ]
+    },
+    "what_this_means": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "recommended_next_move": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "approval_or_uncertainty_note": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 400
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+      },
+      "uniqueItems": true
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "approval_required_items": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "chat_response_version",
+    "model",
+    "answer_id",
+    "replay_digest",
+    "intent",
+    "what_this_means",
+    "recommended_next_move",
+    "approval_or_uncertainty_note",
+    "evidence_refs",
+    "unknowns",
+    "approval_required_items"
+  ],
+  "additionalProperties": false
+}
