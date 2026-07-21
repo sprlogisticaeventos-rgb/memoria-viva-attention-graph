@@ -44,10 +44,12 @@ REPLAY_RESULT_DIGEST:
 sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15
 
 PUBLIC_REPLAY_JSON_HASH:
-4c74a94a7fd9258b16129edb8952b306975d0d99e4c1750653f744d2f2837bca
+18be9783b470b0fb738b2c8be82a76b76d302d88346c22443f19346b3cbaeb37
 
-DEMO_VIDEO: PENDING
-CODEX_FEEDBACK_SESSION_ID: PENDING
+REPOSITORY_DOCS: REVIEWED
+DEMO_VIDEO: READY
+DEMO_VIDEO_URL: https://youtu.be/a7Ri_qCfxc0
+CODEX_FEEDBACK_SESSION_ID: CAPTURED
 DEVPOST_SUBMISSION: PENDING
 FINAL_COMPLIANCE_REVIEW: PENDING
 ```
@@ -57,6 +59,8 @@ responsive, deterministic-replay, and live GPT-5.6 recommendation smoke
 testing. This operational validation does not broaden canonical artifact or
 publication authority: every surface or artifact marked `PENDING` by the replay
 or privacy contract remains `PENDING` until its separate review is completed.
+The primary `/feedback` Session ID was captured and provided privately in the
+Devpost submission form; it is not published in this repository.
 
 ## 1. Product statement
 
@@ -253,9 +257,9 @@ evidence is not official-rule authority.
   downloadable JSON. This does not authorize raw private evidence or external
   source material.
 - `DEMO_UI` is `APPROVED`; `PUBLIC_APP_ACCESS` and `DEPLOYED_SMOKE` are `PASS`.
-- `REPOSITORY_DOCS` is `PENDING_FINAL_REVIEW`.
-- `DEMO_VIDEO` and `DEVPOST_SUBMISSION` remain `PENDING`.
-- `FINAL_COMPLIANCE` remains `UNVERIFIED`.
+- `REPOSITORY_DOCS` is `REVIEWED`.
+- `DEMO_VIDEO` is `READY` at <https://youtu.be/a7Ri_qCfxc0>.
+- `DEVPOST_SUBMISSION` and `FINAL_COMPLIANCE_REVIEW` remain `PENDING`.
 
 Approval is surface-specific and does not extend beyond the statuses above.
 See [`docs/privacy.md`](docs/privacy.md) and the fixture privacy manifest.
@@ -284,8 +288,8 @@ oracle isolation, GraphDelta, RunRecord, replay, tests, CLI, and demo.
 The founder retained authority over ontology, policy, privacy, Goals,
 trade-offs, approval boundaries, and public wording. Git history,
 [`DECISIONS.md`](DECISIONS.md), and [`BUILD_LOG.md`](BUILD_LOG.md) preserve that
-evolution. The final primary `/feedback` Session ID remains pending until this
-thread is complete.
+evolution. The primary `/feedback` Session ID was captured and provided
+privately in the Devpost submission form.
 
 ## 14. Repository structure
 
@@ -313,7 +317,8 @@ streamlit_app.py              one-page judge demo
 - No real Gmail, Calendar, database, authentication, agents, scheduler, or
   external writes.
 - Compliance, submission completion, Goal completion, executed displacement,
-  and publication approval remain unclaimed.
+  and publication approval beyond the existing bounded sanitized surfaces
+  remain unclaimed.
 
 ## 16. Deployment instructions
 
@@ -327,6 +332,7 @@ Current deployment validation:
 - `PUBLIC_APP_ACCESS: PASS`
 - `DEPLOYED_SMOKE: PASS`
 - `LIVE_GPT_5_6_RECOMMENDATIONS: PASS`
+- `RESPONSIVE_REVIEW: PASS`
 
 For a future deployment update:
 
@@ -349,9 +355,9 @@ Streamlit deployment, no-login access, deterministic replay, GPT-5.6 brief, and
 sanitized JSON download have passed human smoke review. `PUBLIC_FIXTURE` and
 `DEMO_UI` are approved within their bounded sanitized scopes.
 
-`REPOSITORY_DOCS` remains `PENDING_FINAL_REVIEW`; `DEMO_VIDEO` and
-`DEVPOST_SUBMISSION` remain `PENDING`; and `FINAL_COMPLIANCE` remains
-`UNVERIFIED`.
+`REPOSITORY_DOCS` is `REVIEWED`. `DEMO_VIDEO` is `READY` at
+<https://youtu.be/a7Ri_qCfxc0>. `DEVPOST_SUBMISSION` remains `PENDING` until the
+human submits it, and `FINAL_COMPLIANCE_REVIEW` remains `PENDING`.
 
 Official hackathon sources have been captured as evidence. Compliance remains
 unverified pending final implementation artifacts, current-source recheck, and
@@ -367,3 +373,5 @@ human review. See [`docs/hackathon/`](docs/hackathon/RULES_BASELINE.md).
 
 Attention policy authority is in [`config/`](config/). Contract and product
 decisions are recorded in [`DECISIONS.md`](DECISIONS.md).
+
+This repository is licensed under the [MIT License](LICENSE).
