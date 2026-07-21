@@ -417,7 +417,10 @@ def _answer_fields(
             f"Ranking after: {proof['ranking_after']['id']}",
             f"GraphDelta: {proof['graph_delta']['id']}",
             f"RunRecord: {proof['run_record']['id']}",
-            "The validated suite contains 200 tests at the release baseline.",
+            (
+                "The validated suite contains "
+                f"{proof['validated_test_count']} tests at the release baseline."
+            ),
             "The feature policy is authorized only for bounded Replay Mode.",
         )
         return _fields(

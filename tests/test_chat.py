@@ -156,7 +156,7 @@ class DeterministicChatTests(unittest.TestCase):
         rendered = " ".join(answer.supporting_points)
         self.assertIn("SNAPSHOT-T0-dac640bbb893407fa5df", rendered)
         self.assertIn("SNAPSHOT-T1-8280b33463a480998d3e", rendered)
-        self.assertIn("200 tests", rendered)
+        self.assertIn("260 tests", rendered)
 
     def test_memory_state_reports_verified_membership(self) -> None:
         answer = answer_question("What does the system remember?", self.session)

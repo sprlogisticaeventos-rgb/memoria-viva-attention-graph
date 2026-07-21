@@ -122,3 +122,38 @@ entry.
 - No residence, age, or private address was inferred or recorded from IP,
   machine settings, timezone, Git identity, or another technical signal.
 - Recheck the OpenAI source immediately before final submission.
+
+### MV-RULE-CHANGE-003 — Final source reconciliation additions
+
+| Field | Value |
+|---|---|
+| `change_id` | `MV-RULE-CHANGE-003` |
+| `capture_timestamp` | `2026-07-21T22:08:15Z` |
+| `source_urls` | https://openai.devpost.com/rules |
+| `source_access` | Official Rules: accessible and rechecked read-only during final source reconciliation |
+| `authority` | `official_rules` |
+| `new_rule_ids` | `BW-RULE-057`; `BW-RULE-058`; `BW-RULE-059` |
+| `amended_rule_ids` | `null` — historical records remain unchanged |
+| `superseded_rule_ids` | `null` |
+| `change_type` | `ADDED` — records added to the repository index; no claim is made that the official page changed |
+| `material_inconsistencies` | None detected between these three rules and the submitted browser architecture; human-only facts remain unresolved rather than inferred |
+| `unresolved_ambiguities` | Entrant-wide submission count and financial or preferential support status require privacy-safe human confirmation |
+| `impact` | Adds conditional controls to the requirements matrix and final compliance review; no product, runtime, fixture, schema, policy, or submission behavior changed |
+| `status` | Source records `EVIDENCED`; proprietary-hardware condition `NOT_APPLICABLE`; multiple-submission and financial-support controls require human confirmation |
+| `next_scheduled_recheck` | Monitor Official Rules and official notices through the 2026-07-22T00:00:00Z submission deadline |
+
+#### Newly indexed records
+
+1. `BW-RULE-057` records the Multiple Submissions condition. It remains
+   `HUMAN_CONFIRMATION_REQUIRED` unless final Devpost evidence establishes
+   that the Entrant submitted only this one project.
+2. `BW-RULE-058` records the possible physical-access requirement for
+   proprietary or uncommon hardware. It is `NOT_APPLICABLE` because Memoria
+   Viva runs in a normal browser and requires no such hardware.
+3. `BW-RULE-059` records the Financial or Preferential Support restriction. It
+   remains `HUMAN_ATTESTATION_REQUIRED`; no financial details belong in Git.
+
+These records were identified during final source reconciliation. The
+available historical capture does not establish whether the official wording
+was added after 2026-07-18 or was present then and omitted from the repository
+baseline, so this entry makes no page-change claim.
