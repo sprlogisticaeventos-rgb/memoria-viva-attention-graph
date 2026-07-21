@@ -1,5 +1,19 @@
 # Hackathon Rules Baseline
 
+## Current-state framing
+
+This file is the historical official-source evidence index. It preserves the
+original captures, authority relationships, ambiguities, and later source
+records; it is not the current implementation or submission status report.
+Final compliance status is maintained in
+[`REQUIREMENTS_MATRIX.md`](REQUIREMENTS_MATRIX.md) and
+[`FINAL_COMPLIANCE_REVIEW.md`](FINAL_COMPLIANCE_REVIEW.md).
+
+The sentence “No compliance requirement is `VERIFIED`” in the original
+capture-status record below describes the 2026-07-18 capture stage only. It
+does not describe the final submitted project's current state. Historical
+observations and timestamps remain unchanged.
+
 ## Capture status
 
 `EVIDENCED` — the three initial official sources and two authorized amendment
@@ -157,6 +171,9 @@ status, supersession link, ambiguity, and notes.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | `BW-RULE-055` Supported countries and territories | `official_openai_documentation` | https://developers.openai.com/api/docs/supported-countries — `Supported countries and territories` | “currently support access” | The current OpenAI source identifies countries and territories supporting API service access. | Official Rules make current supported-country residence part of eligibility; the list is dynamic and must be rechecked before final submission. | `HUMAN_ELIGIBILITY_ATTESTATION_REQUIRED`: human confirms country of legal residence, age-of-majority eligibility, and absence of applicable exclusions; no private address is recorded. | `2026-07-18T19:01:58Z` | `2026-07-18T19:01:58Z` | `EVIDENCED` | `null` | The list can change after observation. | Reached through the Official Rules link; the complete list is intentionally not copied into the repository. |
 | `BW-RULE-056` Official Schedule judging period | `official_schedule` | https://openai.devpost.com/details/dates — `Schedule` | “Judging ... August 09” | Official Schedule shows judging from 2026-07-22 09:00 PDT through 2026-08-09 17:00 PDT. | Official Rules remain controlling at 2026-07-22 10:00 PDT through 2026-08-05 17:00 PDT; the discrepancy is not reconciled. | Conservative internal control keeps demo, repository access, sample data, and judge test path available through at least 2026-08-12 23:59 PDT (`America/Los_Angeles`). | `2026-07-18T19:01:58Z` | `2026-07-18T19:01:58Z` | `DISPUTED` | `null` | Schedule starts one hour earlier and ends four days later than Official Rules. | Internal availability through end of August 12 is not an official extension of judging. |
+| `BW-RULE-057` Multiple Submissions | `official_rules` | https://openai.devpost.com/rules — `Multiple Submissions` | “unique and substantially different” | An Entrant may submit more than one Submission, but each must be unique and substantially different from that Entrant's other Submissions, as determined by the Sponsor and Devpost. | This conditional requirement is `NOT_APPLICABLE` only if final Devpost evidence establishes that the Entrant submitted only this one project; otherwise human confirmation is required. | `HUMAN_CONFIRMATION_REQUIRED`: confirm submission count without recording private account data; if more than one exists, obtain human review of substantial differentiation. | `2026-07-21T22:08:15Z` | `2026-07-21T22:08:15Z` | `EVIDENCED` | `null` | Repository and public project evidence do not establish the Entrant's complete submission count. | Identified during final source reconciliation. It is unknown whether this wording was newly added to the official page or was previously omitted from the repository baseline. |
+| `BW-RULE-058` Proprietary or third-party hardware access | `official_rules` | https://openai.devpost.com/rules — `Testing` | “provide physical access” | If submitted software runs on proprietary or third-party hardware not widely available to the public, the Sponsor or Administrator may require physical access to that hardware. | `NOT_APPLICABLE`: the submitted project runs in a normal browser and does not require proprietary or uncommon physical hardware. | Confirm the public browser demo and ordinary desktop, tablet, or smartphone access path; no hardware-access control is required. | `2026-07-21T22:08:15Z` | `2026-07-21T22:08:15Z` | `EVIDENCED` | `null` | Applicability would change if the submitted judge path depended on uncommon physical hardware. | Identified during final source reconciliation. It is unknown whether this wording was newly added to the official page or was previously omitted from the repository baseline. |
+| `BW-RULE-059` Financial or Preferential Support | `official_rules` | https://openai.devpost.com/rules — `Financial or Preferential Support` | “financial or preferential support” | A Project must not have been developed, or derived from a Project developed, with financial or preferential support from the Sponsor or Administrator before the Submission Period ends; the Rules provide non-exhaustive examples and reserve conflict-of-interest discretion. | Compliance cannot be inferred from code, repository history, or public URLs and requires a privacy-safe human attestation. | `HUMAN_ATTESTATION_REQUIRED`: record only the attestation result; do not place financial details in Git. | `2026-07-21T22:08:15Z` | `2026-07-21T22:08:15Z` | `EVIDENCED` | `null` | Whether any disqualifying support exists is a human-only fact not established by repository evidence. | Identified during final source reconciliation. It is unknown whether this wording was newly added to the official page or was previously omitted from the repository baseline. |
 
 ### FAQ and Update clarifications
 
