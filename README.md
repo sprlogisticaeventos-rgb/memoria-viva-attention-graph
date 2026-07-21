@@ -46,16 +46,10 @@ sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15
 PUBLIC_REPLAY_JSON_HASH:
 18be9783b470b0fb738b2c8be82a76b76d302d88346c22443f19346b3cbaeb37
 
-<<<<<<< HEAD
-DEMO_VIDEO: READY
-DEMO_VIDEO_URL: https://youtu.be/a7Ri_qCfxc0
-CODEX_FEEDBACK_SESSION_ID: 019f762f-473b-7b21-8f06-46c38dbf3f07
-=======
 REPOSITORY_DOCS: REVIEWED
 DEMO_VIDEO: READY
 DEMO_VIDEO_URL: https://youtu.be/a7Ri_qCfxc0
 CODEX_FEEDBACK_SESSION_ID: CAPTURED
->>>>>>> build-week/submission-metadata
 DEVPOST_SUBMISSION: PENDING
 FINAL_COMPLIANCE_REVIEW: PENDING
 ```
@@ -294,12 +288,8 @@ oracle isolation, GraphDelta, RunRecord, replay, tests, CLI, and demo.
 The founder retained authority over ontology, policy, privacy, Goals,
 trade-offs, approval boundaries, and public wording. Git history,
 [`DECISIONS.md`](DECISIONS.md), and [`BUILD_LOG.md`](BUILD_LOG.md) preserve that
-<<<<<<< HEAD
-evolution. Primary `/feedback` Session ID: `019f762f-473b-7b21-8f06-46c38dbf3f07`.
-=======
 evolution. The primary `/feedback` Session ID was captured and provided
 privately in the Devpost submission form.
->>>>>>> build-week/submission-metadata
 
 ## 14. Repository structure
 
