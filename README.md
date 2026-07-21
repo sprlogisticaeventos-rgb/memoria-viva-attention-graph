@@ -18,7 +18,7 @@ private path, or external source material.
 
 | Current validation | Status |
 |---|---|
-| Unit tests | `200 PASSING` |
+| Unit tests | `255 PASSING` |
 | CLI smoke | `PASS` |
 | Streamlit local smoke | `PASS` |
 | Deployed smoke | `PASS` |
@@ -40,6 +40,14 @@ Memoria Viva answers four practical questions:
 The deterministic engine—not a language model—constructs state transitions,
 scores, rankings, GraphDelta, and claims. GPT-5.6 explains those completed
 results; it does not determine or modify them.
+
+A guided decision workspace is the primary interface. **What should happen
+next?** is selected on first load, so a bounded deterministic action is always
+visible. On desktop, a 38/62 composition keeps Goal, grounding, and a compact
+attention map in the left context rail while the verified question and answer
+remain dominant on the right. Narrow screens place the question and answer
+first. There is no open-ended chat history, and the selected question never
+becomes a scoring feature or recomputes rank.
 
 ## 2. The founder problem
 
@@ -70,8 +78,8 @@ The replay:
 - passes all three oracle comparisons.
 
 The same replay is deployed through Streamlit Community Cloud from `main`. Its
-public access, deterministic replay, optional GPT-5.6 brief, four-tab render,
-and sanitized JSON download have passed human smoke review.
+public access, deterministic replay, optional GPT-5.6 explanations, detailed
+four-tab inspector, and sanitized JSON download have passed human smoke review.
 
 ## 4. Quick start
 
@@ -115,13 +123,23 @@ Existing exports are never replaced unless `--force` is supplied. Paths outside
 streamlit run streamlit_app.py
 ```
 
-The app computes the deterministic replay locally without a network call. Use
-**Run deterministic replay** to repeat the same transition and digest.
+The app computes the deterministic replay locally without a network call. The
+right decision workspace starts with **What should happen next?** and shows its
+deterministic answer immediately. The left context rail highlights the affected
+public Goal, exact answer grounding counts, replay verification, and a compact
+top-to-bottom attention graph. The complete before/event/after interface opens
+full-width below both columns through **Inspect deterministic system**.
 
 ## 7. GPT-5.6 configuration
 
-GPT-5.6 runs only after the user presses **Generate GPT-5.6 Decision Brief**.
-It is not called on import or initial page render.
+GPT-5.6 recommendation is available only for **What matters now?** and **What
+should happen next?**, after the user explicitly presses **Recommend the next
+move with GPT-5.6**. It authors only three concise strings: what the verified
+state means, the recommended next move, and the approval or uncertainty note.
+Application code owns every identity, receipt, evidence, uncertainty, and
+approval field. The separate **Generate GPT-5.6 Decision Brief** remains in the
+technical inspector. GPT is not called on import, initial page render, or
+question selection.
 
 For local development, keep credentials in ignored `.env.local`:
 
@@ -152,6 +170,9 @@ sanitized runtime bundle
   → isolated oracle comparisons
   → RunRecord
   → public-safe DemoViewModel
+  → guided deterministic intent router
+  → immutable grounded ChatAnswer
+  → optional GPT-5.6 grounded recommendation
 ```
 
 Canonical serialization is `MV_CANONICAL_JSON_V1`. Stable IDs and SHA-256
@@ -167,10 +188,14 @@ separate; human expected ranks never enter scoring or production generation.
 | Builds rankings and GraphDelta | Cannot change rank or execution state |
 | Preserves claims, uncertainty, and approvals | Must retain uncertainty and approval boundaries |
 | Produces replay and RunRecord digests | Produces a strict `DecisionBrief` only |
+| Selects grounded ChatAnswer facts and receipts | May explain meaning and recommend only the next approved action |
 
 The Responses API uses strict Structured Output validated against
-[`schemas/decision-brief.schema.json`](schemas/decision-brief.schema.json).
-Invalid output is discarded safely; it never replaces deterministic results.
+[`schemas/decision-brief.schema.json`](schemas/decision-brief.schema.json) and
+[`schemas/chat-response.schema.json`](schemas/chat-response.schema.json).
+Application-controlled answer IDs, intent, evidence, uncertainty, approvals,
+and replay digest cannot be model-authored. Invalid output is discarded safely;
+it never replaces deterministic results.
 
 ## 10. Canonical demo scenario
 
@@ -215,9 +240,10 @@ python -m compileall -q src tests streamlit_app.py
 The suite covers closed-schema registration, fixture boundaries, immutable
 Snapshots, transition semantics, scoring, oracle isolation, GraphDelta,
 RunRecord, replay determinism, CLI export controls, public-safe presentation,
-mocked strict GPT output, safe fallback behavior, and Streamlit rendering. No
-automated test makes a paid API request. The Phase 2 validation baseline is
-**200 passing tests**.
+deterministic intent routing, immutable grounded answers, mocked strict GPT
+output, safe fallback behavior, Graphviz story rendering, and guided Streamlit
+rendering. No automated test makes a paid API request. The final UX validation
+suite contains **255 passing tests**.
 
 ## 13. Codex collaboration
 
@@ -238,8 +264,8 @@ config/                       versioned attention policies
 docs/                         blueprint, ontology, privacy, compliance evidence
 fixtures/founder-hackathon/   sanitized canonical scenario and human oracles
 schemas/                      canonical Draft 2020-12 contracts
-src/memoria_viva/             deterministic core and demo adapters
-tests/                        unittest contract, replay, CLI, UI, and explainer tests
+src/memoria_viva/             deterministic core, grounded chat, and demo adapters
+tests/                        unittest contract, replay, chat, CLI, UI, and explainer tests
 runs/                         ignored explicit local exports only
 streamlit_app.py              one-page judge demo
 ```
@@ -250,7 +276,10 @@ streamlit_app.py              one-page judge demo
 - The feature policy remains approved only for bounded Replay Mode; it is not a
   production-active policy claim. The base policy remains `draft` with
   `effective_at: null`.
-- GPT-5.6 explains completed deterministic output but is not required for replay.
+- GPT-5.6 explains completed deterministic output and may recommend the next
+  smallest action within the verified dependency, execution, uncertainty, and
+  approval boundaries. It never chooses attention and is not required for the
+  guided deterministic answer.
 - No real Gmail, Calendar, database, authentication, agents, scheduler, or
   external writes.
 - Compliance, submission completion, Goal completion, executed displacement,

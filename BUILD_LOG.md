@@ -957,3 +957,265 @@ unrounded internal scores.
 - This milestone changes release metadata only. No deterministic core, replay,
   scoring, GraphDelta, schema, fixture, policy, Streamlit behavior, explainer
   behavior, test, dependency, or generated output changed.
+
+## MV-BUILD-016 — Grounded conversational interface
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-20 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/final-ux-chat` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Final UX pass — grounded conversational interface |
+| Status | `STAGED_FOR_LOCAL_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Conversation architecture and product boundary
+
+- Grounded conversation is now the primary presentation surface:
+  `question → deterministic intent → verified state selection → immutable
+  ChatAnswer → optional GPT-5.6 language rewrite → evidence and replay receipt`.
+- The deterministic router supports exactly `CURRENT_ATTENTION`,
+  `WHAT_CHANGED`, `WHY_ITEM`, `PROTECTED_ITEMS`, `REQUIRES_CONFIRMATION`,
+  `EVIDENCE`, `UNKNOWNS`, `REPLAY_PROOF`, `MEMORY_STATE`, and the bounded
+  `UNSUPPORTED` response. Intent precedence and public-subject matching are
+  explicit and versioned in code.
+- A question selects an explanation from the committed replay. It is never
+  passed to component extraction, scoring, ranking, transition, GraphDelta, or
+  RunRecord generation. No contextual reranking or policy recalibration was
+  introduced.
+- `MV_CHAT_ANSWER_V1` derives a stable answer identity from normalized question,
+  intent, matched public item, ReplayResult digest, and contract version. Its
+  public attention rows preserve exact rank, displayed score, status,
+  protection, confirmation, execution, and evidence state.
+- GPT-5.6 receives only a sanitized completed ChatAnswer projection. It may
+  author three conversational strings; model identity, answer identity, intent,
+  replay digest, evidence, unknowns, and approval fields are controlled by the
+  application and validated locally. The deterministic answer remains visible
+  after every credential, API, timeout, or validation failure.
+
+### User experience and verification
+
+- Streamlit now opens with the grounded conversation, six suggested prompts,
+  current-session-only history, a clear control, and a top-three current
+  attention rail. The detailed before/event/after experience remains available
+  under `Inspect deterministic system` with all four prior technical tabs.
+- The UI does not call GPT-5.6 on import, page load, deterministic question
+  submission, or suggested-prompt click. A separate per-answer button is the
+  only GPT chat trigger. Conversation is not persisted or written under
+  `runs/`.
+- Added the closed Draft 2020-12 `GroundedChatResponse` contract, deterministic
+  chat tests, mocked strict Responses API tests, and expanded Streamlit AppTest
+  coverage. All **232 tests pass**; `compileall`, CLI replay, schema registration,
+  AppTest, and a localhost Streamlit health check pass without a GPT request.
+- The canonical replay remains `PASS` for all three oracle comparisons with
+  ReplayResult digest
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- No fixture, policy, deterministic core module, existing core schema,
+  ontology, blueprint, privacy contract, publication data, score, ranking,
+  Snapshot, transition, GraphDelta, RunRecord, oracle, or dependency changed.
+  Public deployment review of the new UX remains pending until after human
+  local review, commit, merge, and deployment.
+
+### Next exact action
+
+- Run the six suggested questions locally, inspect one conditional-item answer,
+  optionally test one GPT-5.6 rewrite, and confirm the preserved deterministic
+  inspector before authorizing commit and deployment review.
+
+## MV-BUILD-017 — Guided single-question UX simplification
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-20 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/final-ux-chat` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Final UX pass — guided verified question interface |
+| Status | `STAGED_FOR_LOCAL_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Simplified product surface and preserved architecture
+
+- Superseded the visible chat history, arbitrary text input, clear-conversation
+  control, and permanent attention rail with one centered select-only control.
+  The six public questions continue through the existing deterministic intent
+  router and immutable `MV_CHAT_ANSWER_V1`; no scoring or contextual reranking
+  path was introduced.
+- The primary view now renders one concise answer at a time: headline, direct
+  answer, relevant ranked items, evidence count, replay verification, and only
+  the approval or uncertainty warning that applies. Detailed receipts remain
+  available in compact expanders.
+- Added a deterministic public-safe Graphviz projection of the principal story:
+  event creation, dependency order, protected continuity, conditional
+  displacement with execution `UNKNOWN` and not executed, and the two
+  confirmation-required items. The complete 21-change GraphDelta remains in
+  `Inspect deterministic system` rather than the primary graph.
+- Preserved the full four-tab deterministic inspector, deterministic replay,
+  GPT-5.6 Decision Brief, and sanitized JSON download.
+
+### Optional explanation boundary and verification
+
+- The optional GPT-5.6 response now authors only `what_this_means`,
+  `recommended_next_move`, and `approval_or_uncertainty_note`. Application code
+  still controls model identity, answer identity, intent, ranks, scores,
+  evidence, uncertainty, approvals, and replay identity.
+- The recommendation is constrained to the next smallest action allowed by the
+  verified rank, prerequisite order, execution state, uncertainty, and approval
+  boundaries. It cannot rerank, predict future events, claim completion or
+  executed displacement, invent evidence, or bypass approval.
+- Added `graphviz==0.21` to the pinned demo dependency set. No graph library is
+  used by the deterministic replay core.
+- All **241 tests pass**, including focused guided-question, GPT semantic guard,
+  Graphviz principal-story, no-GPT-on-load, and narrow-layout checks. Bytecode
+  compilation, CLI replay, schema registration, core digest comparison,
+  public replay JSON comparison, AppTest, and local Streamlit health are part of
+  the final gate. A real local Playwright pass at `390 × 844` confirmed the
+  centered selector, single-answer hierarchy, compact ranked rows, collapsed
+  inspector, and rendered attention graph with zero browser-console errors.
+- No fixture, policy, deterministic core module, replay output, score, rank,
+  Snapshot, transition, GraphDelta, RunRecord, oracle, ontology, blueprint, or
+  privacy boundary changed. No output is written under `runs/`.
+
+### Next exact action
+
+- Locally select each of the six verified questions, inspect the compact graph
+  at desktop and narrow width, optionally request one GPT-5.6 recommendation,
+  and verify the complete hidden inspector before authorizing commit and a new
+  deployed-surface review.
+
+## MV-BUILD-018 — Final guided UX and recommendation reliability correction
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-20 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/final-ux-chat` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Non-empty guided experience and bounded GPT recommendation |
+| Status | `STAGED_FOR_LOCAL_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Final product correction
+
+- Preselected **What matters now?** so the primary surface always opens with a
+  complete deterministic answer. The same six-option router remains available;
+  no arbitrary input, history, or contextual reranking was introduced.
+- Added a public-safe Goal context derived from Snapshot T1 and the existing
+  event Goal reference. All three Goals appear as compact chips; `GC-01 —
+  Product validation` is highlighted as `Active`, `Incomplete`, and `Official
+  requirements unverified`. The UI explicitly states that changed attention
+  does not prove Goal completion.
+- Added one primary-view clarification that rank is the verified attention
+  order while score is a supporting signal and protection or dependency may
+  determine final order.
+- Restricted the optional GPT-5.6 recommendation control to **What matters
+  now?** and **What should happen next?** only. The three authored language
+  fields share a 130-word semantic ceiling, and existing guards continue to
+  reject reranking, score changes, completion, compliance, future outcomes,
+  executed displacement, unsupported evidence, and approval bypass.
+- Strengthened the model-free **What should happen next?** answer to freeze the
+  minimum verifiable demonstration scope, verify the public demo, then complete
+  the dependent package while reviewing conditional displacement and human
+  approvals separately. No action is represented as executed.
+- Reworked the public graph into a compact top-to-bottom Goal → event → verified
+  attention narrative. Confirmation-required items now connect to a single
+  `Human confirmation required` lane; conditional authorization, no execution,
+  and `UNKNOWN` remain explicit.
+
+### Verification and unchanged authority
+
+- The complete suite contains **247 passing tests**, including the non-empty
+  initial state, Goal derivation, incomplete Goal state, single order-versus-
+  score explanation, two-question GPT gate, 130-word recommendation ceiling,
+  deterministic next action, and connected confirmation lane.
+- No live GPT request was made. The deterministic answer remains sufficient for
+  every question, and no GPT client is created on page load or selection.
+- AppTest and a real local Playwright pass at `390 × 844` confirmed the
+  preselected answer, Goal chips, single order-versus-score explanation,
+  two-question GPT gate, connected vertical Graphviz narrative, and collapsed
+  technical inspector with zero browser-console errors.
+- ReplayResult, public replay JSON, fixture, policy, Snapshot, score, ranking,
+  transition, GraphDelta, RunRecord, oracle, ontology, blueprint, and privacy
+  semantics remain unchanged. No output is written under `runs/`.
+
+### Next exact action
+
+- Review the preselected first answer, all six selector states, the two allowed
+  GPT recommendation controls, the compact Goal context, and the connected
+  vertical graph locally before authorizing commit and deployed-surface review.
+
+## MV-BUILD-019 — Final release UX composition and GPT reliability pass
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-20 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/final-ux-chat` |
+| Logical thread | `BUILD WEEK — MEMORIA VIVA PRIMARY CORE` |
+| Milestone | Release composition — context rail, decision workspace, grounded GPT recommendation |
+| Status | `STAGED_FOR_LOCAL_HUMAN_REVIEW` |
+| Commit | None |
+| Push | None |
+
+### Release composition
+
+- Replaced the centered single-column presentation with a responsive 38/62
+  composition: Current Goal, verified grounding, and the compact attention map
+  occupy the left context rail; the product headline, default **What should
+  happen next?** selector, deterministic answer, basis, warning, next action,
+  and optional GPT recommendation occupy the right decision workspace.
+- Narrow layouts reorder the workspace before the context rail. The full
+  inspector is controlled from the decision workspace but renders below both
+  columns at page width, preserving The shift, Why it changed, Evidence &
+  uncertainty, Technical proof, deterministic replay, GPT Decision Brief, and
+  sanitized JSON download.
+- Simplified the Current Goal surface so `Product validation` is visually
+  primary and remains `Active · Incomplete` with official requirements
+  unverified. The other two approved Goals remain secondary public chips.
+- Added deterministic answer-level grounding: relevant attention-item count,
+  evidence-reference count, all three oracle PASS states, replay verification,
+  and relevant confirmation or conditional-displacement counts. Exact evidence
+  and receipts remain available in a compact expander.
+- Reduced the primary Graphviz story to seven connected concepts with short
+  vertical relationships. It preserves the affected Goal, event, top three,
+  conditional authorization, no execution, `UNKNOWN`, and one two-item human
+  confirmation boundary without exposing raw IDs as primary labels.
+
+### GPT recommendation boundary and verification
+
+- GPT-5.6 remains available only for **What matters now?** and **What should
+  happen next?**. Its strict model-authored payload contains only the required
+  non-empty strings `what_this_means`, `recommended_next_move`, and
+  `approval_or_uncertainty_note`; application code attaches and validates all
+  model, answer, intent, replay, evidence, uncertainty, and approval metadata.
+- Semantic validation now allows legitimate paraphrase while rejecting rank or
+  score restatement, reversed dependency, unsupported entity or evidence IDs,
+  completion or compliance claims, known/executed displacement, invented future
+  outcomes, and approval bypass. A failed optional call renders only the compact
+  public message while retaining a developer-safe diagnostic and the complete
+  deterministic next action.
+- All **255 tests pass**. The suite covers layout composition, Goal and
+  grounding derivation, compact graph semantics, full-width inspector gating,
+  strict three-field GPT output, application-controlled metadata, paraphrase
+  acceptance, stronger-claim rejection, compact failure presentation, no GPT
+  call on load, and no private context.
+- Local Playwright review passed at `1440 × 1100` and `390 × 900`: desktop uses
+  the intended asymmetric context/workspace composition, mobile puts the
+  question and answer first, the graph fits without stray edge labels, and the
+  opened inspector spans the page below both columns. Browser console errors
+  were zero; the one warning was the renderer's benign worker fallback.
+- No deterministic core module, fixture, policy, Goal contract, score, ranking,
+  Snapshot, transition, GraphDelta, RunRecord, oracle expectation, replay JSON,
+  or core digest changed. No output is written under `runs/`; no live GPT call
+  was made.
+
+### Next exact action
+
+- Review the default deterministic recommendation, Goal and grounding rail,
+  compact graph, both GPT-eligible questions, one forced GPT failure, narrow
+  stacking order, and the full-width inspector before authorizing commit and a
+  deployed-surface review.
