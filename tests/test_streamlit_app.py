@@ -40,7 +40,31 @@ class StreamlitAppTests(unittest.TestCase):
             ],
         )
 
-    def test_all_four_tabs_render(self) -> None:
+    def test_chat_first_copy_and_suggestions_render(self) -> None:
+        app = AppTest.from_file(str(APP)).run(timeout=30)
+        rendered = _rendered_text(app)
+        self.assertIn("What deserves your attention now?", rendered)
+        labels = [button.label for button in app.button]
+        self.assertEqual(
+            labels[:5],
+            [
+                "What changed after the trigger?",
+                "What should I pay attention to?",
+                "Why is CMT-04 still conditional?",
+                "Show me what the system remembers.",
+                "Replay this decision.",
+            ],
+        )
+
+    def test_attention_suggestion_renders_grounded_chat_answer(self) -> None:
+        app = AppTest.from_file(str(APP)).run(timeout=30)
+        _button(app, "What should I pay attention to?").click().run(timeout=30)
+        rendered = _rendered_text(app)
+        self.assertIn("The deterministic ranking says your top three are", rendered)
+        self.assertIn("Public product demonstration ready", rendered)
+        self.assertIn("Replay verified", rendered)
+
+    def test_all_four_inspector_tabs_render(self) -> None:
         app = AppTest.from_file(str(APP)).run(timeout=30)
         self.assertEqual(
             [tab.label for tab in app.tabs],
@@ -75,7 +99,7 @@ class StreamlitAppTests(unittest.TestCase):
     def test_replay_button_is_deterministic(self) -> None:
         app = AppTest.from_file(str(APP)).run(timeout=30)
         before = _rendered_text(app)
-        app.button[0].click().run(timeout=30)
+        _button(app, "Run deterministic replay").click().run(timeout=30)
         after = _rendered_text(app)
         digest = "sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15"
         self.assertIn(digest, before)
@@ -88,13 +112,14 @@ class StreamlitAppTests(unittest.TestCase):
 
     def test_gpt_button_exists_but_is_not_pressed(self) -> None:
         app = AppTest.from_file(str(APP)).run(timeout=30)
-        self.assertEqual(
+        self.assertIn(
+            "Generate GPT-5.6 Decision Brief",
             [button.label for button in app.button],
-            [
-                "Run deterministic replay",
-                "Generate GPT-5.6 Decision Brief",
-            ],
         )
+
+
+def _button(app: AppTest, label: str):
+    return next(button for button in app.button if button.label == label)
 
 
 def _rendered_text(app: AppTest) -> str:
