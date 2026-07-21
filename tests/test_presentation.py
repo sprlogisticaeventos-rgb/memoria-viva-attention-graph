@@ -27,6 +27,7 @@ class PresentationTests(unittest.TestCase):
             self.session.view_model.canonical_bytes(),
             second.view_model.canonical_bytes(),
         )
+        self.assertEqual(self.view["technical_proof"]["validated_test_count"], 260)
 
     def test_before_and_after_order_is_judge_readable(self) -> None:
         self.assertEqual(
