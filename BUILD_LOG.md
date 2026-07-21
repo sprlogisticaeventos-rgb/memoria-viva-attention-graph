@@ -1257,3 +1257,41 @@ unrounded internal scores.
 - This milestone changes documentation only. It does not modify application
   behavior, canonical replay output, dependencies, fixtures, policies, schemas,
   tests, or any deterministic core module.
+
+## MV-BUILD-021 — Submission documentation reconciliation
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-21 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/submission-metadata` |
+| Milestone | Final public repository documentation review |
+| Status | `READY_FOR_HUMAN_DEVPOST_SUBMISSION` |
+| Commit | None |
+| Push | None |
+
+### Validated release state
+
+- The validated-test-count presentation hotfix is deployed: the Technical
+  proof now reports `260` instead of the stale `197`.
+- The complete suite remains `260 PASS`, and all three oracle comparisons
+  remain `PASS`.
+- ReplayResult digest remained unchanged at
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- The sanitized public replay JSON was recalculated after the presentation
+  hotfix. The prior hash is superseded by
+  `18be9783b470b0fb738b2c8be82a76b76d302d88346c22443f19346b3cbaeb37`.
+- The public demo video is ready at <https://youtu.be/a7Ri_qCfxc0>.
+- The primary `/feedback` Session ID was captured and is provided privately in
+  the Devpost submission form. No literal Session ID is stored publicly.
+- Repository documentation was reviewed. `DEVPOST_SUBMISSION` remains
+  `PENDING`, and `FINAL_COMPLIANCE_REVIEW` remains `PENDING`.
+
+### Change boundary
+
+- This correction changes `README.md` and appends this entry to `BUILD_LOG.md`
+  only. No application, deterministic core, schema, fixture, policy,
+  dependency, or test file changed.
+- Existing surface-specific privacy and publication restrictions remain in
+  force. Raw private evidence and unauthorized publication surfaces remain
+  prohibited.
