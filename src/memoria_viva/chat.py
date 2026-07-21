@@ -151,15 +151,22 @@ def _conditionality_answer(view: Mapping[str, Any]) -> tuple[str, tuple[str, ...
         (row for row in view["after_ranking"] if row["subject_id"] == "CMT-04"),
         None,
     )
+    if item is None:
+        return (
+            "CMT-04 is not available in the current sanitized replay view.",
+            (),
+        )
     change = next(
         (
             row
             for row in view["graph_delta_by_category"]["DISPLACED"]
             if row["affected_id"] == "CMT-04"
+            or "CMT-04" in str(row["affected_id"])
+            or item["label"] in row["label"]
         ),
         None,
     )
-    if item is None or change is None:
+    if change is None:
         return (
             "CMT-04 is not available in the current sanitized replay view.",
             (),
