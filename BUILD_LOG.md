@@ -1295,3 +1295,45 @@ unrounded internal scores.
 - Existing surface-specific privacy and publication restrictions remain in
   force. Raw private evidence and unauthorized publication surfaces remain
   prohibited.
+
+## MV-BUILD-022 — OpenAI Build Week submission closure
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-21 |
+| Project | Memoria Viva — Attention Graph for Founders |
+| Branch | `build-week/final-submission-close` |
+| Milestone | OpenAI Build Week submission closure |
+| Status | `SUBMITTED_AND_PUBLISHED` |
+| Commit | None |
+| Push | None |
+
+### External submission receipts
+
+- The OpenAI Build Week Devpost submission was successfully submitted, and the
+  Memoria Viva project is publicly published at
+  <https://devpost.com/software/memoria-viva>.
+- The submission confirmation email was received. No private email address or
+  message identifier is recorded here.
+- The public demo remains available at
+  <https://memoria-viva-attention-graph-kmhfgbtexurbgcqvhaht8v.streamlit.app/>,
+  and the public video is available at <https://youtu.be/a7Ri_qCfxc0>.
+- The repository remained public under the MIT License. The primary
+  `/feedback` Session ID was provided privately in Devpost and is not recorded
+  in public repository files.
+
+### Final deterministic receipts and boundary
+
+- `260` tests remain the final validated count, and all three oracle
+  comparisons remain `PASS`.
+- ReplayResult digest remained unchanged at
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- Public replay JSON hash remained unchanged at
+  `18be9783b470b0fb738b2c8be82a76b76d302d88346c22443f19346b3cbaeb37`.
+- `CODE_FREEZE` became `FINAL`.
+- This closure changes `README.md` and appends this entry to `BUILD_LOG.md`
+  only. No application, deterministic core, schema, fixture, policy,
+  dependency, or test file changed.
+- Approved sanitized-surface privacy boundaries remain in force. Submission
+  does not authorize raw private evidence or any publication surface outside
+  the approved sanitized scope.
