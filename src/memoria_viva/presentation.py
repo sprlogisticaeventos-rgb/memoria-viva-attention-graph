@@ -24,7 +24,7 @@ DETERMINISTIC_AUTHORITY_STATEMENT = (
 
 # Static build metadata from the Phase 2 validation gate. Streamlit must never
 # run subprocess tests inside a web request.
-VALIDATED_TEST_COUNT = 197
+VALIDATED_TEST_COUNT = 260
 
 
 @dataclass(frozen=True)
