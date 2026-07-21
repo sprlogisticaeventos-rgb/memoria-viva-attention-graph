@@ -1450,3 +1450,40 @@ unrounded internal scores.
 - No application, deterministic core, schema, fixture, policy, dependency,
   test, score, ranking, GraphDelta, RunRecord, ReplayResult, oracle, GPT, or
   deployment behavior changed. Devpost was not modified.
+
+## MV-BUILD-025 — Public repository metadata closure
+
+| Field | Value |
+|---|---|
+| Date | 2026-07-21 |
+| Project | Memoria Viva — Attention Graph for Founder Decisions |
+| Branch | `build-week/final-repo-metadata-closure` |
+| Milestone | Public repository metadata correction verification |
+| Status | `VALIDATED_AND_READY_FOR_COMMIT` |
+| Commit | None |
+| Push | None |
+
+### External metadata closure
+
+- The repository owner corrected the public GitHub repository description.
+- A logged-out browser recheck at `2026-07-21T23:21:01Z` confirmed the public
+  description `Attention Graph for founder decisions.` in both standard and
+  Open Graph metadata.
+- Updated the final compliance review to replace the resolved metadata warning
+  with the verified current state.
+- `README.md` remained unchanged because its tracked project facts were already
+  accurate. The GitHub settings correction did not alter any repository file.
+
+### Validation receipts and change boundary
+
+- The complete suite passes: `Ran 260 tests` and `OK`.
+- Ranking-before, ranking-after, and GraphDelta comparisons remain `3/3 PASS`.
+- ReplayResult digest remains unchanged at
+  `sha256:3ae0d566fef04029972e1875f2026e11cd9a60d39208241f030330e6237c6f15`.
+- Public replay JSON hash remains unchanged at
+  `18be9783b470b0fb738b2c8be82a76b76d302d88346c22443f19346b3cbaeb37`.
+- No application, deterministic core, schema, fixture, policy, dependency,
+  test, score, ranking, GraphDelta, RunRecord, ReplayResult, oracle, GPT, or
+  deployment behavior changed. Devpost was not modified.
+- No secret, literal Session ID, UUID, PII, merge marker, or actual private
+  filesystem path was introduced.
