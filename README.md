@@ -47,7 +47,7 @@ PUBLIC_REPLAY_JSON_HASH:
 4c74a94a7fd9258b16129edb8952b306975d0d99e4c1750653f744d2f2837bca
 
 DEMO_VIDEO: PENDING
-CODEX_FEEDBACK_SESSION_ID: PENDING
+CODEX_FEEDBACK_SESSION_ID: 019f762f-473b-7b21-8f06-46c38dbf3f07
 DEVPOST_SUBMISSION: PENDING
 FINAL_COMPLIANCE_REVIEW: PENDING
 ```
@@ -284,8 +284,7 @@ oracle isolation, GraphDelta, RunRecord, replay, tests, CLI, and demo.
 The founder retained authority over ontology, policy, privacy, Goals,
 trade-offs, approval boundaries, and public wording. Git history,
 [`DECISIONS.md`](DECISIONS.md), and [`BUILD_LOG.md`](BUILD_LOG.md) preserve that
-evolution. The final primary `/feedback` Session ID remains pending until this
-thread is complete.
+evolution. Primary `/feedback` Session ID: `019f762f-473b-7b21-8f06-46c38dbf3f07`.
 
 ## 14. Repository structure
 
